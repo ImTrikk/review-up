@@ -1,18 +1,21 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
  return (
   <>
    <div className="flex  w-full h-screen">
     <div className="bg-primaryColor w-[50%] p-16">
-     <div className="flex items-center gap-2">
-      <img
-       src="/static/images/whitePNGReviewUp.png"
-       alt=""
-       className="w-[20px]"
-      />
-      <h1 className="text-white text-xl font-black">ReviewUp</h1>
-     </div>
+     <Link to="/">
+      <div className="flex items-center gap-2">
+       <img
+        src="/static/images/whitePNGReviewUp.png"
+        alt=""
+        className="w-[20px]"
+       />
+       <h1 className="text-white text-xl font-black">ReviewUp</h1>
+      </div>
+     </Link>
      <div className="pt-10">
       <h1 className="text-white text-4xl font-black">
        Engage with different students{" "}
@@ -85,10 +88,7 @@ export const Login = () => {
          </div>
         </div>
         <div className="mt-10 space-y-2">
-         <button
-          
-          className="bg-primaryColor text-white px-2 h-8 rounded w-full text-sm font-bold"
-         >
+         <button className="bg-primaryColor text-white px-2 h-8 rounded w-full text-sm font-bold">
           Login
          </button>
          <button className="border border-primaryColor text-primaryColor px-2 h-8 rounded w-full text-sm font-bold">
@@ -109,7 +109,7 @@ export const Signup = () => {
  const [lastName, setLastName] = useState("");
  const [email, setEmail] = useState("");
  const [phone, setPhone] = useState("");
- 
+
  return (
   <>
    <h1>Hello this is the signup page</h1>
