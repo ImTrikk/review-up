@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
+
 export const AboutPage = () => {
  return (
   <>
    <div className="bg-secondaryColor">
-    <div className="lg:max-w-7xl mx-20 2xl:mx-auto flex items-center">
-     <div className="h-screen">
+    <div className="lg:max-w-7xl mx-20 2xl:mx-auto">
+     <div className="h-screen flex items-center">
       <div className="flex">
        <img
         src="/static/images/aboutus-image(nobg).png"
@@ -18,9 +20,10 @@ export const AboutPage = () => {
          get left behind in their studies.
         </p>
         <div className="pt-8">
+         <Link to='/signup'>
          <button className="bg-primaryColor text-white px-3 rounded h-10">
           Register now
-         </button>
+         </button></Link>
         </div>
        </div>
       </div>

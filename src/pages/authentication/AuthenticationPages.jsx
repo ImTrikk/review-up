@@ -156,7 +156,7 @@ export const Signup = () => {
      </div>
      <div className="w-[50%]">
       <div className="p-10">
-       <div className="bg-white rounded h-full p-5">
+       <div className="bg-white rounded h-full p-5 shadow-lg">
         <form action="">
          <div className="space-y-4">
           <div className="grid grid-cols">
@@ -166,7 +166,7 @@ export const Signup = () => {
            <input
             type="text"
             placeholder="firstname"
-            className="border border-gray-200 text-xs font-light h-10 px-2 rounded"
+            className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
           </div>
           <div className="grid grid-cols">
@@ -176,7 +176,7 @@ export const Signup = () => {
            <input
             type="text"
             placeholder="lastname"
-            className="border border-gray-200 text-xs font-light h-10 px-2 rounded"
+            className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
           </div>
           <div className="grid grid-cols">
@@ -186,7 +186,7 @@ export const Signup = () => {
            <input
             type="text"
             placeholder="email"
-            className="border border-gray-200 text-xs font-light h-10 px-2 rounded"
+            className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
           </div>
           <div className="grid grid-cols">
@@ -196,7 +196,7 @@ export const Signup = () => {
            <input
             type="text"
             placeholder="phone number"
-            className="border border-gray-200 text-xs font-light h-10 px-2 rounded"
+            className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
           </div>
           <div className="grid grid-cols">
@@ -206,7 +206,7 @@ export const Signup = () => {
            <input
             type="text"
             placeholder="Password"
-            className="border border-gray-200 text-xs font-light h-10 px-2 rounded"
+            className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
           </div>
           <div className="grid grid-cols">
@@ -216,7 +216,7 @@ export const Signup = () => {
            <input
             type="text"
             placeholder="type your password again"
-            className="border border-gray-200 text-xs font-light h-10 px-2 rounded"
+            className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
           </div>
          </div>
