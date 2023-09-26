@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { buildUrl } from "../../utils/buildUrl.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Login = () => {
  return (
@@ -116,7 +118,7 @@ export const Signup = () => {
  const [password, setPassword] = useState("");
  const [phone, setPhone] = useState("");
 
- const handleSignupRequest = async(event) => {
+ const handleSignupRequest = async (event) => {
   event.preventDefault();
   try {
    let response = await fetch(buildUrl("/auth/signup"), {
@@ -135,15 +137,49 @@ export const Signup = () => {
    });
    if (response.ok) {
     console.log("Success fetch...");
+    toast.success("Register complete!", {
+     position: "top-right",
+     autoClose: 5000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+    });
    }
   } catch (err) {
-   console.log(err)
+   console.log(err);
+   toast.error("Error creating account", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
   }
  };
+
+ // <ToastContainer
+ //  position="top-right"
+ //  autoClose={5000}
+ //  hideProgressBar={false}
+ //  newestOnTop={false}
+ //  closeOnClick
+ //  rtl={false}
+ //  pauseOnFocusLoss
+ //  draggable
+ //  pauseOnHover
+ //  theme="light"
+ // />;
 
  return (
   <>
    <div className="bg-primaryColor h-screen">
+    <ToastContainer autoClose={2000} />
     <div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
      <div className="w-[50%] p-10">
       <Link to="/">
@@ -258,7 +294,11 @@ export const Signup = () => {
           </div>
          </div>
          <div className="pt-10">
-          <button type="submit" onClick={handleSignupRequest} className="bg-primaryColor text-white font-bold h-10 w-full rounded">
+          <button
+           type="submit"
+           onClick={handleSignupRequest}
+           className="bg-primaryColor text-white font-bold h-10 w-full rounded"
+          >
            Register
           </button>
          </div>
