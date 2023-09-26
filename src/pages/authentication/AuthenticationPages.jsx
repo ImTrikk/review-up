@@ -131,7 +131,7 @@ export const Signup = () => {
       </Link>
       <div className="pt-10">
        <h1 className="text-white text-4xl font-black">
-        Engage with different students{" "}
+        Create account to unlock features
        </h1>
        <div className="w-44 pt-2">
         <hr className="text-white border-4" />
