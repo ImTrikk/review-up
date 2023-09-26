@@ -1,11 +1,11 @@
 import express from "express"
-import { login, signin } from "../Controllers/auth.js"
+import { login, signup } from "../Controllers/auth.js"
 
 const router = express.Router()
 
 
 // auth routers
-router.post("/sigin", signin)
+router.post("/signup", signup)
 router.post("/login", login)
 
 

@@ -15,7 +15,7 @@ app.use(
  })
 );
 
-app.use("/api", UserRouter);
+app.use("/api/auth", UserRouter);
 
 // add database connection here
 dbConnection.connect((err) => {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { buildUrl } from "../../utils/buildUrl";
 
 export const Login = () => {
  return (
@@ -109,10 +110,36 @@ export const Login = () => {
 };
 
 export const Signup = () => {
- const [firstName, setFirstName] = useState("");
- const [lastName, setLastName] = useState("");
+ const [first_name, setFirstName] = useState("");
+ const [last_name, setLastName] = useState("");
  const [email, setEmail] = useState("");
+ const [password, setPassword] = useState("");
  const [phone, setPhone] = useState("");
+
+ const handleSignup = async (event) => {
+  event.preventDefault();
+  try {
+   let response = await fetch(buildUrl("/auth/signup"), {
+    method: "POST",
+    headers: {
+     "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+     first_name,
+     last_name,
+     email,
+     password,
+     phone,
+     password,
+    }),
+   });
+   if (response.ok) {
+    console.log("Success fetch...");
+   }
+  } catch (err) {
+   console.log(err)
+  }
+ };
 
  return (
   <>
@@ -221,7 +248,7 @@ export const Signup = () => {
           </div>
          </div>
          <div className="pt-10">
-          <button className="bg-primaryColor text-white font-bold h-10 w-full rounded">
+          <button onClick={handleSignup} className="bg-primaryColor text-white font-bold h-10 w-full rounded">
            Register
           </button>
          </div>
