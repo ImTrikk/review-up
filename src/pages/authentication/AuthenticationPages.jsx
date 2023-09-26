@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { buildUrl } from "../../utils/buildUrl";
+import { buildUrl } from "../../utils/buildUrl.js";
 
 export const Login = () => {
  return (
@@ -116,7 +116,7 @@ export const Signup = () => {
  const [password, setPassword] = useState("");
  const [phone, setPhone] = useState("");
 
- const handleSignup = async (event) => {
+ const handleSignupRequest = async(event) => {
   event.preventDefault();
   try {
    let response = await fetch(buildUrl("/auth/signup"), {
@@ -184,7 +184,7 @@ export const Signup = () => {
      <div className="w-[50%]">
       <div className="p-10">
        <div className="bg-white rounded h-full p-5 shadow-lg">
-        <form action="">
+        <form>
          <div className="space-y-4">
           <div className="grid grid-cols">
            <label htmlFor="" className="text-sm text-primaryColor font-medium">
@@ -192,6 +192,8 @@ export const Signup = () => {
            </label>
            <input
             type="text"
+            value={first_name}
+            onChange={(e) => setFirstName(e.target.value)}
             placeholder="firstname"
             className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
@@ -202,6 +204,8 @@ export const Signup = () => {
            </label>
            <input
             type="text"
+            value={last_name}
+            onChange={(e) => setLastName(e.target.value)}
             placeholder="lastname"
             className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
@@ -212,6 +216,8 @@ export const Signup = () => {
            </label>
            <input
             type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="email"
             className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
@@ -222,6 +228,8 @@ export const Signup = () => {
            </label>
            <input
             type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             placeholder="phone number"
             className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
@@ -231,7 +239,9 @@ export const Signup = () => {
             Password
            </label>
            <input
-            type="text"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
@@ -248,7 +258,7 @@ export const Signup = () => {
           </div>
          </div>
          <div className="pt-10">
-          <button onClick={handleSignup} className="bg-primaryColor text-white font-bold h-10 w-full rounded">
+          <button type="submit" onClick={handleSignupRequest} className="bg-primaryColor text-white font-bold h-10 w-full rounded">
            Register
           </button>
          </div>

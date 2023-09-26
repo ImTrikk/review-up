@@ -1,4 +1,5 @@
 import { dbConnection } from "../Database/database.js";
+import bcrypt from "bcrypt";
 
 export const login = async (req, res) => {
  try {
@@ -24,17 +25,17 @@ export const signup = async (req, res) => {
 
   // Insert a new user into the database using parameterized query
   const newUserQuery = `
-      INSERT INTO users (first_name, last_name, email, password, phone)
+      INSERT INTO users (first_name, last_name, email, hashed_password, phone)
       VALUES ($1, $2, $3, $4, $5)
     `;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+  const hashed_password = await bcrypt.hash(password, 10);
 
   await dbConnection.query(newUserQuery, [
    first_name,
    last_name,
    email,
-   hashedPassword,
+   hashed_password,
    phone,
   ]);
 
