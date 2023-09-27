@@ -14,7 +14,7 @@ export const login = async (req, res) => {
 
   console.log(findEmail)
 
-  if(findEmail){
+  if(!findEmail){
     return res.status(400).json({message: "Email does not exist!"})
   }
 

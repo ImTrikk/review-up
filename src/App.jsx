@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter as Routers, Routes, Route } from "react-router-dom";
 import { Mainpage } from "./pages/Mainpage";
 import { Login, Signup } from "./pages/authentication/AuthenticationPages.jsx";
-import DashboardContainer from "./pages/Dashboard/DashboardContainer";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
  return (
@@ -12,7 +12,7 @@ function App() {
      <Route path="/" element={<Mainpage />} />
      <Route path="/signup" element={<Signup />} />
      <Route path="/login" element={<Login />} />
-     <Route path="/dashboard" element={<DashboardContainer />} />
+     <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
    </Routers>
   </>

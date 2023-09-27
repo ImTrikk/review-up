@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
+import { BsJournalBookmarkFill } from "react-icons/bs";
+import { BsFillBookFill } from "react-icons/bs";
+import { BiSolidArchiveIn } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
+import { IoMdSettings } from "react-icons/io";
+
 
 export const SideBar = () => {
  return (
@@ -26,32 +32,40 @@ export const SideBar = () => {
        <Link>
         <div className="border border-gray-100 h-10">
          <div className="px-10 flex items-center h-full gap-2 text-primaryColor">
-          <AiFillHome size={15} />
-          <p className="text-sm">Dashboard</p>
+          <BsJournalBookmarkFill size={15} />
+          <p className="text-sm">Reviewers</p>
          </div>
         </div>
        </Link>
        <Link>
         <div className="border border-gray-100 h-10">
          <div className="px-10 flex items-center h-full gap-2 text-primaryColor">
-          <AiFillHome size={15} />
-          <p className="text-sm">Dashboard</p>
+          <BsFillBookFill size={15} />
+          <p className="text-sm">My reviewers</p>
          </div>
         </div>
        </Link>
        <Link>
         <div className="border border-gray-100 h-10">
          <div className="px-10 flex items-center h-full gap-2 text-primaryColor">
-          <AiFillHome size={15} />
-          <p className="text-sm">Dashboard</p>
+          <BiSolidArchiveIn size={15} />
+          <p className="text-sm">Archived</p>
          </div>
         </div>
        </Link>
        <Link>
         <div className="border border-gray-100 h-10">
          <div className="px-10 flex items-center h-full gap-2 text-primaryColor">
-          <AiFillHome size={15} />
-          <p className="text-sm">Dashboard</p>
+          <CgProfile size={15} />
+          <p className="text-sm">Profile</p>
+         </div>
+        </div>
+       </Link>
+       <Link>
+        <div className="border border-gray-100 h-10">
+         <div className="px-10 flex items-center h-full gap-2 text-primaryColor">
+          <IoMdSettings size={15} />
+          <p className="text-sm">Settings</p>
          </div>
         </div>
        </Link>
