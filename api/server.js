@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import { UserRouter } from "./Routes/Router.js";
 import { dbConnection } from "./Database/database.js";
 
+
 const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,5 +26,6 @@ dbConnection.connect((err) => {
   console.log("Connected to PostgreSQL Database");
  }
 });
+
 
 app.listen(6000, () => console.log("Server running on localhost 6000"));

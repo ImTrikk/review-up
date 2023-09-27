@@ -1,10 +1,27 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { buildUrl } from "../../../utils/buildUrl.js";
+import { buildUrl } from "../../utils/buildUrl.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const Login = () => {
+ const [email, setEmail] = useState("");
+ const [password, setPassword] = useState("");
+
+ const handleLoginRequest = async(event) => {
+  event.preventDefault();
+  await fetch(buildUrl("/auth/login"), {
+   method: "POST",
+   headers: {
+    "Content-Type": "application/json",
+   },
+   body: JSON.stringify({
+    email,
+    password,
+   }),
+  });
+ };
+
  return (
   <>
    <div className="flex  w-full h-screen">
@@ -52,13 +69,15 @@ export const Login = () => {
        discussions with students
       </p>
       <div className="pt-10">
-       <form action="">
+       <form>
         <div className="flex flex-col pt-4">
          <label htmlFor="" className="text-sm font-medium text-primaryColor">
           Email
          </label>
          <input
-          type="text"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter email"
           className="text-xs font-light border border-gray-200 px-4 h-10 py-2 rounded outline-none"
          />
@@ -69,6 +88,8 @@ export const Login = () => {
          </label>
          <input
           type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.password)}
           placeholder="Enter the correct password"
           className="text-xs font-light border border-gray-200 px-4 h-10 py-2 rounded outline-none"
          />
@@ -91,7 +112,11 @@ export const Login = () => {
          </div>
         </div>
         <div className="mt-10 space-y-2">
-         <button className="bg-primaryColor text-white px-2 h-10 rounded w-full text-sm font-bold">
+         <button
+          type="submit"
+          onClick={handleLoginRequest}
+          className="bg-primaryColor text-white px-2 h-10 rounded w-full text-sm font-bold"
+         >
           Login
          </button>
          <div className="">
@@ -112,6 +137,7 @@ export const Login = () => {
 };
 
 export const Signup = () => {
+ 
  const [first_name, setFirstName] = useState("");
  const [last_name, setLastName] = useState("");
  const [email, setEmail] = useState("");
@@ -121,7 +147,7 @@ export const Signup = () => {
  const handleSignupRequest = async (event) => {
   event.preventDefault();
   try {
-   const response = await fetch(buildUrl("/auth/signup"), {
+   let response = await fetch(buildUrl("/auth/signup"), {
     method: "POST",
     headers: {
      "Content-Type": "application/json",
@@ -134,23 +160,10 @@ export const Signup = () => {
      phone,
     }),
    });
-
-   if (response.status === 201) {
-    const data = await response.json();
+   if ((response = 201)) {
     toast.success("Success creating account", {
      position: "top-right",
-     autoClose: 2000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "light",
-    });
-   } else {
-    toast.error("There was an issue creating your account", {
-     position: "top-right",
-     autoClose: 2000,
+     autoClose: 5000,
      hideProgressBar: false,
      closeOnClick: true,
      pauseOnHover: true,
@@ -160,10 +173,10 @@ export const Signup = () => {
     });
    }
   } catch (err) {
-   console.error("Error creating account:", err);
+   console.log(err);
    toast.error("Error creating account", {
     position: "top-right",
-    autoClose: 5000,
+    autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -176,7 +189,7 @@ export const Signup = () => {
  return (
   <>
    <div className="bg-primaryColor h-screen">
-    <ToastContainer autoClose={2000} />
+    <ToastContainer />
     <div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
      <div className="w-[50%] p-10">
       <Link to="/">
@@ -248,7 +261,7 @@ export const Signup = () => {
             Email
            </label>
            <input
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email"
@@ -260,7 +273,7 @@ export const Signup = () => {
             Phone
            </label>
            <input
-            type="text"
+            type="number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="phone number"
