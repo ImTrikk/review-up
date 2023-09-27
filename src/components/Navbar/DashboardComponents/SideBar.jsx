@@ -10,7 +10,7 @@ import { IoMdSettings } from "react-icons/io";
 export const SideBar = () => {
  return (
   <>
-   <div className="fixed bg-white h-screen w-[220px] shadow-lg">
+   <div className="fixed bg-white h-screen w-[200px] shadow-lg">
     <div className="">
      <Link to="/">
       <div className="flex items-center gap-2 p-10">

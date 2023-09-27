@@ -18,7 +18,7 @@ export const ReviewModuleCard = () => {
      <div className="flex items-center justify-between mt-8">
       <div className="text-primaryColor text-xs flex items-center gap-2">
        Rating:
-       {/* <StarRating/> */}
+       <StarRating/>
       </div>
       <button className="bg-primaryColor text-xs text-white rounded h-7 px-2 ">
        ReviewUP

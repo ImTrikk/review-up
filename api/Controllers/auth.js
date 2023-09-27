@@ -3,31 +3,27 @@ import { dbConnection } from "../Database/database.js";
 
 // login endpoint
 export const login = async (req, res) => {
- console.log("checj login api");
  try {
   const { email, password } = req.body;
 
-  const findEmail = await dbConnection.query(
+  const user = await dbConnection.query(
    "SELECT * from users where email = $1",
    [email]
   );
-
-  console.log(findEmail)
-
-  if(!findEmail){
-    return res.status(400).json({message: "Email does not exist!"})
-  }
-
-  const hashedPassword = await dbConnection.query(
-   "SELECT * from users where email = $1 and hashed_password = $2",
-   [email, password]
+  if (user.rows.length === 0) {
+   return res.status(400).json("User does not exist");
+  } 
+  const result = await dbConnection.query(
+   "SELECT hashed_password from users where email = $1",
+   [email]
   );
+  const { hashed_password } = result.rows[0];
+  const validatePassword = await bcrypt.compare(password, hashed_password)
 
-  if (password != hashedPassword) {
-   return res.status(400).json({ message: "Invalid Login" });
-  } else {
-   return res.status(200).json({ message: "User found" });
+  if(!validatePassword){
+    return res.status(400).json({message: "Wrong password"})
   }
+  return res.status(200).json({ message: "User found" });
  } catch (err) {
   console.log(err);
  }

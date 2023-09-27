@@ -3,12 +3,16 @@ import {BsFillArrowUpRightCircleFill} from "react-icons/bs"
 import { ReviewModuleCard } from "../../components/ReviewModuleCard";
 
 const Dashboard = () => {
+
+ let first_name = localStorage.getItem("first_name")
+ let last_name = localStorage.getItem("last_name")
+
  return (
   <>
    <div className="">
     <SideBar />
     <div className="bg-primaryColor w-full h-[140px]">
-     <div className="ml-[250px] h-full grid items-end">
+     <div className="ml-[220px] h-full grid items-end">
       <div className="pb-10">
        <h1 className="text-white text-3xl font-bold">Dashboard</h1>
        <p className="text-white text-sm">
@@ -17,7 +21,7 @@ const Dashboard = () => {
       </div>
      </div>
     </div>
-    <div className="ml-[220px]">
+    <div className="ml-[200px]">
      <div className="p-8">
       <div className="flex items-start justify-between">
        <h1 className="font-bold text-xl text-primaryColor">

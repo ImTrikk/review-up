@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { buildUrl } from "../../utils/buildUrl.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,23 +8,58 @@ export const Login = () => {
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
 
- const handleLoginRequest = async(event) => {
+ const navDashboard = useNavigate();
+
+ const handleLoginRequest = async (event) => {
   event.preventDefault();
-  await fetch(buildUrl("/auth/login"), {
-   method: "POST",
-   headers: {
-    "Content-Type": "application/json",
-   },
-   body: JSON.stringify({
-    email,
-    password,
-   }),
-  });
+  try {
+   let response = await fetch(buildUrl("/auth/login"), {
+    method: "POST",
+    headers: {
+     "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+     email,
+     password,
+    }),
+   });
+   if (response.ok) {
+    // localStorage.setItem("first_name", user.first_name)
+    // localStorage.setItem("last_name", user.last_name)
+    toast.success("Login successful!", {
+     position: "top-right",
+     autoClose: 2000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+    });
+    setTimeout(() => {
+     navDashboard("/dashboard");
+    }, 2000);
+   } else {
+    toast.error("There was an error loggin in", {
+     position: "top-right",
+     autoClose: 2000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+    });
+   }
+  } catch (err) {
+   console.log(err);
+  }
  };
 
  return (
   <>
    <div className="flex  w-full h-screen">
+    <ToastContainer />
     <div className="bg-primaryColor w-[50%] p-16">
      <Link to="/">
       <div className="flex items-center gap-2">
@@ -89,7 +124,7 @@ export const Login = () => {
          <input
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.password)}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter the correct password"
           className="text-xs font-light border border-gray-200 px-4 h-10 py-2 rounded outline-none"
          />
@@ -137,12 +172,13 @@ export const Login = () => {
 };
 
 export const Signup = () => {
- 
  const [first_name, setFirstName] = useState("");
  const [last_name, setLastName] = useState("");
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
  const [phone, setPhone] = useState("");
+
+ const navLogin = useNavigate();
 
  const handleSignupRequest = async (event) => {
   event.preventDefault();
@@ -150,7 +186,7 @@ export const Signup = () => {
    let response = await fetch(buildUrl("/auth/signup"), {
     method: "POST",
     headers: {
-     "Content-Type": "application/json",
+     "Content-type": "application/json",
     },
     body: JSON.stringify({
      first_name,
@@ -160,10 +196,25 @@ export const Signup = () => {
      phone,
     }),
    });
-   if ((response = 201)) {
-    toast.success("Success creating account", {
+   if (response.ok) {
+    console.log(response);
+    toast.success("Success creating account!", {
      position: "top-right",
-     autoClose: 5000,
+     autoClose: 2000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+    });
+    setTimeout(() => {
+     navLogin("/login");
+    }, 2000);
+   } else {
+    toast.error("Error creating account", {
+     position: "top-right",
+     autoClose: 2000,
      hideProgressBar: false,
      closeOnClick: true,
      pauseOnHover: true,
@@ -174,16 +225,6 @@ export const Signup = () => {
    }
   } catch (err) {
    console.log(err);
-   toast.error("Error creating account", {
-    position: "top-right",
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-   });
   }
  };
  return (

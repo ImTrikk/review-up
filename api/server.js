@@ -28,4 +28,4 @@ dbConnection.connect((err) => {
 });
 
 
-app.listen(6000, () => console.log("Server running on localhost 6000"));
+app.listen(4242, () => console.log("Server running on localhost 4242"));
