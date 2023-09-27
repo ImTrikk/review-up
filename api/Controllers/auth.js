@@ -1,6 +1,7 @@
 import { dbConnection } from "../Database/database.js";
 import bcrypt from "bcrypt";
 
+// login endpoint
 export const login = async (req, res) => {
  try {
   const { email, password } = req.body;
@@ -9,7 +10,9 @@ export const login = async (req, res) => {
  }
 };
 
+// signup endpoint
 export const signup = async (req, res) => {
+  console.log("api checker")
  try {
   const { first_name, last_name, email, phone, password } = req.body;
 
@@ -39,7 +42,7 @@ export const signup = async (req, res) => {
    phone,
   ]);
 
-  res.status(201).json({ message: "New user created!" });
+  res.status(201).json({newUserQuery, message: "New user created!" });
  } catch (err) {
   console.log(err);
   res.status(500).json({ message: "Internal server error" });

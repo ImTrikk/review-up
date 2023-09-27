@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { buildUrl } from "../../utils/buildUrl.js";
+import { buildUrl } from "../../../utils/buildUrl.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -121,7 +121,7 @@ export const Signup = () => {
  const handleSignupRequest = async (event) => {
   event.preventDefault();
   try {
-   let response = await fetch(buildUrl("/auth/signup"), {
+   const response = await fetch(buildUrl("/auth/signup"), {
     method: "POST",
     headers: {
      "Content-Type": "application/json",
@@ -132,14 +132,25 @@ export const Signup = () => {
      email,
      password,
      phone,
-     password,
     }),
    });
-   if (response.ok) {
-    console.log("Success fetch...");
-    toast.success("Register complete!", {
+
+   if (response.status === 201) {
+    const data = await response.json();
+    toast.success("Success creating account", {
      position: "top-right",
-     autoClose: 5000,
+     autoClose: 2000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+    });
+   } else {
+    toast.error("There was an issue creating your account", {
+     position: "top-right",
+     autoClose: 2000,
      hideProgressBar: false,
      closeOnClick: true,
      pauseOnHover: true,
@@ -149,7 +160,7 @@ export const Signup = () => {
     });
    }
   } catch (err) {
-   console.log(err);
+   console.error("Error creating account:", err);
    toast.error("Error creating account", {
     position: "top-right",
     autoClose: 5000,
@@ -162,20 +173,6 @@ export const Signup = () => {
    });
   }
  };
-
- // <ToastContainer
- //  position="top-right"
- //  autoClose={5000}
- //  hideProgressBar={false}
- //  newestOnTop={false}
- //  closeOnClick
- //  rtl={false}
- //  pauseOnFocusLoss
- //  draggable
- //  pauseOnHover
- //  theme="light"
- // />;
-
  return (
   <>
    <div className="bg-primaryColor h-screen">
@@ -282,7 +279,7 @@ export const Signup = () => {
             className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
           </div>
-          <div className="grid grid-cols">
+          {/* <div className="grid grid-cols">
            <label htmlFor="" className="text-sm text-primaryColor font-medium">
             Confirm password
            </label>
@@ -291,7 +288,7 @@ export const Signup = () => {
             placeholder="type your password again"
             className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
            />
-          </div>
+          </div> */}
          </div>
          <div className="pt-10">
           <button
