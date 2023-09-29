@@ -1,3 +1,4 @@
+import { CreateButton } from "../../components/CreateButton";
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
 
 export const Archived = () => {
@@ -18,6 +19,7 @@ export const Archived = () => {
     <div className="ml-[220px]">
      <h1>Archived</h1>
     </div>
+    <CreateButton/>
    </div>
   </>
  );

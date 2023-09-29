@@ -2,10 +2,10 @@ import { NavLink, Link } from "react-router-dom";
 import { useState } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { BsJournalBookmarkFill } from "react-icons/bs";
-import { BsFillBookFill } from "react-icons/bs";
-import { BiSolidArchiveIn } from "react-icons/bi";
+import { BiBookmarkAltPlus } from "react-icons/bi";
+import { BiArchiveIn } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { IoMdSettings } from "react-icons/io";
+import { IoSettingsOutline } from "react-icons/io5";
 
 export const SideBar = () => {
  return (
@@ -37,7 +37,7 @@ export const SideBar = () => {
          </div>
         )}
        </NavLink>
-       <NavLink to="/reviewers">
+       <NavLink to="/courses">
         {({ isActive }) => (
          <div
           className={`border border-gray-100 h-10 text-primaryColor ${
@@ -46,12 +46,12 @@ export const SideBar = () => {
          >
           <div className="px-10 flex items-center h-full gap-2">
            <BsJournalBookmarkFill size={15} />
-           <p className="text-xs">Reviewers</p>
+           <p className="text-xs">Courses</p>
           </div>
          </div>
         )}
        </NavLink>
-       <NavLink to="/my-reviewer">
+       <NavLink to="/my-courses">
         {({ isActive }) => (
          <div
           className={`border border-gray-100 h-10 text-primaryColor ${
@@ -59,8 +59,8 @@ export const SideBar = () => {
           }`}
          >
           <div className="px-10 flex items-center h-full gap-2">
-           <BsFillBookFill size={15} />
-           <p className="text-xs">My reviewers</p>
+           <BiBookmarkAltPlus size={15} />
+           <p className="text-xs">My courses</p>
           </div>
          </div>
         )}
@@ -73,7 +73,7 @@ export const SideBar = () => {
           }`}
          >
           <div className="px-10 flex items-center h-full gap-2">
-           <BiSolidArchiveIn size={15} />
+           <BiArchiveIn size={15} />
            <p className="text-xs">Archived</p>
           </div>
          </div>
@@ -101,12 +101,18 @@ export const SideBar = () => {
           }`}
          >
           <div className="px-10 flex items-center h-full gap-2">
-           <IoMdSettings size={15} />
+           <IoSettingsOutline size={15} />
            <p className="text-xs">Settings</p>
           </div>
          </div>
         )}
        </NavLink>
+      </div>
+      <div className="flex items-center justify-between px-4 mt-60">
+       <p className="text-xs text-gray-400">Need help?</p>
+       <button className="text-xs text-white h-8 px-4 bg-primaryColor rounded">
+        Logout
+       </button>
       </div>
      </div>
     </div>

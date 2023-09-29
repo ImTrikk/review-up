@@ -1,11 +1,11 @@
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
-import {BsFillArrowUpRightCircleFill} from "react-icons/bs"
+import { BsSearch } from "react-icons/bs";
 import { ReviewModuleCard } from "../../components/ReviewModuleCard";
+import { CreateButton } from "../../components/CreateButton";
 
 const Dashboard = () => {
-
- let first_name = localStorage.getItem("first_name")
- let last_name = localStorage.getItem("last_name")
+ let first_name = localStorage.getItem("first_name");
+ let last_name = localStorage.getItem("last_name");
 
  return (
   <>
@@ -28,20 +28,27 @@ const Dashboard = () => {
         Welcome back, Patrick James Dionen!
        </h1>
        <div>
-        <button className="bg-primaryColor text-sm text-white font-medium h-8 rounded px-4 flex items-center gap-2">
-         Reviewers
-         <BsFillArrowUpRightCircleFill />
-        </button>
+        <form action="">
+         <div className="flex items-center gap-2 text-primaryColor">
+          <input
+           type="text"
+           placeholder="search courses"
+           className="border border-primaryColor text-xs text-primaryColor outline-none px-4 h-8 rounded"
+          />
+          <BsSearch type="submit" size={16} className="cursor-pointer"/>
+         </div>
+        </form>
        </div>
       </div>
       <div className="pt-2">
        <hr className="border-1 border-primaryColor" />
       </div>
       <div className="pt-5">
-       <ReviewModuleCard/>
+       <ReviewModuleCard />
       </div>
      </div>
     </div>
+    <CreateButton/>
    </div>
   </>
  );
