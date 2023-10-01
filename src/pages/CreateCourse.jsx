@@ -39,7 +39,7 @@ export const CreateCourse = () => {
               htmlFor=""
               className="text-sm font-medium text-primaryColor"
              >
-              Course ID:
+              Course Title:
              </label>
              <input
               type="text"
@@ -64,6 +64,10 @@ export const CreateCourse = () => {
            <div className="flex items-center gap-1">
             <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center gap-2">
              <AiFillPlusCircle size={16} className="text-white" />
+             <button>Notes</button>
+            </div>
+            <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center gap-2">
+             <AiFillPlusCircle size={16} className="text-white" />
              <button>Links</button>
             </div>
             <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center gap-2">
@@ -76,15 +80,17 @@ export const CreateCourse = () => {
            <label htmlFor="" className="text-sm text-primaryColor">
             Description:
            </label>
-           <textarea
-            placeholder="Description"
-            className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none"
-           />
+           <div className="pt-2 w-full">
+            <textarea
+             placeholder="Description"
+             className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none w-full "
+            />
+           </div>
           </div>
          </form>
          <div className="p-5 absolute bottom-0 right-0">
           <div className="bg-primaryColor px-4 rounded h-8 flex items-center">
-           <button className="text-white text-xs">Create course</button>
+           <button className="text-white text-xs">Create</button>
           </div>
          </div>
         </div>

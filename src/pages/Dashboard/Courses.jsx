@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
 import { CreateButton } from "../../components/CreateButton";
+import { ReviewModuleCard } from "../../components/ReviewModuleCard";
 
 export const Courses = () => {
  return (
@@ -17,11 +18,26 @@ export const Courses = () => {
       </div>
      </div>
     </div>
-    <div className="ml-[220px]">
-     <h1>Courses</h1>
+    <div className="ml-[200px]">
+     <div className="p-8">
+      <h1 className="font-bold text-xl text-primaryColor">
+       Courses with reviewers
+      </h1>
+      <div className="pt-2">
+       <hr className="border-1 border-primaryColor" />
+      </div>
+      <div className="pt-10">
+       <div className="flex flex-wrap gap-2">
+        <ReviewModuleCard />
+        <ReviewModuleCard />
+        <ReviewModuleCard />
+        <ReviewModuleCard />
+       </div>
+      </div>
+     </div>
     </div>
-   <CreateButton/>
+    <CreateButton />
    </div>
   </>
  );
-}
+};

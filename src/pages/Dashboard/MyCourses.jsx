@@ -1,5 +1,6 @@
 import { CreateButton } from "../../components/CreateButton";
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
+import { ReviewModuleCard } from "../../components/ReviewModuleCard";
 
 export const MyCourses = () => {
  return (
@@ -18,6 +19,9 @@ export const MyCourses = () => {
     </div>
     <div className="ml-[220px]">
      <h1>My Courses</h1>
+     <div>
+     <ReviewModuleCard/>
+     </div>
     </div>
     <CreateButton/>
    </div>
