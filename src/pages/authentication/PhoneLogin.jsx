@@ -4,8 +4,8 @@ import { buildUrl } from "../../utils/buildUrl.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const Login = () => {
- const [email, setEmail] = useState("");
+export const PhoneLogin = () => {
+ const [phone, setPhone] = useState("");
  const [password, setPassword] = useState("");
 
  const navDashboard = useNavigate();
@@ -19,7 +19,7 @@ export const Login = () => {
      "Content-type": "application/json",
     },
     body: JSON.stringify({
-     email,
+     phone,
      password,
     }),
    });
@@ -110,9 +110,9 @@ export const Login = () => {
           Email
          </label>
          <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
           placeholder="Enter email"
           className="text-xs font-light border border-gray-200 px-4 h-10 py-2 rounded outline-none"
          />

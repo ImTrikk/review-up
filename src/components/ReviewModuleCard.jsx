@@ -1,4 +1,5 @@
 import StarRating from "./StarRating";
+import { Link } from "react-router-dom";
 
 export const ReviewModuleCard = () => {
  return (
@@ -11,18 +12,18 @@ export const ReviewModuleCard = () => {
       <p className="text-sm font-medium text-gray-600">
        Web Systems and Integration
       </p>
-      <p className="text-xs text-gray-600">
-       By: Patrick James Dionen
-      </p>
+      <p className="text-xs text-gray-600">By: Patrick James Dionen</p>
      </div>
      <div className="flex items-center justify-between mt-8">
       <div className="text-primaryColor text-xs flex items-center gap-2">
        Rating:
-       <StarRating/>
+       <StarRating />
       </div>
-      <button className="bg-primaryColor text-xs text-white rounded h-7 px-2 ">
-       ReviewUP
-      </button>
+      <Link to="/course-module">
+       <button className="bg-primaryColor text-xs text-white rounded h-7 px-2 ">
+        ReviewUP
+       </button>
+      </Link>
      </div>
     </div>
    </div>

@@ -9,6 +9,7 @@ import { Archived } from "./pages/Dashboard/Archived";
 import { Profile } from "./pages/Dashboard/Profile";
 import { Settings } from "./pages/Dashboard/Settings";
 import { CreateCourse } from "./pages/CreateCourse";
+import { CourseModule } from "./pages/CourseModule";
 
 function App() {
  return (
@@ -25,6 +26,7 @@ function App() {
      <Route path="/profile" element={<Profile />} />
      <Route path="/settings" element={<Settings />} />
      <Route path="/create-course" element={<CreateCourse />} />
+     <Route path="/course-module" element={<CourseModule />} />
     </Routes>
    </Routers>
   </>

@@ -35,7 +35,7 @@ const Dashboard = () => {
            placeholder="search courses"
            className="border border-primaryColor text-xs text-primaryColor outline-none px-4 h-8 rounded"
           />
-          <BsSearch type="submit" size={16} className="cursor-pointer"/>
+          <BsSearch type="submit" size={16} className="cursor-pointer" />
          </div>
         </form>
        </div>
@@ -48,7 +48,7 @@ const Dashboard = () => {
       </div>
      </div>
     </div>
-    <CreateButton/>
+    <CreateButton />
    </div>
   </>
  );

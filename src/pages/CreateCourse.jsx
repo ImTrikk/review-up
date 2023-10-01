@@ -14,7 +14,7 @@ export const CreateCourse = () => {
       <div className="pb-10">
        <h1 className="text-white text-3xl font-bold">Create Course</h1>
        <p className="text-white text-sm">
-        Create reviewers, drop down notes, and even 
+        Create reviewers, drop down notes, and even
        </p>
       </div>
      </div>
@@ -31,27 +31,52 @@ export const CreateCourse = () => {
        <div className="border border-primaryColor h-screen rounded">
         <div className="p-5">
          <form action="">
-          <div className="w-[350px] space-y-2">
-           <div className="flex items-center justify-between">
-            <label htmlFor="" className="text-sm font-medium text-primaryColor">
-             Course ID:
-            </label>
-            <input
-             type="text"
-             placeholder=""
-             className="border border-primaryColor px-4 h-8 rounded outline-none"
-            />
+          <div className="flex items-center justify-between">
+           <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between gap-2">
+             <label
+              htmlFor=""
+              className="text-sm font-medium text-primaryColor"
+             >
+              Course ID:
+             </label>
+             <input
+              type="text"
+              placeholder=""
+              className="border border-primaryColor text-xs px-4 h-8 rounded outline-none"
+             />
+            </div>
+            <div className="flex items-center justify-between gap-2">
+             <label
+              htmlFor=""
+              className="text-sm font-medium text-primaryColor"
+             >
+              Category:
+             </label>
+             <input
+              type="text"
+              placeholder=""
+              className="border border-primaryColor text-xs px-4 h-8 rounded outline-none"
+             />
+            </div>
            </div>
-           <div className="flex items-center justify-between">
-            <label htmlFor="" className="text-sm font-medium text-primaryColor">
-             Course Details:
-            </label>
-            <input
-             type="text"
-             placeholder=""
-             className="border border-primaryColor px-4 h-8 rounded outline-none"
-            />
+           <div className="flex items-center gap-1">
+            <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center">
+             <button>Links</button>
+            </div>
+            <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center" >
+             <button>Quiz</button>
+            </div>
            </div>
+          </div>
+          <div className="pt-5 flex flex-col">
+           <label htmlFor="" className="text-sm text-primaryColor">
+            Description:
+           </label>
+           <textarea
+            placeholder="Description"
+            className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none"
+           />
           </div>
          </form>
         </div>
