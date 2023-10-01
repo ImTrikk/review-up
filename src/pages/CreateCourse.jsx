@@ -1,5 +1,6 @@
 import { SideBar } from "../components/Navbar/DashboardComponents/SideBar";
 import { BsSearch } from "react-icons/bs";
+import { AiFillPlusCircle } from "react-icons/ai";
 
 export const CreateCourse = () => {
  let first_name = localStorage.getItem("first_name");
@@ -28,7 +29,7 @@ export const CreateCourse = () => {
        <hr className="border-1 border-primaryColor" />
       </div>
       <div className="mt-10">
-       <div className="border border-primaryColor h-screen rounded">
+       <div className="border border-primaryColor h-screen rounded relative">
         <div className="p-5">
          <form action="">
           <div className="flex items-center justify-between">
@@ -61,10 +62,12 @@ export const CreateCourse = () => {
             </div>
            </div>
            <div className="flex items-center gap-1">
-            <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center">
+            <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center gap-2">
+             <AiFillPlusCircle size={16} className="text-white" />
              <button>Links</button>
             </div>
-            <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center" >
+            <div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center gap-2">
+             <AiFillPlusCircle size={16} className="text-white" />
              <button>Quiz</button>
             </div>
            </div>
@@ -79,6 +82,11 @@ export const CreateCourse = () => {
            />
           </div>
          </form>
+         <div className="p-5 absolute bottom-0 right-0">
+          <div className="bg-primaryColor px-4 rounded h-8 flex items-center">
+           <button className="text-white text-xs">Create course</button>
+          </div>
+         </div>
         </div>
        </div>
       </div>
