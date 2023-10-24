@@ -1,7 +1,6 @@
 import express from "express";
-import { login, signup } from "../Controllers/auth.js";
+import { TwoFactorAuth, login, signup } from "../Controllers/auth.js";
 import { Userinfo } from "../Controllers/Userinfo.js";
-import { TwoFactorAuth } from "../Controllers/TwoFactorAuth.js";
 
 const router = express.Router();
 

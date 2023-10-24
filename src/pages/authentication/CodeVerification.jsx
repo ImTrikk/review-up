@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { buildUrl } from "../../utils/buildUrl";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const CodeVerification = () => {
+ const navigate = useNavigate();
+
  const [verificationCode, setVerificationCode] = useState([
   "",
   "",
@@ -19,9 +24,8 @@ export const CodeVerification = () => {
 
  const handleVerifyCode = async () => {
   const concatenatedCode = verificationCode.join("");
-
   try {
-   await fetch(buildUrl("/auth-user"), {
+   await fetch(buildUrl("/auth/auth-user"), {
     method: "POST",
     headers: {
      "Content-Type": "application/json",
@@ -32,13 +36,19 @@ export const CodeVerification = () => {
    }).then((res) => {
     if (res.ok) {
      return res.json().then((data) => {
-      localStorage.setItem("user_id", data.foundUser.user_id);
-      localStorage.setItem("token", data.jwtToken);
-      localStorage.setItem("first_name", data.foundUser.first_name);
-      localStorage.setItem("last_name", data.foundUser.last_name);
-      localStorage.setItem("email", data.foundUser.email);
-      localStorage.setItem("phone", data.foundUser.phone);
-      toast.success("Login successful!", {
+      localStorage.setItem("user_id", data.compressedData.foundUser.user_id);
+      localStorage.setItem("token", data.compressedData.jwtToken);
+      localStorage.setItem(
+       "first_name",
+       data.compressedData.foundUser.first_name,
+      );
+      localStorage.setItem(
+       "last_name",
+       data.compressedData.foundUser.last_name,
+      );
+      localStorage.setItem("email", data.compressedData.foundUser.email);
+      localStorage.setItem("phone", data.compressedData.foundUser.phone);
+      toast.success("Verified email, login successful!", {
        position: "top-right",
        autoClose: 2000,
        hideProgressBar: false,
@@ -49,11 +59,11 @@ export const CodeVerification = () => {
        theme: "light",
       });
       setTimeout(() => {
-       navDashboard("/dashboard");
+       navigate("/dashboard");
       }, 2000);
      });
     } else {
-     toast.error("There was an error loggin in", {
+     toast.error("There was an error verifying email", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -73,6 +83,7 @@ export const CodeVerification = () => {
  return (
   <>
    <div className="bg-primaryColor h-screen">
+    <ToastContainer />
     <div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
      <div className="flex items-center justify-center w-full h-screen">
       <div className="flex gap-10 justify-between">

@@ -27,8 +27,10 @@ export const Login = () => {
     }),
    });
    if (response.ok) {
-    const data = await response.json();
-    navigator("/verify", data);
+    toast.info("Verify your email account");
+    setTimeout(() => {
+     navigator("/verify");
+    }, 3000);
    } else {
     if (response.status === 400) {
      const data = await response.json();

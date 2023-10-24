@@ -3,6 +3,10 @@ import { dbConnection } from "../Database/database.js";
 import jwtGenerator from "../../src/utils/jwtGenerator.js";
 import nodemailer from "nodemailer";
 import { buildUrl } from "../../src/utils/buildUrl.js";
+import fetch from "node-fetch";
+
+let globalCode;
+let compressedData;
 
 // login endpoint
 export const login = async (req, res) => {
@@ -42,35 +46,17 @@ export const login = async (req, res) => {
   });
   console.log("Verification: ", verifyEmail);
 
-  // return res.status(200).json({ jwtToken });
+  globalCode = verifyEmail;
+  console.log("global code: ", globalCode);
 
-  // let verifyOtpEmail = await fetch(buildUrl("/auth-user"), {
-  //  method: "POST",
-  //  headers: {
-  //   "Content-Type": "application/json",
-  //  },
-  //  body: JSON.stringify({
-  //   verifyEmail,
-  //  }),
-  // });
+  compressedData = { foundUser, jwtToken };
 
-  // console.log(verifyOtpEmail);
-
-  return res.status(200).json({ foundUser, jwtToken, message: "User found" });
+  return res.status(200).json({ message: "User found" });
  } catch (err) {
   console.log(err);
  }
 };
 
-// let verifyOtpEmail = await fetch(buildUrl("/auth-user"), {
-//  method: "POST",
-//  headers: {
-//   "Content-Type": "application/json",
-//  },
-//  body: JSON.stringify({
-//   concatenatedCode,
-//  }),
-// });
 // signup endpoint
 export const signup = async (req, res) => {
  try {
@@ -107,7 +93,23 @@ export const signup = async (req, res) => {
  }
 };
 
-// deliverables
+export const TwoFactorAuth = async (req, res) => {
+ const { concatenatedCode } = req.body;
+
+ try {
+  if (concatenatedCode === globalCode) {
+   res.cookie(compressedData.jwtToken);
+
+   return res
+    .status(200)
+    .json({ compressedData, message: "Verified email account" });
+  } else {
+   return res.status(400).json({ message: "Wrong One time password" });
+  }
+ } catch (err) {
+  console.log(err);
+ }
+};
 
 // Verification email function
 const OtpVerificationEmail = async ({ user_id, email }) => {
