@@ -8,12 +8,14 @@ export const Login = () => {
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
 
+ const userToken = localStorage.getItem("token");
+
  const navDashboard = useNavigate();
 
  const handleLoginRequest = async (event) => {
   event.preventDefault();
   try {
-   let response = await fetch(buildUrl("/auth/login"), {
+   await fetch(buildUrl("/auth/login"), {
     method: "POST",
     headers: {
      "Content-type": "application/json",
@@ -22,35 +24,42 @@ export const Login = () => {
      email,
      password,
     }),
+   }).then((res) => {
+    if (res.ok) {
+     return res.json().then((data) => {
+      localStorage.setItem("user_id", data.foundUser.user_id);
+      localStorage.setItem("token", data.jwtToken);
+      localStorage.setItem("first_name", data.foundUser.first_name);
+      localStorage.setItem("last_name", data.foundUser.last_name);
+      localStorage.setItem("email", data.foundUser.email);
+      localStorage.setItem("phone", data.foundUser.phone);
+      toast.success("Login successful!", {
+       position: "top-right",
+       autoClose: 2000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+       theme: "light",
+      });
+      setTimeout(() => {
+       navDashboard("/dashboard");
+      }, 2000);
+     });
+    } else {
+     toast.error("There was an error loggin in", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+     });
+    }
    });
-   if (response.ok) {
-    // localStorage.setItem("first_name", user.first_name)
-    // localStorage.setItem("last_name", user.last_name)
-    toast.success("Login successful!", {
-     position: "top-right",
-     autoClose: 2000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "light",
-    });
-    setTimeout(() => {
-     navDashboard("/dashboard");
-    }, 2000);
-   } else {
-    toast.error("There was an error loggin in", {
-     position: "top-right",
-     autoClose: 2000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "light",
-    });
-   }
   } catch (err) {
    console.log(err);
   }

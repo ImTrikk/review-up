@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { dbConnection } from "../Database/database.js";
+import jwtGenerator from "../../src/utils/jwtGenerator.js";
 
 // login endpoint
 export const login = async (req, res) => {
@@ -8,22 +9,31 @@ export const login = async (req, res) => {
 
   const user = await dbConnection.query(
    "SELECT * from users where email = $1",
-   [email]
+   [email],
   );
+
+  const foundUser = user.rows[0];
+  console.log("Found user: ", foundUser);
+
   if (user.rows.length === 0) {
    return res.status(400).json("User does not exist");
-  } 
+  }
   const result = await dbConnection.query(
    "SELECT hashed_password from users where email = $1",
-   [email]
+   [email],
   );
   const { hashed_password } = result.rows[0];
-  const validatePassword = await bcrypt.compare(password, hashed_password)
+  const validatePassword = await bcrypt.compare(password, hashed_password);
 
-  if(!validatePassword){
-    return res.status(400).json({message: "Wrong password"})
+  if (!validatePassword) {
+   return res.status(400).json({ message: "Wrong password" });
   }
-  return res.status(200).json({ message: "User found" });
+
+  const jwtToken = jwtGenerator(user.rows[0].user_id);
+  console.log(jwtToken);
+  res.cookie(jwtToken, "secret");
+
+  return res.status(200).json({ foundUser, jwtToken, message: "User found" });
  } catch (err) {
   console.log(err);
  }
@@ -31,14 +41,13 @@ export const login = async (req, res) => {
 
 // signup endpoint
 export const signup = async (req, res) => {
- console.log("api checker");
  try {
   const { first_name, last_name, email, phone, password } = req.body;
 
   // Check if the email already exists
   const existingEmail = await dbConnection.query(
    "SELECT * FROM users WHERE email = $1",
-   [email]
+   [email],
   );
 
   if (existingEmail.rows.length > 0) {
@@ -49,9 +58,7 @@ export const signup = async (req, res) => {
       INSERT INTO users (first_name, last_name, email, hashed_password, phone)
       VALUES ($1, $2, $3, $4, $5)
     `;
-
   const hashed_password = await bcrypt.hash(password, 10);
-
   await dbConnection.query(newUserQuery, [
    first_name,
    last_name,
@@ -60,9 +67,14 @@ export const signup = async (req, res) => {
    phone,
   ]);
 
-  res.status(201).json({ newUserQuery, message: "New user created!" });
+  const jwtToken = jwtGenerator(newUserQuery.rows[0].user_id);
+  res
+   .status(201)
+   .json({ jwtToken, newUserQuery, message: "New user created!" });
  } catch (err) {
   console.log(err);
   res.status(500).json({ message: "Internal server error" });
  }
 };
+
+// deliverables

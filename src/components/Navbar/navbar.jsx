@@ -5,7 +5,7 @@ export const Navbar = () => {
   <>
    <div className="fixed w-full">
     <div className="bg-secondaryColor py-2">
-     <div className="flex items-center justify-between mx-20">
+     <div className="flex items-center justify-between lg:max-w-7xl mx-20 2xl:mx-auto">
       <div className="w-[20px]">
        <Link to="/">
         <img src="/static/images/mainlogo.png" alt="" className="w-[200px]" />
@@ -13,11 +13,15 @@ export const Navbar = () => {
       </div>
       <div className="flex items-center gap-10">
        <ul className="flex gap-5 text-primaryColor">
-        <li>Home</li>
-        <li>About</li>
+        <a href="#home">
+         <li>Home</li>
+        </a>
+        <a href="">
+         <li>About</li>
+        </a>
         <li>Services</li>
        </ul>
-       <Link to='/login'>
+       <Link to="/login">
         <button className="bg-primaryColor font-bold text-white h-8 px-4 rounded">
          Login
         </button>
