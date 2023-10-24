@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { dbConnection } from "../Database/database.js";
 import jwtGenerator from "../../src/utils/jwtGenerator.js";
+import { OtpVerificationemail } from "./OtpVerificationemail.js";
 
 // login endpoint
 export const login = async (req, res) => {
@@ -32,6 +33,8 @@ export const login = async (req, res) => {
   const jwtToken = jwtGenerator(user.rows[0].user_id);
   console.log(jwtToken);
   res.cookie(jwtToken, "secret");
+
+  //  OtpVerificationemail({}); 
 
   return res.status(200).json({ foundUser, jwtToken, message: "User found" });
  } catch (err) {
