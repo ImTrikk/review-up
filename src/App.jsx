@@ -22,6 +22,7 @@ function App() {
      <Route path="/login" element={<Login />} />
      <Route path="/signup" element={<Signup />} />
      <Route path="/verify" element={<CodeVerification />} />
+     <Route path="/dashboard" element={<Dashboard />} />
      <Route path="/courses" element={<Courses />} />
      <Route path="/my-courses" element={<MyCourses />} />
      <Route path="/archived" element={<Archived />} />

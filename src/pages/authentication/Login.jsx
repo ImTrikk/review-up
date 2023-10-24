@@ -25,41 +25,45 @@ export const Login = () => {
      password,
     }),
    }).then((res) => {
-    if (res.ok) {
-     return res.json().then((data) => {
-      localStorage.setItem("user_id", data.foundUser.user_id);
-      localStorage.setItem("token", data.jwtToken);
-      localStorage.setItem("first_name", data.foundUser.first_name);
-      localStorage.setItem("last_name", data.foundUser.last_name);
-      localStorage.setItem("email", data.foundUser.email);
-      localStorage.setItem("phone", data.foundUser.phone);
-      toast.success("Login successful!", {
-       position: "top-right",
-       autoClose: 2000,
-       hideProgressBar: false,
-       closeOnClick: true,
-       pauseOnHover: true,
-       draggable: true,
-       progress: undefined,
-       theme: "light",
-      });
-      setTimeout(() => {
-       navDashboard("/dashboard");
-      }, 2000);
-     });
-    } else {
-     toast.error("There was an error loggin in", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-     });
-    }
-   });
+    
+   })
+   
+    //.then((res) => {
+    // if (res.ok) {
+    //  return res.json().then((data) => {
+    //   localStorage.setItem("user_id", data.foundUser.user_id);
+    //   localStorage.setItem("token", data.jwtToken);
+    //   localStorage.setItem("first_name", data.foundUser.first_name);
+    //   localStorage.setItem("last_name", data.foundUser.last_name);
+    //   localStorage.setItem("email", data.foundUser.email);
+    //   localStorage.setItem("phone", data.foundUser.phone);
+    //   toast.success("Login successful!", {
+    //    position: "top-right",
+    //    autoClose: 2000,
+    //    hideProgressBar: false,
+    //    closeOnClick: true,
+    //    pauseOnHover: true,
+    //    draggable: true,
+    //    progress: undefined,
+    //    theme: "light",
+    //   });
+    //   setTimeout(() => {
+    //    navDashboard("/dashboard");
+    //   }, 2000);
+    //  });
+    // } else {
+    //  toast.error("There was an error loggin in", {
+    //   position: "top-right",
+    //   autoClose: 2000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: "light",
+    //  });
+    // }
+   // });
   } catch (err) {
    console.log(err);
   }
@@ -67,7 +71,7 @@ export const Login = () => {
 
  return (
   <>
-   <div className="flex  w-full h-screen">
+   <div className="flex w-full h-screen">
     <ToastContainer />
     <div className="bg-primaryColor w-[50%] p-16">
      <Link to="/">
@@ -81,24 +85,24 @@ export const Login = () => {
       </div>
      </Link>
      <div className="pt-10">
-      <h1 className="text-white text-4xl font-black">
+      <h1 className="text-white text-5xl font-black">
        Engage with different students{" "}
       </h1>
       <div className="w-44 pt-2">
        <hr className="text-white border-4" />
       </div>
       <div className="pt-5">
-       <p className="text-lg text-white">
+       <p className="text-lg font-light text-white">
         Learn from peers and share your ideas, reviewers, and other study
         resources.
        </p>
       </div>
       <div className="pt-5">
-       <p className="text-lg text-white">
+       <p className="text-lg font-light text-white">
         Don't have an account yet? Create now and collaborate with students!
        </p>
        <div className="pt-4">
-        <button className="bg-white rounded px-4 h-8 text-sm text-primaryColor">
+        <button className="bg-white rounded px-4 h-10 text-sm text-primaryColor">
          Register here
         </button>
        </div>
@@ -107,7 +111,7 @@ export const Login = () => {
     </div>
     <div className="w-[50%]">
      <div className="p-16">
-      <h1 className="text-primaryColor font-black text-3xl">Login</h1>
+      <h1 className="text-primaryColor font-black text-3xl">LOGIN</h1>
       <p className="text-sm text-gray-500 pt-2">
        Login to keep track of ongoing progress and engage in meaningful
        discussions with students

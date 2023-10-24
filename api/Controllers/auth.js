@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { dbConnection } from "../Database/database.js";
 import jwtGenerator from "../../src/utils/jwtGenerator.js";
-import { OtpVerificationemail } from "./OtpVerificationemail.js";
+import nodemailer from "nodemailer";
 
 // login endpoint
 export const login = async (req, res) => {
@@ -34,7 +34,14 @@ export const login = async (req, res) => {
   console.log(jwtToken);
   res.cookie(jwtToken, "secret");
 
-  //  OtpVerificationemail({}); 
+  // Call the verification email function with user_id and email
+  const verifyEmail = await OtpVerificationEmail({
+   user_id: user.rows[0].user_id,
+   email: email,
+  });
+  console.log("Verification: ", verifyEmail);
+
+  
 
   return res.status(200).json({ foundUser, jwtToken, message: "User found" });
  } catch (err) {
@@ -70,7 +77,7 @@ export const signup = async (req, res) => {
    phone,
   ]);
 
-  const jwtToken = jwtGenerator(newUserQuery.rows[0].user_id);
+  const jwtToken = jwtGenerator(user.rows[0].user_id);
   res
    .status(201)
    .json({ jwtToken, newUserQuery, message: "New user created!" });
@@ -81,3 +88,36 @@ export const signup = async (req, res) => {
 };
 
 // deliverables
+
+// Verification email function
+const OtpVerificationEmail = async ({ user_id, email }) => {
+ try {
+  const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+
+  const emailTransporter = nodemailer.createTransport({
+   service: "gmail",
+   host: "smtp.gmail.com",
+   port: 465,
+   secure: true,
+   auth: {
+    user: "reviewupofficial@gmail.com",
+    pass: "hase uosx uyks fhrq",
+   },
+  });
+
+  // Send the verification email
+  const mailOptions = {
+   from: "reviewupofficial@gmail.com",
+   to: email,
+   subject: "Your Verification Code",
+   text: `Your verification code is: ${otp}`,
+  };
+
+  const info = await emailTransporter.sendMail(mailOptions);
+  console.log("Verification email sent:", info.response);
+
+  return otp;
+ } catch (err) {
+  console.log(err);
+ }
+};

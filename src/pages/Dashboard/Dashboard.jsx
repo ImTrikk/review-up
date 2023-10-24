@@ -24,8 +24,8 @@ const Dashboard = () => {
     <div className="ml-[200px]">
      <div className="p-8">
       <div className="flex items-start justify-between">
-       <h1 className="font-bold text-xl text-primaryColor">
-        Welcome back, Patrick James Dionen!
+       <h1 className="font-semibold text-lg text-primaryColor">
+        Welcome back, <span className="font-bold text-2xl">{first_name + "!"}</span>
        </h1>
        <div>
         <form action="">
