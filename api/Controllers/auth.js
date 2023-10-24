@@ -41,7 +41,7 @@ export const login = async (req, res) => {
   });
   console.log("Verification: ", verifyEmail);
 
-  
+  return res.status(200).json({ jwtToken });
 
   return res.status(200).json({ foundUser, jwtToken, message: "User found" });
  } catch (err) {
@@ -77,10 +77,8 @@ export const signup = async (req, res) => {
    phone,
   ]);
 
-  const jwtToken = jwtGenerator(user.rows[0].user_id);
-  res
-   .status(201)
-   .json({ jwtToken, newUserQuery, message: "New user created!" });
+  // const jwtToken = jwtGenerator(user.rows[0].user_id);
+  res.status(201).json({ newUserQuery, message: "New user created!" });
  } catch (err) {
   console.log(err);
   res.status(500).json({ message: "Internal server error" });
@@ -92,7 +90,8 @@ export const signup = async (req, res) => {
 // Verification email function
 const OtpVerificationEmail = async ({ user_id, email }) => {
  try {
-  const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+  //  provide a 6 digit code to the client email
+  const otp = `${Math.floor(100000 + Math.random() * 900000)}`;
 
   const emailTransporter = nodemailer.createTransport({
    service: "gmail",

@@ -15,55 +15,89 @@ export const Signup = () => {
 
  const handleSignupRequest = async (event) => {
   event.preventDefault();
-  try {
-   let response = await fetch(buildUrl("/auth/signup"), {
-    method: "POST",
-    headers: {
-     "Content-type": "application/json",
-    },
-    body: JSON.stringify({
-     first_name,
-     last_name,
-     email,
-     password,
-     phone,
-    }),
+
+  console.log("Handling signup request"); // Add this line to check if the function is called
+  console.log(password);
+
+  if (password.length <= 8) {
+   toast.error("Password is too short", {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
    });
-   if (response.ok) {
-    console.log(response);
-    toast.success("Success creating account!", {
-     position: "top-right",
-     autoClose: 2000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "light",
+  } else if (
+   !/[A-Z]/.test(password) ||
+   !/[a-z]/.test(password)
+   // /\d/.test(password)
+   // /[!@#$%^&*]/.test(password)
+  ) {
+   toast.error("Password is not strong enough", {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
+  } else {
+   try {
+    let response = await fetch(buildUrl("/auth/signup"), {
+     method: "POST",
+     headers: {
+      "Content-type": "application/json",
+     },
+     body: JSON.stringify({
+      first_name,
+      last_name,
+      email,
+      password,
+      phone,
+     }),
     });
-    setTimeout(() => {
-     navLogin("/login");
-    }, 2000);
-   } else {
-    toast.error("Error creating account", {
-     position: "top-right",
-     autoClose: 2000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "light",
-    });
+    if (response.ok) {
+     console.log(response);
+     toast.success("Success creating account!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+     });
+     setTimeout(() => {
+      navLogin("/login");
+     }, 2000);
+    } else {
+     toast.error("Error creating account", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+     });
+    }
+   } catch (err) {
+    console.log(err);
    }
-  } catch (err) {
-   console.log(err);
   }
  };
+
  return (
   <>
    <div className="bg-primaryColor h-screen">
-    <ToastContainer />
+    <ToastContainer autoClose={2000} />
     <div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
      <div className="w-[50%] p-10">
       <Link to="/">

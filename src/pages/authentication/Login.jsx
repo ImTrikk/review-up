@@ -11,6 +11,7 @@ export const Login = () => {
  const userToken = localStorage.getItem("token");
 
  const navDashboard = useNavigate();
+ const navigator = useNavigate();
 
  const handleLoginRequest = async (event) => {
   event.preventDefault();
@@ -25,44 +26,46 @@ export const Login = () => {
      password,
     }),
    }).then((res) => {
-    
-   })
-   
-    //.then((res) => {
-    // if (res.ok) {
-    //  return res.json().then((data) => {
-    //   localStorage.setItem("user_id", data.foundUser.user_id);
-    //   localStorage.setItem("token", data.jwtToken);
-    //   localStorage.setItem("first_name", data.foundUser.first_name);
-    //   localStorage.setItem("last_name", data.foundUser.last_name);
-    //   localStorage.setItem("email", data.foundUser.email);
-    //   localStorage.setItem("phone", data.foundUser.phone);
-    //   toast.success("Login successful!", {
-    //    position: "top-right",
-    //    autoClose: 2000,
-    //    hideProgressBar: false,
-    //    closeOnClick: true,
-    //    pauseOnHover: true,
-    //    draggable: true,
-    //    progress: undefined,
-    //    theme: "light",
-    //   });
-    //   setTimeout(() => {
-    //    navDashboard("/dashboard");
-    //   }, 2000);
-    //  });
-    // } else {
-    //  toast.error("There was an error loggin in", {
-    //   position: "top-right",
-    //   autoClose: 2000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    //   theme: "light",
-    //  });
-    // }
+    if (res.ok) {
+     navigator("/verify");
+    }
+   });
+
+   //.then((res) => {
+   // if (res.ok) {
+   //  return res.json().then((data) => {
+   //   localStorage.setItem("user_id", data.foundUser.user_id);
+   //   localStorage.setItem("token", data.jwtToken);
+   //   localStorage.setItem("first_name", data.foundUser.first_name);
+   //   localStorage.setItem("last_name", data.foundUser.last_name);
+   //   localStorage.setItem("email", data.foundUser.email);
+   //   localStorage.setItem("phone", data.foundUser.phone);
+   //   toast.success("Login successful!", {
+   //    position: "top-right",
+   //    autoClose: 2000,
+   //    hideProgressBar: false,
+   //    closeOnClick: true,
+   //    pauseOnHover: true,
+   //    draggable: true,
+   //    progress: undefined,
+   //    theme: "light",
+   //   });
+   //   setTimeout(() => {
+   //    navDashboard("/dashboard");
+   //   }, 2000);
+   //  });
+   // } else {
+   //  toast.error("There was an error loggin in", {
+   //   position: "top-right",
+   //   autoClose: 2000,
+   //   hideProgressBar: false,
+   //   closeOnClick: true,
+   //   pauseOnHover: true,
+   //   draggable: true,
+   //   progress: undefined,
+   //   theme: "light",
+   //  });
+   // }
    // });
   } catch (err) {
    console.log(err);
@@ -188,4 +191,3 @@ export const Login = () => {
   </>
  );
 };
-

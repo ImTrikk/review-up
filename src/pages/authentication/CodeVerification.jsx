@@ -1,4 +1,26 @@
+import { useState } from "react";
+
 export const CodeVerification = () => {
+ const [verificationCode, setVerificationCode] = useState([
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+ ]);
+
+ const handleInputChange = (index, value) => {
+  const newVerificationCode = [...verificationCode];
+  newVerificationCode[index] = value;
+  setVerificationCode(newVerificationCode);
+ };
+
+ const handleVerifyCode = async () => {
+  const concatenatedCode = verificationCode.join("");
+  console.log("verification code: ", concatenatedCode);
+ };
+
  return (
   <>
    <div className="bg-primaryColor h-screen">
@@ -23,37 +45,25 @@ export const CodeVerification = () => {
         </div>
         <div className="flex items-center justify-center pt-10">
          <div className="flex gap-2">
-          <input
-           type="text"
-           className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
-          />
-          <input
-           type="text"
-           className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
-          />
-          <input
-           type="text"
-           className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
-          />
-          <input
-           type="text"
-           className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
-          />
-          <input
-           type="text"
-           className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
-          />
-          <input
-           type="text"
-           className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
-          />
+          {verificationCode.map((value, index) => (
+           <input
+            key={index}
+            type="text"
+            className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
+            value={value}
+            onChange={(e) => handleInputChange(index, e.target.value)}
+           />
+          ))}
          </div>
         </div>
         <div className="flex justify-between items-center pt-16">
          <button className="text-xs text-primaryColor">
           Didn't received email?
          </button>
-         <button className="bg-primaryColor text-white px-2 h-8 rounded text-xs">
+         <button
+          onClick={handleVerifyCode}
+          className="bg-primaryColor text-white px-2 h-8 rounded text-xs"
+         >
           send
          </button>
         </div>
