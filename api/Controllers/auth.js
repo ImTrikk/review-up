@@ -19,7 +19,6 @@ export const login = async (req, res) => {
   );
 
   const foundUser = user.rows[0];
-  console.log("Found user: ", foundUser);
 
   if (user.rows.length === 0) {
    return res.status(400).json({ message: "User does not exist" });
@@ -44,11 +43,9 @@ export const login = async (req, res) => {
    user_id: user.rows[0].user_id,
    email: email,
   });
-  console.log("Verification: ", verifyEmail);
 
+  //  store data to global
   globalCode = verifyEmail;
-  console.log("global code: ", globalCode);
-
   compressedData = { foundUser, jwtToken };
 
   return res.status(200).json({ message: "User found" });
@@ -95,7 +92,6 @@ export const signup = async (req, res) => {
 
 export const TwoFactorAuth = async (req, res) => {
  const { concatenatedCode } = req.body;
-
  try {
   if (concatenatedCode === globalCode) {
    res.cookie(compressedData.jwtToken);

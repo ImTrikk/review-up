@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { BsJournalBookmarkFill } from "react-icons/bs";
@@ -6,11 +6,30 @@ import { BiBookmarkAltPlus } from "react-icons/bi";
 import { BiArchiveIn } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoSettingsOutline } from "react-icons/io5";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const SideBar = () => {
+ const navigate = useNavigate();
+
+ const handleLogout = () => {
+  toast.info("Logging out...");
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("first_name");
+  localStorage.removeItem("last_name");
+  localStorage.removeItem("phone");
+  localStorage.removeItem("user_id");
+  localStorage.removeItem("email");
+  setTimeout(() => {
+   navigate("/");
+  }, 3000);
+ };
+
  return (
   <>
    <div className="fixed bg-white h-screen w-[200px] shadow-lg">
+    <ToastContainer />
     <div className="">
      <Link to="/">
       <div className="flex items-center gap-2 p-10">
@@ -110,7 +129,10 @@ export const SideBar = () => {
       </div>
       <div className="flex items-center justify-between px-4 mt-60">
        <p className="text-xs text-gray-400">Need help?</p>
-       <button className="text-xs text-white h-8 px-4 bg-primaryColor rounded">
+       <button
+        onClick={handleLogout}
+        className="text-xs text-white h-8 px-4 bg-primaryColor rounded"
+       >
         Logout
        </button>
       </div>
