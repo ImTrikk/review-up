@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { dbConnection } from "../Database/database.js";
 import jwtGenerator from "../../src/utils/jwtGenerator.js";
 import nodemailer from "nodemailer";
+import { buildUrl } from "../../src/utils/buildUrl.js";
 
 // login endpoint
 export const login = async (req, res) => {
@@ -17,7 +18,7 @@ export const login = async (req, res) => {
   console.log("Found user: ", foundUser);
 
   if (user.rows.length === 0) {
-   return res.status(400).json("User does not exist");
+   return res.status(400).json({ message: "User does not exist" });
   }
   const result = await dbConnection.query(
    "SELECT hashed_password from users where email = $1",
@@ -41,7 +42,19 @@ export const login = async (req, res) => {
   });
   console.log("Verification: ", verifyEmail);
 
-  return res.status(200).json({ jwtToken });
+  // return res.status(200).json({ jwtToken });
+
+  // let verifyOtpEmail = await fetch(buildUrl("/auth-user"), {
+  //  method: "POST",
+  //  headers: {
+  //   "Content-Type": "application/json",
+  //  },
+  //  body: JSON.stringify({
+  //   verifyEmail,
+  //  }),
+  // });
+
+  // console.log(verifyOtpEmail);
 
   return res.status(200).json({ foundUser, jwtToken, message: "User found" });
  } catch (err) {
@@ -49,6 +62,15 @@ export const login = async (req, res) => {
  }
 };
 
+// let verifyOtpEmail = await fetch(buildUrl("/auth-user"), {
+//  method: "POST",
+//  headers: {
+//   "Content-Type": "application/json",
+//  },
+//  body: JSON.stringify({
+//   concatenatedCode,
+//  }),
+// });
 // signup endpoint
 export const signup = async (req, res) => {
  try {

@@ -1,13 +1,14 @@
-import express from "express"
-import { login, signup } from "../Controllers/auth.js"
-import { Userinfo } from "../Controllers/Userinfo.js"
+import express from "express";
+import { login, signup } from "../Controllers/auth.js";
+import { Userinfo } from "../Controllers/Userinfo.js";
+import { TwoFactorAuth } from "../Controllers/TwoFactorAuth.js";
 
-const router = express.Router()
+const router = express.Router();
 
 // auth routers
-router.post("/signup", signup)
-router.post("/login", login)
-router.get("/user-info", Userinfo)
+router.post("/signup", signup);
+router.post("/login", login);
+router.get("/user-info", Userinfo);
+router.post("/auth-user", TwoFactorAuth);
 
-
-export { router as UserRouter }
+export { router as UserRouter };

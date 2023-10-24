@@ -16,7 +16,7 @@ export const Login = () => {
  const handleLoginRequest = async (event) => {
   event.preventDefault();
   try {
-   await fetch(buildUrl("/auth/login"), {
+   let response = await fetch(buildUrl("/auth/login"), {
     method: "POST",
     headers: {
      "Content-type": "application/json",
@@ -25,47 +25,30 @@ export const Login = () => {
      email,
      password,
     }),
-   }).then((res) => {
-    if (res.ok) {
-     navigator("/verify");
-    }
    });
+   if (response.ok) {
+    const data = await response.json();
+    navigator("/verify", data);
+   } else {
+    if (response.status === 400) {
+     const data = await response.json();
+     console.log(data.message);
+     if (data.message === "User does not exist") {
+      toast.error("User does not exist");
+     }
+     if (data.message === "Wrong password") {
+      toast.error("Wrong password");
+     }
+    }
+   }
 
-   //.then((res) => {
-   // if (res.ok) {
-   //  return res.json().then((data) => {
-   //   localStorage.setItem("user_id", data.foundUser.user_id);
-   //   localStorage.setItem("token", data.jwtToken);
-   //   localStorage.setItem("first_name", data.foundUser.first_name);
-   //   localStorage.setItem("last_name", data.foundUser.last_name);
-   //   localStorage.setItem("email", data.foundUser.email);
-   //   localStorage.setItem("phone", data.foundUser.phone);
-   //   toast.success("Login successful!", {
-   //    position: "top-right",
-   //    autoClose: 2000,
-   //    hideProgressBar: false,
-   //    closeOnClick: true,
-   //    pauseOnHover: true,
-   //    draggable: true,
-   //    progress: undefined,
-   //    theme: "light",
-   //   });
-   //   setTimeout(() => {
-   //    navDashboard("/dashboard");
-   //   }, 2000);
-   //  });
-   // } else {
-   //  toast.error("There was an error loggin in", {
-   //   position: "top-right",
-   //   autoClose: 2000,
-   //   hideProgressBar: false,
-   //   closeOnClick: true,
-   //   pauseOnHover: true,
-   //   draggable: true,
-   //   progress: undefined,
-   //   theme: "light",
-   //  });
-   // }
+   //  .then((res) => {
+   //  if (res.ok) {
+   //   navigator("/verify");
+   //  } else {
+   //   console.log(response.message);
+   //   console.log("User has problems");
+   //  }
    // });
   } catch (err) {
    console.log(err);
