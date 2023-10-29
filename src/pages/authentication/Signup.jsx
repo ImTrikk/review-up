@@ -10,8 +10,9 @@ export const Signup = () => {
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
  const [phone, setPhone] = useState("");
-
  const navLogin = useNavigate();
+
+ // these states are for the errorHandling of password
 
  const handleSignupRequest = async (event) => {
   event.preventDefault();
@@ -19,7 +20,7 @@ export const Signup = () => {
   console.log("Handling signup request"); // Add this line to check if the function is called
   console.log(password);
 
-  if (password.length <= 8) {
+  if (password.length <= 12) {
    toast.error("Password is too short", {
     position: "top-right",
     autoClose: 2000,
@@ -32,11 +33,11 @@ export const Signup = () => {
    });
   } else if (
    !/[A-Z]/.test(password) ||
-   !/[a-z]/.test(password)
-   // /\d/.test(password)
-   // /[!@#$%^&*]/.test(password)
+   !/[a-z]/.test(password) ||
+   // /\d/.test(password) ||
+   /[!@#$%^&*]/.test(password)
   ) {
-   toast.error("Password is not strong enough", {
+   toast.error("Password must contain symbols", {
     position: "top-right",
     autoClose: 2000,
     hideProgressBar: false,
@@ -77,6 +78,7 @@ export const Signup = () => {
       navLogin("/login");
      }, 2000);
     } else {
+     console.log(response.message);
      toast.error("Error creating account", {
       position: "top-right",
       autoClose: 2000,
@@ -124,13 +126,14 @@ export const Signup = () => {
         </p>
        </div>
        <div className="pt-5">
-        <p className="text-lg text-white">
-         Don't have an account yet? Create now and collaborate with students!
-        </p>
-        <div className="pt-4">
-         <button className="bg-white rounded px-4 h-8 text-sm text-primaryColor">
-          Register here
-         </button>
+        <div className="text-white">
+         <p className="text-lg font-bold">Tips for creating password</p>
+         <ul className="text-sm font-light pt-2">
+          <ol>1. Password must have 8 minimum characters</ol>
+          <ol>2. Must have at least 1 uppercase letter</ol>
+          <ol>3. Must have at least 1 lowercase letter</ol>
+          <ol>4. Must have at least 1 number from numbers 0-9 </ol>
+         </ul>
         </div>
        </div>
       </div>

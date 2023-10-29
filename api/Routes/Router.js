@@ -9,5 +9,6 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.get("/user-info", Userinfo);
 router.post("/auth-user", TwoFactorAuth);
+// router.post('/resend-verify', )
 
 export { router as UserRouter };

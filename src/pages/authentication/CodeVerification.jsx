@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const CodeVerification = () => {
+ // const email = use.email.location;
  const navigate = useNavigate();
 
  const [verificationCode, setVerificationCode] = useState([
@@ -63,7 +64,7 @@ export const CodeVerification = () => {
       }, 2000);
      });
     } else {
-     toast.error("There was an error verifying email", {
+     toast.error("Incorrect code, input again", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -80,6 +81,22 @@ export const CodeVerification = () => {
   }
  };
 
+ const handleResendOtp = async () => {
+  try {
+   await fetch(buildUrl("/auth/resend-verify"), {
+    method: "POST",
+    headers: {
+     "Content-Type": "applicaiton/json",
+    },
+    body: {
+     email,
+    },
+   });
+  } catch (err) {
+   console.log(err);
+  }
+ };
+
  return (
   <>
    <div className="bg-primaryColor h-screen">
@@ -90,8 +107,8 @@ export const CodeVerification = () => {
        <div className="w-[400px]">
         <h1 className="font-black text-4xl text-white">Almost there</h1>
         <p className="text-white font-light pt-5">
-         Email is sent to your email account, Please look through your Gmail
-         account and enter the provided code
+         One time password is sent to your email account, Please look through
+         your Gmail account and enter the provided code
         </p>
        </div>
        <div className="w-[500px] bg-white h-[270px] rounded p-5">
@@ -117,7 +134,10 @@ export const CodeVerification = () => {
          </div>
         </div>
         <div className="flex justify-between items-center pt-16">
-         <button className="text-xs text-primaryColor">
+         <button
+          onClick={handleResendOtp}
+          className="text-xs text-primaryColor"
+         >
           Didn't received email?
          </button>
          <button

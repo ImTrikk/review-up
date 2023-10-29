@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { buildUrl } from "../../utils/buildUrl.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLocation } from "react-router-dom";
 
 export const Login = () => {
  const [email, setEmail] = useState("");
@@ -34,7 +35,6 @@ export const Login = () => {
    } else {
     if (response.status === 400) {
      const data = await response.json();
-     console.log(data.message);
      if (data.message === "User does not exist") {
       toast.error("User does not exist");
      }
@@ -43,15 +43,6 @@ export const Login = () => {
      }
     }
    }
-
-   //  .then((res) => {
-   //  if (res.ok) {
-   //   navigator("/verify");
-   //  } else {
-   //   console.log(response.message);
-   //   console.log("User has problems");
-   //  }
-   // });
   } catch (err) {
    console.log(err);
   }
