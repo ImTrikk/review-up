@@ -19,7 +19,7 @@ export const login = async (req, res) => {
 		);
 
 		const foundUser = user.rows[0];
-
+ 
 		if (user.rows.length === 0) {
 			return res.status(400).json({ message: "User does not exist" });
 		}

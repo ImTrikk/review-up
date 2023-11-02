@@ -65,7 +65,9 @@ export const Signup = () => {
 			email == "" ||
 			first_name == "" ||
 			last_name == "" ||
-			phone == "" || password == "" || cPassword == ""
+			phone == "" ||
+			password == "" ||
+			cPassword == ""
 		) {
 			toast.error("Input fields are required", {
 				position: "top-right",
