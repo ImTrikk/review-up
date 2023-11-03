@@ -35,8 +35,7 @@ export const Signup = () => {
 		}, 3000);
 	};
 
-	// Email validation regular expression
-	const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+	const emailRegex = /^[a-zA-Z0-9._-]+@carsu\.edu\.ph$/;
 
 	const handleSignupRequest = async (event) => {
 		event.preventDefault();
@@ -55,7 +54,7 @@ export const Signup = () => {
 		} else if (!emailRegex.test(email)) {
 			setShowredborder(true);
 			setShowerror(true);
-			showToast("Must use gmail account", "error");
+			showToast("Must use CARSU account", "error");
 		} else if (!/[A-Z]/.test(password)) {
 			setShowredborder(true);
 			setShowerror(true);
@@ -109,44 +108,7 @@ export const Signup = () => {
 		<>
 			<div className="bg-primaryColor h-screen">
 				<ToastContainer autoClose={2000} />
-				<div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
-					{/* <div className="w-[50%] p-10">
-						<Link to="/">
-							<div className="flex items-center gap-2">
-								<img
-									src="/static/images/whitePNGReviewUp.png"
-									alt=""
-									className="w-[20px]"
-								/>
-								<h1 className="text-white text-xl font-black">ReviewUp</h1>
-							</div>
-						</Link>
-						<div className="pt-10">
-							<h1 className="text-white text-4xl font-black">
-								Create account to unlock features
-							</h1>
-							<div className="w-44 pt-2">
-								<hr className="text-white border-4" />
-							</div>
-							<div className="pt-5">
-								<p className="text-lg text-white">
-									Learn from peers and share your ideas, reviewers, and other study
-									resources.
-								</p>
-							</div>
-							<div className="pt-5">
-								<div className="text-white">
-									<p className="text-lg font-bold">Tips for creating password</p>
-									<ul className="text-sm font-light pt-2">
-										<ol>1. Password must have 8 minimum characters</ol>
-										<ol>2. Must have at least 1 uppercase letter</ol>
-										<ol>3. Must have at least 1 lowercase letter</ol>
-										<ol>4. Must have at least 1 number from numbers 0-9 </ol>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div> */}
+				<div className="flex items-center justify-center lg:max-w-7xl mx-20 2xl:mx-auto">
 					<div className="w-[50%]">
 						<div className="p-10">
 							<div className="bg-white rounded h-full p-5 shadow-lg">
