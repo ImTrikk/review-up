@@ -1,11 +1,12 @@
 import express from "express";
 import { TwoFactorAuth, login, signup } from "../Controllers/auth.js";
 import { Userinfo } from "../Controllers/Userinfo.js";
+import { checkEligibleEmail } from "../MIddleware/CheckValidEmail.js";
 
 const router = express.Router();
 
 // auth routers
-router.post("/signup", signup);
+router.post("/signup", checkEligibleEmail, signup);
 router.post("/login", login);
 router.get("/user-info", Userinfo);
 router.post("/auth-user", TwoFactorAuth);

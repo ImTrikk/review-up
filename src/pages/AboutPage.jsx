@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export const AboutPage = () => {
  return (
   <>
-   <div className="bg-secondaryColor">
+   <div className="">
     <div className="lg:max-w-7xl mx-20 2xl:mx-auto">
      <div className="h-screen flex items-center">
       <div className="flex">

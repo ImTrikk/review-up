@@ -12,130 +12,95 @@ export const Signup = () => {
 	const [cPassword, setCPassword] = useState("");
 	const [phone, setPhone] = useState("");
 	const navLogin = useNavigate();
+	const [showRedborder, setShowredborder] = useState(false);
+	const [showError, setShowerror] = useState(false);
 
 	// these states are for the errorHandling of password
 
+	const showToast = (message, type) => {
+		toast[type](message, {
+			position: "top-right",
+			autoClose: 2000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
+
+		setTimeout(() => {
+			setShowredborder(false);
+			setShowerror(false);
+		}, 3000);
+	};
+
+	// Email validation regular expression
+	const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
 	const handleSignupRequest = async (event) => {
 		event.preventDefault();
-		if (password.length <= 12) {
-			toast.error("Password is too short", {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
-		} else if (!/[A-Z]/.test(password)) {
-			toast.error("Password must contain upppercase character", {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
-		} else if (!/[a-z]/.test(password)) {
-			toast.error("Password must contain lowercase character", {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
-		} else if (/[!@#$%^&*]/.test(password)) {
-			toast.error("Password must have symbols (!@#$%^&*)", {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
-		} else if (
-			email == "" ||
-			first_name == "" ||
-			last_name == "" ||
-			phone == "" ||
-			password == "" ||
-			cPassword == ""
+
+		if (
+			email === "" ||
+			first_name === "" ||
+			last_name === "" ||
+			phone === "" ||
+			password === "" ||
+			cPassword === ""
 		) {
-			toast.error("Input fields are required", {
-				position: "top-right",
-				autoClose: 2000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
+			setShowredborder(true);
+			setShowerror(true);
+			showToast("Input fields are required", "error");
+		} else if (!emailRegex.test(email)) {
+			setShowredborder(true);
+			setShowerror(true);
+			showToast("Must use gmail account", "error");
+		} else if (!/[A-Z]/.test(password)) {
+			setShowredborder(true);
+			setShowerror(true);
+			showToast("Password must contain uppercase character", "error");
+		} else if (!/[a-z]/.test(password)) {
+			setShowredborder(true);
+			setShowerror(true);
+			showToast("Password must contain lowercase character", "error");
+		} else if (!/[!@#$%^&*]/.test(password)) {
+			setShowredborder(true);
+			setShowerror(true);
+			showToast("Password must have symbols (!@#$%^&*)", "error");
+		} else if (password.length <= 12) {
+			setShowredborder(true);
+			setShowerror(true);
+			showToast("Password is too short", "error");
+		} else if (cPassword !== password) {
+			setShowredborder(true);
+			setShowerror(true);
+			showToast("Password does not match", "error");
 		} else {
-			if (cPassword !== password) {
-				toast.error("Password does not match", {
-					position: "top-right",
-					autoClose: 2000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					theme: "light",
+			try {
+				let response = await fetch(buildUrl("/auth/signup"), {
+					method: "POST",
+					headers: {
+						"Content-type": "application/json",
+					},
+					body: JSON.stringify({
+						first_name,
+						last_name,
+						email,
+						password,
+						phone,
+					}),
 				});
-			} else {
-				try {
-					let response = await fetch(buildUrl("/auth/signup"), {
-						method: "POST",
-						headers: {
-							"Content-type": "application/json",
-						},
-						body: JSON.stringify({
-							first_name,
-							last_name,
-							email,
-							password,
-							phone,
-						}),
-					});
-					if (response.ok) {
-						toast.success("Success creating account!", {
-							position: "top-right",
-							autoClose: 2000,
-							hideProgressBar: false,
-							closeOnClick: true,
-							pauseOnHover: true,
-							draggable: true,
-							progress: undefined,
-							theme: "light",
-						});
-						setTimeout(() => {
-							navLogin("/login");
-						}, 2000);
-					} else {
-						console.log(response.message);
-						toast.error("Error creating account", {
-							position: "top-right",
-							autoClose: 2000,
-							hideProgressBar: false,
-							closeOnClick: true,
-							pauseOnHover: true,
-							draggable: true,
-							progress: undefined,
-							theme: "light",
-						});
-					}
-				} catch (err) {
-					console.log(err);
+				if (response.ok) {
+					showToast("Success creating account!", "success");
+					setTimeout(() => {
+						navLogin("/login");
+					}, 2000);
+				} else {
+					showToast("Email already in use", "error");
 				}
+			} catch (err) {
+				console.log(err);
 			}
 		}
 	};
@@ -145,7 +110,7 @@ export const Signup = () => {
 			<div className="bg-primaryColor h-screen">
 				<ToastContainer autoClose={2000} />
 				<div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
-					<div className="w-[50%] p-10">
+					{/* <div className="w-[50%] p-10">
 						<Link to="/">
 							<div className="flex items-center gap-2">
 								<img
@@ -181,7 +146,7 @@ export const Signup = () => {
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> */}
 					<div className="w-[50%]">
 						<div className="p-10">
 							<div className="bg-white rounded h-full p-5 shadow-lg">
@@ -196,8 +161,13 @@ export const Signup = () => {
 												value={first_name}
 												onChange={(e) => setFirstName(e.target.value)}
 												placeholder="firstname"
-												className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												className={` ${
+													showRedborder
+														? "border border-red-500 text-xs font-light h-10 px-2 rounded"
+														: "border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												}`}
 											/>
+											<div>{showError}</div>
 										</div>
 										<div className="grid grid-cols">
 											<label htmlFor="" className="text-sm text-primaryColor font-medium">
@@ -208,8 +178,13 @@ export const Signup = () => {
 												value={last_name}
 												onChange={(e) => setLastName(e.target.value)}
 												placeholder="lastname"
-												className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												className={` ${
+													showRedborder
+														? "border border-red-500 text-xs font-light h-10 px-2 rounded"
+														: "border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												}`}
 											/>
+											<div>{showError}</div>
 										</div>
 										<div className="grid grid-cols">
 											<label htmlFor="" className="text-sm text-primaryColor font-medium">
@@ -220,8 +195,13 @@ export const Signup = () => {
 												value={email}
 												onChange={(e) => setEmail(e.target.value)}
 												placeholder="email"
-												className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												className={` ${
+													showRedborder
+														? "border border-red-500 text-xs font-light h-10 px-2 rounded"
+														: "border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												}`}
 											/>
+											<div>{showError}</div>
 										</div>
 										<div className="grid grid-cols">
 											<label htmlFor="" className="text-sm text-primaryColor font-medium">
@@ -232,8 +212,13 @@ export const Signup = () => {
 												value={phone}
 												onChange={(e) => setPhone(e.target.value)}
 												placeholder="phone number"
-												className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												className={` ${
+													showRedborder
+														? "border border-red-500 text-xs font-light h-10 px-2 rounded"
+														: "border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												}`}
 											/>
+											<div>{showError}</div>
 										</div>
 										<div className="grid grid-cols">
 											<label htmlFor="" className="text-sm text-primaryColor font-medium">
@@ -244,8 +229,13 @@ export const Signup = () => {
 												value={password}
 												onChange={(e) => setPassword(e.target.value)}
 												placeholder="Password"
-												className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												className={` ${
+													showRedborder
+														? "border border-red-500 text-xs font-light h-10 px-2 rounded"
+														: "border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												}`}
 											/>
+											<div>{showError}</div>
 										</div>
 										<div className="grid grid-cols">
 											<label htmlFor="" className="text-sm text-primaryColor font-medium">
@@ -256,7 +246,11 @@ export const Signup = () => {
 												value={cPassword}
 												onChange={(e) => setCPassword(e.target.value)}
 												placeholder="type your password again"
-												className="border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												className={` ${
+													showRedborder
+														? "border border-red-500 text-xs font-light h-10 px-2 rounded"
+														: "border border-gray-200 text-xs font-light h-10 px-2 rounded outline-primaryColor"
+												}`}
 											/>
 										</div>
 									</div>
