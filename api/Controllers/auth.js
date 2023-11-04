@@ -46,12 +46,9 @@ export const login = async (req, res) => {
 
 // signup endpoint
 export const signup = async (req, res) => {
-	console.log("Nexxtttsss.......")
 	 const { userData } = req;
-	console.log("User data: ", userData)
 	try {
 		const [first_name, last_name, email, password, phone] = userData;
-		console.log(first_name, last_name, email, password, phone)
 
 		// Check if the email already exists
 		const existingEmail = await dbConnection.query(
