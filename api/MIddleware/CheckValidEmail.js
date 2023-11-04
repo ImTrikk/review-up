@@ -70,7 +70,6 @@ export const sendOtp = async (req, res, next) => {
 		});
 		console.log("This is the verificiation: ", verifyEmail);
 		sentCode = verifyEmail;
-		console.log("Succes sent code....");
 
 		//unto the next middleware which is the 2FA mail verfication
 		return res.status(200).json({ message: "OTP code sent to email account" });
@@ -82,11 +81,8 @@ export const sendOtp = async (req, res, next) => {
 // checks compare the 2FA code from the front end back end
 export const TwoFactorAuth = async (req, res, next) => {
 	const { userData, concatenatedCode } = req.body;
-	console.log("This is the user data: ", userData);
-	console.log(concatenatedCode);
 	try {
 		if (concatenatedCode === sentCode) {
-			console.log("Equal code");
 			req.userData = userData
 			return next();
 		} else {
@@ -123,7 +119,6 @@ const OtpVerificationEmail = async ({ user_id, email }) => {
 
 		//  for checking responses only
 		const info = await emailTransporter.sendMail(mailOptions);
-		console.log("Verification email sent:", info.response);
 
 		return otp;
 	} catch (err) {

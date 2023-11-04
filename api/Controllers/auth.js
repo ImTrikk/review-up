@@ -35,9 +35,6 @@ export const login = async (req, res) => {
 		const jwtToken = jwtGenerator(user.rows[0].user_id);
 		res.cookie(jwtToken, "secret");
 
-		console.log("Token: ", jwtToken);
-		console.log("User logged in: ", foundUser);
-
 		return res.status(200).json({ jwtToken, foundUser, message: "User found" });
 	} catch (err) {
 		console.log(err);

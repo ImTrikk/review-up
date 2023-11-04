@@ -9,10 +9,7 @@ export const CodeVerification = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const userData = location.state ? location.state.userData : null;
-
 	const reqEndpoint = location.state ? location.state.endpoint : null;
-
-	console.log(reqEndpoint);
 
 	const [verificationCode, setVerificationCode] = useState([
 		"",
@@ -22,6 +19,7 @@ export const CodeVerification = () => {
 		"",
 		"",
 	]);
+	
 	const loadingBar = useRef(null);
 	const inputRefs = verificationCode.map(() => useRef());
 
@@ -55,7 +53,6 @@ export const CodeVerification = () => {
 					concatenatedCode,
 				}),
 			}).then((res) => {
-				console.log(res.status)
 				if (res.status === 200) {
 					if (reqEndpoint === "/signup") {
 						toast.success("Account created, redirecting to login page...");
@@ -90,7 +87,6 @@ export const CodeVerification = () => {
 								progress: undefined,
 								theme: "light",
 							});
-								toast.success("Success login, redirecting to dashboard");
 								loadingBar.current.continuousStart(60);
 								setTimeout(() => {
 									loadingBar.current.complete();
