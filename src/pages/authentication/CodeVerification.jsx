@@ -10,6 +10,10 @@ export const CodeVerification = () => {
 	const location = useLocation();
 	const userData = location.state ? location.state.userData : null;
 
+	const reqEndpoint = location.state ? location.state.endpoint : null;
+
+	console.log(reqEndpoint);
+
 	const [verificationCode, setVerificationCode] = useState([
 		"",
 		"",
@@ -21,7 +25,7 @@ export const CodeVerification = () => {
 	const loadingBar = useRef(null);
 	const inputRefs = verificationCode.map(() => useRef());
 
-	const navigator = useNavigate()
+	const navigator = useNavigate();
 
 	const handleInputChange = (index, value) => {
 		setVerificationCode((prevCodes) => {
@@ -41,7 +45,7 @@ export const CodeVerification = () => {
 		const concatenatedCode = verificationCode.join("");
 		try {
 			// this should go to the TwoFactorAtuh endpoint
-			await fetch(buildUrl("/auth/signup"), {
+			await fetch(buildUrl(`/auth${reqEndpoint}`), {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -51,17 +55,53 @@ export const CodeVerification = () => {
 					concatenatedCode,
 				}),
 			}).then((res) => {
-				if (res.ok) {
-					toast.success("Account created, redirecting to login page...")
-					loadingBar.current.continuousStart(60);
-					setTimeout(() => {
-						loadingBar.current.complete();
+				console.log(res.status)
+				if (res.status === 200) {
+					if (reqEndpoint === "/signup") {
+						toast.success("Account created, redirecting to login page...");
+						loadingBar.current.continuousStart(60);
 						setTimeout(() => {
-							navigator("/login");
-						}, 1200);
-					}, 1000);
-				} else { 
-					toast.error("Entered wrong OTP code!")
+							loadingBar.current.complete();
+							setTimeout(() => {
+								navigator("/login");
+							}, 1200);
+						}, 1000);
+					} else {
+						return res.json().then((data) => {
+							localStorage.setItem("user_id", data.foundUser.user_id);
+							localStorage.setItem("token", data.jwtToken);
+							localStorage.setItem(
+								"first_name",
+								data.foundUser.first_name,
+							);
+							localStorage.setItem(
+								"last_name",
+								data.foundUser.last_name,
+							);
+							localStorage.setItem("email", data.foundUser.email);
+							localStorage.setItem("phone", data.foundUser.phone);
+							toast.success("Verified email, login successful!", {
+								position: "top-right",
+								autoClose: 2000,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								theme: "light",
+							});
+								toast.success("Success login, redirecting to dashboard");
+								loadingBar.current.continuousStart(60);
+								setTimeout(() => {
+									loadingBar.current.complete();
+									setTimeout(() => {
+										navigator("/dashboard");
+									}, 1200);
+								}, 1000);
+						});
+					}
+				} else {
+					toast.error("Entered wrong OTP code!");
 				}
 			});
 		} catch (err) {

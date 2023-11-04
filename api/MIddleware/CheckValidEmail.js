@@ -29,15 +29,27 @@ export const checkEligibleEmail = async (req, res, next) => {
 // check existing email for loggin in
 export const checkEmailValidity = async (req, res, next) => {
 	try {
-		const { email } = req.body;
+		const { email, password } = req.body;
 		const emailExist = await dbConnection.query(
 			"SELECT * from users where email = $1",
 			[email],
 		);
 		const foundEmail = emailExist.rows[0];
 		if (!foundEmail) {
-			return res.status(400).json({ message: "Email does not exist!" });
+			return res.status(400).json({ message: "User does not exist" });
 		}
+
+		const result = await dbConnection.query(
+			"SELECT hashed_password from users where email = $1",
+			[email],
+		);
+		const { hashed_password } = result.rows[0];
+		const validatePassword = await bcrypt.compare(password, hashed_password);
+
+		if (!validatePassword) {
+			return res.status(400).json({ message: "Wrong password" });
+		}
+
 		return next();
 	} catch (err) {
 		console.log(err);

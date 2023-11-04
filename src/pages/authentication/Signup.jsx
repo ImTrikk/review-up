@@ -17,6 +17,8 @@ export const Signup = () => {
 	const [showError, setShowerror] = useState(false);
 	const loadingBar = useRef(null);
 
+	const endpoint = location.pathname;
+
 	const userData = [first_name, last_name, email, password, phone];
 
 	const navigator = useNavigate();
@@ -94,7 +96,7 @@ export const Signup = () => {
 					setTimeout(() => {
 						loadingBar.current.complete();
 						setTimeout(() => {
-							navigator("/verify", { state: { userData } });
+							navigator("/verify", { state: { userData, endpoint } });
 						}, 1200);
 					}, 1000);
 				} else {

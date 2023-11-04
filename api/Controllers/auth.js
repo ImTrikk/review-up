@@ -7,8 +7,10 @@ import fetch from "node-fetch";
 
 // login endpoint
 export const login = async (req, res) => {
+
+	const { userData } = req;
 	try {
-		const { email, password } = req.body;
+		const [email, password] = userData;
 
 		const user = await dbConnection.query(
 			"SELECT * from users where email = $1",
@@ -33,10 +35,10 @@ export const login = async (req, res) => {
 		const jwtToken = jwtGenerator(user.rows[0].user_id);
 		res.cookie(jwtToken, "secret");
 
-		console.log("Token: ", jwtToken)
-		console.log("User logged in: ", foundUser)
+		console.log("Token: ", jwtToken);
+		console.log("User logged in: ", foundUser);
 
-		return res.status(200).json({jwtToken, foundUser, message: "User found" });
+		return res.status(200).json({ jwtToken, foundUser, message: "User found" });
 	} catch (err) {
 		console.log(err);
 	}

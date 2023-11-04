@@ -13,9 +13,7 @@ const router = express.Router();
 router.post("/send-otp", checkEligibleEmail, sendOtp);
 router.post("/send-otp-login", checkEmailValidity, sendOtp);
 router.post("/signup", TwoFactorAuth, signup)
-router.post("/login", checkEmailValidity, login);
+router.post("/login", TwoFactorAuth, login);
 router.get("/user-info", Userinfo);
-router.post("/auth-user", TwoFactorAuth);
-// router.post('/resend-verify', )
 
 export { router as UserRouter };

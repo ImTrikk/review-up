@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { buildUrl } from "../../utils/buildUrl.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingBar from "react-top-loading-bar";
 
 export const Login = () => {
 	const [email, setEmail] = useState("");
@@ -10,11 +11,16 @@ export const Login = () => {
 	const userToken = localStorage.getItem("token");
 	const navDashboard = useNavigate();
 	const navigator = useNavigate();
+	const loadingBar = useRef(null);
+
+	const endpoint = location.pathname;
+
+	const userData = [email, password];
 
 	const handleLoginRequest = async (event) => {
 		event.preventDefault();
 		try {
-			let response = await fetch(buildUrl("/auth/login"), {
+			let response = await fetch(buildUrl("/auth/send-otp-login"), {
 				method: "POST",
 				headers: {
 					"Content-type": "application/json",
@@ -24,11 +30,15 @@ export const Login = () => {
 					password,
 				}),
 			});
+			console.log(response.status)
 			if (response.ok) {
-				toast.info("Verify your email account");
+				loadingBar.current.continuousStart(60);
 				setTimeout(() => {
-					navigator("/verify");
-				}, 3000);
+					loadingBar.current.complete();
+					setTimeout(() => {
+						navigator("/verify", { state: { userData, endpoint } });
+					}, 1200);
+				}, 1000);
 			} else {
 				if (response.status === 400) {
 					const data = await response.json();
@@ -49,6 +59,7 @@ export const Login = () => {
 		<>
 			<div className="flex items-center justify-center w-full h-screen">
 				<ToastContainer />
+				<LoadingBar height={7} color="#0043DC" ref={loadingBar} />
 				{/* <div className="bg-primaryColor w-[50%] p-16">
      <Link to="/">
       <div className="flex items-center gap-2">
