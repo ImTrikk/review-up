@@ -13,15 +13,15 @@ export const AboutPage = () => {
         className="w-[600px]"
        />
        <div className="ml-10">
-        <h1 className="text-4xl font-black text-primaryColor ">About us</h1>
-        <p className="text-primaryColor text-xl pt-5">
+        <h1 className="text-4xl font-extrabold text-primaryColor ">About us</h1>
+        <p className="text-primaryColor text-sm font-light pt-5">
          We are students who wants to aim for high grades and at the same time,
          help students struggling with their studies. We don’t want students to
          get left behind in their studies.
         </p>
         <div className="pt-8">
          <Link to='/signup'>
-         <button className="bg-primaryColor text-white px-3 rounded h-10">
+         <button className="bg-primaryColor text-white px-3 rounded text-xs h-10">
           Register now
          </button></Link>
         </div>

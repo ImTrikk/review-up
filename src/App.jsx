@@ -11,7 +11,7 @@ import { Settings } from "./pages/Dashboard/Settings";
 import { CreateCourse } from "./pages/CreateCourse";
 import { CourseModule } from "./pages/CourseModule";
 import { CodeVerification } from "./pages/authentication/CodeVerification";
-import { Signup } from "./pages/authentication/signup";
+import { Signup } from "./pages/authentication/Signup";
 
 function App() {
  return (

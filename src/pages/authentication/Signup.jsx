@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { buildUrl } from "../../utils/buildUrl.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingBar from "react-top-loading-bar";
 
 export const Signup = () => {
 	const [first_name, setFirstName] = useState("");
@@ -14,8 +15,11 @@ export const Signup = () => {
 	const navLogin = useNavigate();
 	const [showRedborder, setShowredborder] = useState(false);
 	const [showError, setShowerror] = useState(false);
+	const loadingBar = useRef(null);
 
-	// these states are for the errorHandling of password
+	const userData = [first_name, last_name, email, password, phone];
+
+	const navigator = useNavigate();
 
 	const showToast = (message, type) => {
 		toast[type](message, {
@@ -39,7 +43,6 @@ export const Signup = () => {
 
 	const handleSignupRequest = async (event) => {
 		event.preventDefault();
-
 		if (
 			email === "" ||
 			first_name === "" ||
@@ -77,24 +80,23 @@ export const Signup = () => {
 			showToast("Password does not match", "error");
 		} else {
 			try {
-				let response = await fetch(buildUrl("/auth/signup"), {
+				let response = await fetch(buildUrl("/auth/send-otp"), {
 					method: "POST",
 					headers: {
 						"Content-type": "application/json",
 					},
 					body: JSON.stringify({
-						first_name,
-						last_name,
 						email,
-						password,
-						phone,
 					}),
 				});
 				if (response.ok) {
-					showToast("Success creating account!", "success");
+					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
-						navLogin("/login");
-					}, 2000);
+						loadingBar.current.complete();
+						setTimeout(() => {
+							navigator("/verify", { state: { userData } });
+						}, 1200);
+					}, 1000);
 				} else {
 					showToast("Email already in use", "error");
 				}
@@ -107,6 +109,7 @@ export const Signup = () => {
 	return (
 		<>
 			<div className="bg-primaryColor h-screen">
+				<LoadingBar height={7} color="#0043DC" ref={loadingBar} />
 				<ToastContainer autoClose={2000} />
 				<div className="flex items-center justify-center lg:max-w-7xl mx-20 2xl:mx-auto">
 					<div className="w-[50%]">
@@ -204,7 +207,7 @@ export const Signup = () => {
 												Confirm password
 											</label>
 											<input
-												type="text"
+												type="password"
 												value={cPassword}
 												onChange={(e) => setCPassword(e.target.value)}
 												placeholder="type your password again"
@@ -217,6 +220,14 @@ export const Signup = () => {
 										</div>
 									</div>
 									<div className="pt-10">
+										<div className="py-1">
+											<Link to="/login">
+												<p className="text-xs text-gray-400 font-light">
+													Already have an account?{" "}
+													<span className="italic underline">Login</span>
+												</p>
+											</Link>
+										</div>
 										<button
 											type="submit"
 											onClick={handleSignupRequest}

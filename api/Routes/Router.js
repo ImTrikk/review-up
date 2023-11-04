@@ -1,13 +1,18 @@
 import express from "express";
-import { TwoFactorAuth, login, signup } from "../Controllers/auth.js";
+import { login, signup } from "../Controllers/auth.js";
 import { Userinfo } from "../Controllers/Userinfo.js";
-import { checkEligibleEmail } from "../MIddleware/CheckValidEmail.js";
+import { TwoFactorAuth, checkEmailValidity } from "../MIddleware/CheckValidEmail.js";
+import {
+	checkEligibleEmail,
+	sendOtp,
+} from "../MIddleware/CheckValidEmail.js";
 
 const router = express.Router();
 
-// auth routers
-router.post("/signup", checkEligibleEmail, signup);
-router.post("/login", login);
+// auth routers and initial endpoint with middlewres
+router.post("/send-otp", checkEligibleEmail, sendOtp);
+router.post("/signup", TwoFactorAuth, signup)
+router.post("/login", checkEmailValidity, login);
 router.get("/user-info", Userinfo);
 router.post("/auth-user", TwoFactorAuth);
 // router.post('/resend-verify', )
