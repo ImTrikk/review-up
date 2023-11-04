@@ -6,7 +6,6 @@ let sentCode;
 
 // check email if already taken or not
 export const checkEligibleEmail = async (req, res, next) => {
-	console.log("Checking email validity....");
 	try {
 		const { email } = req.body;
 
@@ -29,7 +28,6 @@ export const checkEligibleEmail = async (req, res, next) => {
 
 // check existing email for loggin in
 export const checkEmailValidity = async (req, res, next) => {
-	console.log("Checking email validity....");
 	try {
 		const { email } = req.body;
 		const emailExist = await dbConnection.query(
@@ -52,16 +50,6 @@ export const sendOtp = async (req, res, next) => {
 	try {
 		const { email } = req.body;
 		console.log("This is the email: ", email);
-		// // query for the user email
-		// const user = await dbConnection.query(
-		// 	"SELECT * from users where email = $1",
-		// 	[email],
-		// );
-		// if (user.rows.length === 0) {
-		// 	return res.status(400).json({ message: "User does not exist" });
-		// }
-
-		// console.log("This is the user: ", user);
 
 		// send otp to email
 		const verifyEmail = await OtpVerificationEmail({
@@ -73,7 +61,7 @@ export const sendOtp = async (req, res, next) => {
 		console.log("Succes sent code....");
 
 		//unto the next middleware which is the 2FA mail verfication
-		return res.status(200).json({message: "OTP code sent to email account"})
+		return res.status(200).json({ message: "OTP code sent to email account" });
 	} catch (err) {
 		console.log(err);
 	}

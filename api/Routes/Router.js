@@ -11,6 +11,7 @@ const router = express.Router();
 
 // auth routers and initial endpoint with middlewres
 router.post("/send-otp", checkEligibleEmail, sendOtp);
+router.post("/send-otp-login", checkEmailValidity, sendOtp);
 router.post("/signup", TwoFactorAuth, signup)
 router.post("/login", checkEmailValidity, login);
 router.get("/user-info", Userinfo);

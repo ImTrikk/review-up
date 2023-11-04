@@ -60,6 +60,8 @@ export const CodeVerification = () => {
 							navigator("/login");
 						}, 1200);
 					}, 1000);
+				} else { 
+					toast.error("Entered wrong OTP code!")
 				}
 			});
 		} catch (err) {
@@ -77,7 +79,7 @@ export const CodeVerification = () => {
 				body: {
 					email,
 				},
-			});
+			})
 		} catch (err) {
 			console.log(err);
 		}
