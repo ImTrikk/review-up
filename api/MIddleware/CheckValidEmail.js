@@ -58,17 +58,14 @@ export const checkEmailValidity = async (req, res, next) => {
 
 // sending verification code to email
 export const sendOtp = async (req, res, next) => {
-	console.log("Verifying email.....");
 	try {
 		const { email } = req.body;
-		console.log("This is the email: ", email);
 
 		// send otp to email
 		const verifyEmail = await OtpVerificationEmail({
 			// user_id: user.rows[0].user_id,
 			email: email,
 		});
-		console.log("This is the verificiation: ", verifyEmail);
 		sentCode = verifyEmail;
 
 		//unto the next middleware which is the 2FA mail verfication
