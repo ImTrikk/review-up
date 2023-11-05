@@ -6,10 +6,17 @@ import { buildUrl } from "../utils/buildUrl";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
+import { FileUploader } from "react-drag-drop-files";
 
 export const CreateCourse = () => {
 	let first_name = localStorage.getItem("first_name");
 	let last_name = localStorage.getItem("last_name");
+	const fileTypes = ["JPG", "PNG", "GIF"];
+
+	const [file, setFile] = useState(null);
+	const handleChange = (file) => {
+		setFile(file);
+	};
 
 	const [course_code, setCourseCode] = useState("");
 	const [course_title, setCourseTitle] = useState("");
@@ -122,6 +129,13 @@ export const CreateCourse = () => {
 													className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none w-full "
 												/>
 											</div>
+										</div>
+										<div>
+											<FileUploader
+												handleChange={handleChange}
+												name="file"
+												types={fileTypes}
+											/>
 										</div>
 									</form>
 									<div className="p-5 absolute bottom-0 right-0">
