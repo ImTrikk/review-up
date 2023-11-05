@@ -111,7 +111,7 @@ export const Signup = () => {
 	return (
 		<>
 			<div className="bg-primaryColor h-screen">
-				<LoadingBar height={7} color="#0043DC" ref={loadingBar} />
+				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<ToastContainer autoClose={2000} />
 				<div className="flex items-center justify-center lg:max-w-7xl mx-20 2xl:mx-auto">
 					<div className="w-[50%]">

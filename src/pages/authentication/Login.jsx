@@ -59,43 +59,7 @@ export const Login = () => {
 		<>
 			<div className="flex items-center justify-center w-full h-screen">
 				<ToastContainer />
-				<LoadingBar height={7} color="#0043DC" ref={loadingBar} />
-				{/* <div className="bg-primaryColor w-[50%] p-16">
-     <Link to="/">
-      <div className="flex items-center gap-2">
-       <img
-        src="/static/images/whitePNGReviewUp.png"
-        alt=""
-        className="w-[20px]"
-       />
-       <h1 className="text-white text-xl font-black">ReviewUp</h1>
-      </div>
-     </Link>
-     <div className="pt-10">
-      <h1 className="text-white text-5xl font-black">
-       Engage with different students{" "}
-      </h1>
-      <div className="w-44 pt-2">
-       <hr className="text-white border-4" />
-      </div>
-      <div className="pt-5">
-       <p className="text-lg font-light text-white">
-        Learn from peers and share your ideas, reviewers, and other study
-        resources.
-       </p>
-      </div>
-      <div className="pt-5">
-       <p className="text-lg font-light text-white">
-        Don't have an account yet? Create now and collaborate with students!
-       </p>
-       <div className="pt-4">
-        <button className="bg-white rounded px-4 h-10 text-sm text-primaryColor">
-         Register here
-        </button>
-       </div>
-      </div>
-     </div>
-    </div> */}
+				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<div className="w-[35%] border border-gray-200 rounded shadow-m  d">
 					<div className="p-10">
 						<h1 className="text-primaryColor font-black text-3xl">LOGIN</h1>

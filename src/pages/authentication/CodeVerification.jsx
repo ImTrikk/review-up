@@ -136,7 +136,7 @@ export const CodeVerification = () => {
 		<>
 			<div className="bg-primaryColor h-screen">
 				<ToastContainer />
-				<LoadingBar height={7} color="#0043DC" ref={loadingBar} />
+				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
 					<div className="flex items-center justify-center w-full h-screen">
 						<div className="flex gap-10 justify-between">
@@ -146,7 +146,7 @@ export const CodeVerification = () => {
 									One time password is sent to your email account, Please look through
 									your Gmail account and enter the provided code
 								</p>
-								<Link to='/login'>
+								<Link to="/login">
 									<p className="text-white text-sm underline font-light pt-5">
 										Choose a different account
 									</p>
