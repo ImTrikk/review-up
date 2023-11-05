@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { buildUrl } from "../../utils/buildUrl";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
@@ -10,6 +10,7 @@ export const CodeVerification = () => {
 	const location = useLocation();
 	const userData = location.state ? location.state.userData : null;
 	const reqEndpoint = location.state ? location.state.endpoint : null;
+	const [countdown, setCountdown] = useState(30);
 
 	const [verificationCode, setVerificationCode] = useState([
 		"",
@@ -19,7 +20,7 @@ export const CodeVerification = () => {
 		"",
 		"",
 	]);
-	
+
 	const loadingBar = useRef(null);
 	const inputRefs = verificationCode.map(() => useRef());
 
@@ -67,14 +68,8 @@ export const CodeVerification = () => {
 						return res.json().then((data) => {
 							localStorage.setItem("user_id", data.foundUser.user_id);
 							localStorage.setItem("token", data.jwtToken);
-							localStorage.setItem(
-								"first_name",
-								data.foundUser.first_name,
-							);
-							localStorage.setItem(
-								"last_name",
-								data.foundUser.last_name,
-							);
+							localStorage.setItem("first_name", data.foundUser.first_name);
+							localStorage.setItem("last_name", data.foundUser.last_name);
 							localStorage.setItem("email", data.foundUser.email);
 							localStorage.setItem("phone", data.foundUser.phone);
 							toast.success("Verified email, login successful!", {
@@ -87,13 +82,13 @@ export const CodeVerification = () => {
 								progress: undefined,
 								theme: "light",
 							});
-								loadingBar.current.continuousStart(60);
+							loadingBar.current.continuousStart(50);
+							setTimeout(() => {
+								loadingBar.current.complete();
 								setTimeout(() => {
-									loadingBar.current.complete();
-									setTimeout(() => {
-										navigator("/dashboard");
-									}, 1200);
-								}, 1000);
+									navigator("/dashboard");
+								}, 1200);
+							}, 1000);
 						});
 					}
 				} else {
@@ -105,6 +100,22 @@ export const CodeVerification = () => {
 		}
 	};
 
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setCountdown((prevCountdown) => {
+				if (prevCountdown === 0) {
+					clearInterval(timer);
+					return 0;
+				}
+				return prevCountdown - 1;
+			});
+		}, 1000);
+
+		return () => {
+			clearInterval(timer);
+		};
+	}, []);
+
 	const handleResendOtp = async () => {
 		try {
 			await fetch(buildUrl("/auth/resend-verify"), {
@@ -115,7 +126,7 @@ export const CodeVerification = () => {
 				body: {
 					email,
 				},
-			})
+			});
 		} catch (err) {
 			console.log(err);
 		}
@@ -131,10 +142,15 @@ export const CodeVerification = () => {
 						<div className="flex gap-10 justify-between">
 							<div className="w-[400px]">
 								<h1 className="font-black text-4xl text-white">Almost there</h1>
-								<p className="text-white font-light pt-5">
+								<p className="text-white text-sm font-light pt-5">
 									One time password is sent to your email account, Please look through
 									your Gmail account and enter the provided code
 								</p>
+								<Link to='/login'>
+									<p className="text-white text-sm underline font-light pt-5">
+										Choose a different account
+									</p>
+								</Link>
 							</div>
 							<div className="w-[500px] bg-white h-[270px] rounded p-5">
 								<div>
@@ -163,8 +179,9 @@ export const CodeVerification = () => {
 								<div className="flex justify-between items-center pt-16">
 									<button
 										onClick={handleResendOtp}
-										className="text-xs text-primaryColor">
-										Didn't receive the email?
+										className="text-xs text-primaryColor"
+										disabled={countdown > 0}>
+										Resend in {countdown}
 									</button>
 									<button
 										onClick={handleVerifyCode}
