@@ -12,7 +12,7 @@ export const CreateCourse = async (req, res) => {
 	try {
 		const newCourseQuery = `
       INSERT INTO courses (course_code, course_title, course_category, description, course_files)
-      VALUES ($1, $2, $3)
+      VALUES ($1, $2, $3, $4, $5)
     `;
 
 		await dbConnection.query(newCourseQuery, [

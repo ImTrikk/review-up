@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
 import { FileUploader } from "react-drag-drop-files";
+import { DragDropFile } from "../components/DragDropFile";
 
 export const CreateCourse = () => {
 	let first_name = localStorage.getItem("first_name");
@@ -14,7 +15,7 @@ export const CreateCourse = () => {
 	const fileTypes = ["JPG", "PNG", "GIF"];
 
 	const [file, setFile] = useState(null);
-	const handleChange = (file) => {
+	const onFileChange = (file) => {
 		setFile(file);
 	};
 
@@ -88,6 +89,8 @@ export const CreateCourse = () => {
 													<input
 														type="text"
 														placeholder=""
+														value={course_title}
+														onChange={(e) => setCourseTitle(e.target.value)}
 														className="border border-primaryColor text-xs px-4 h-8 rounded outline-none"
 													/>
 												</div>
@@ -100,6 +103,8 @@ export const CreateCourse = () => {
 													<input
 														type="text"
 														placeholder=""
+														value={course_category}
+														onChange={(e) => setCourseCategory(e.target.value)}
 														className="border border-primaryColor text-xs px-4 h-8 rounded outline-none"
 													/>
 												</div>
@@ -126,16 +131,14 @@ export const CreateCourse = () => {
 											<div className="pt-2 w-full">
 												<textarea
 													placeholder="Description"
+													value={description}
+													onChange={(e) => setDescription(e.target.value)}
 													className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none w-full "
 												/>
 											</div>
 										</div>
-										<div>
-											<FileUploader
-												handleChange={handleChange}
-												name="file"
-												types={fileTypes}
-											/>
+										<div className="w-[320px] h-auto bg-white shadow rounded">
+											<DragDropFile onFileChange={(files) => onFileChange(files)}/>
 										</div>
 									</form>
 									<div className="p-5 absolute bottom-0 right-0">
