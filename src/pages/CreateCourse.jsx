@@ -8,24 +8,32 @@ import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
 import { FileUploader } from "react-drag-drop-files";
 import { DragDropFile } from "../components/DragDropFile";
+import { NotesDragDrop } from "../components/NotesDragDrop";
 
 export const CreateCourse = () => {
 	let first_name = localStorage.getItem("first_name");
 	let last_name = localStorage.getItem("last_name");
 	const fileTypes = ["JPG", "PNG", "GIF"];
 
-	const [file, setFile] = useState(null);
+	const [files, setFile] = useState(null);
 	const onFileChange = (file) => {
 		setFile(file);
 	};
 
+	const [notes, setNote] = useState(null);
+	const onNotesChange = (notes) => {
+		setNote(notes);
+	};
+
+	// console.log("This is the notes: ", notes);
+	// console.log("This is the files: ", file);
 	const [course_code, setCourseCode] = useState("");
 	const [course_title, setCourseTitle] = useState("");
 	const [course_category, setCourseCategory] = useState("");
 	const [description, setDescription] = useState("");
-	const [course_files, setCourseFiles] = useState([]);
 
 	const handleCreateCourse = async () => {
+
 		try {
 			await fetch(buildUrl("/create-course"), {
 				method: "POST",
@@ -37,7 +45,8 @@ export const CreateCourse = () => {
 					course_title,
 					course_category,
 					description,
-					course_files,
+					files,
+					notes,
 				}),
 			}).then((res) => {
 				if (res.ok) {
@@ -75,7 +84,7 @@ export const CreateCourse = () => {
 							<hr className="border-1 border-primaryColor" />
 						</div>
 						<div className="mt-10">
-							<div className="border border-primaryColor h-screen rounded relative">
+							<div className="border border-primaryColor h-autO rounded relative">
 								<div className="p-5">
 									<form action="">
 										<div className="flex items-center justify-between">
@@ -137,8 +146,13 @@ export const CreateCourse = () => {
 												/>
 											</div>
 										</div>
-										<div className="w-[350px] h-auto bg-white shadow rounded">
-											<DragDropFile onFileChange={(files) => onFileChange(files)}/>
+										<div className="flex gap-10">
+											<div className="w-[350px] h-auto bg-white shadow rounded">
+												<DragDropFile onFileChange={(files) => onFileChange(files)} />
+											</div>
+											<div className="w-[350px] h-auto bg-white shadow rounded">
+												<NotesDragDrop onNotesChange={(notes) => onNotesChange(notes)} />
+											</div>
 										</div>
 									</form>
 									<div className="p-5 absolute bottom-0 right-0">
