@@ -20,11 +20,12 @@ export const NotesDragDrop = (notes) => {
 	const [noteList, setNoteList] = useState([]);
 
 	const onDragEnter = (e) => {
-		e.preventDefault(); 
+		e.preventDefault();
 		wrapperRef.current.classList.add("dragover");
 	};
 
 	const onDrop = (e) => {
+		console.log("Thi is dropping");
 		e.preventDefault();
 		wrapperRef.current.classList.remove("dragover");
 
@@ -46,12 +47,13 @@ export const NotesDragDrop = (notes) => {
 		}
 	};
 
-	const fileRemove = (file) => {
-		const updatedList = [...noteList];
-		updatedList.splice(noteList.indexOf(file), 1);
-		setNoteList(updatedList);
-		notes.onNotesChange(updatedList);
-	};
+	// const fileRemove = (file) => {
+	// 	const updatedList = [...noteList];
+	// 	updatedList.splice(noteList.indexOf(file), 1);
+	// 	console.log("Updated List:", updatedList); // Add this line
+	// 	setNoteList(updatedList);
+	// 	notes.onFileChange(updatedList);
+	// };
 
 	return (
 		<>
@@ -66,13 +68,12 @@ export const NotesDragDrop = (notes) => {
 					className="relative cursor-pointer p-10 flex flex-col items-center justify-center border border-dashed border-blue-700 rounded"
 					onDragOver={(e) => e.preventDefault()} // Prevent the default behavior
 				>
-					{/* <BsFillCloudArrowDownFill size={80} className="text-blue-400" /> */}
 					<GiNotebook size={80} className="text-blue-400" />
 					<input
 						type="file"
 						className="opacity-0 text-xs pointer-events-none"
 						id="noteInput"
-						onChange={onFileDrop} // Trigger file selection on input change
+						onChange={onFileDrop}
 					/>
 					<p className="text-blue-500 text-xs">
 						Drag and drop your notes here or click here and select a file

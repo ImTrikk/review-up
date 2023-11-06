@@ -36,6 +36,8 @@ export const DragDropFile = (props) => {
 		}
 	};
 
+
+
 	const onFileDrop = (e) => {
 		e.preventDefault();
 		const newFiles = Array.from(e.target.files);
@@ -52,6 +54,18 @@ export const DragDropFile = (props) => {
 		setFileList(updatedList);
 		props.onFileChange(updatedList);
 	};
+
+	// const onFileChange = (files) => {
+	// 	console.log("Files received:", files); // This line logs the received files
+	// 	const fileData = files.map((file) => ({
+	// 		name: file.name,
+	// 		size: file.size,
+	// 		type: file.type,
+	// 		lastModified: file.lastModified,
+	// 	}));
+	// 	props.onFileChange(fileData); // This line sends the relevant file information to the callback
+	// 	setFileList(files); // Update the state with File objects
+	// };
 
 	return (
 		<>

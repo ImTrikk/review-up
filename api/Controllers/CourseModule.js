@@ -6,21 +6,21 @@ export const CreateCourse = async (req, res) => {
 		course_title,
 		course_category,
 		description,
-		course_files,
+		fileList,
+		noteList,
 	} = req.body;
 
 	try {
 		const newCourseQuery = `
-      INSERT INTO courses (course_code, course_title, course_category, description, course_files)
-      VALUES ($1, $2, $3, $4, $5)
-    `;
+	     INSERT INTO courses (course_code, course_title, course_category, description, files, notes)
+	     VALUES ($1, $2, $3, $4, $5, $6)
+	   `;
 
 		await dbConnection.query(newCourseQuery, [
 			course_code,
 			course_title,
 			course_category,
 			description,
-			course_files,
 		]);
 
 		res.status(201).json({ message: "New course created" });
@@ -28,6 +28,8 @@ export const CreateCourse = async (req, res) => {
 		console.error(err);
 		res.status(500).json({ message: "Internal server error" });
 	}
+
+	return res.status(200).json({ fileList, noteList });
 };
 
 

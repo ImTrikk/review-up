@@ -15,39 +15,57 @@ export const CreateCourse = () => {
 	let last_name = localStorage.getItem("last_name");
 	const fileTypes = ["JPG", "PNG", "GIF"];
 
-	const [files, setFile] = useState(null);
-	const onFileChange = (file) => {
-		setFile(file);
+	const [files, setFiles] = useState([]);
+	const [notes, setNotes] = useState([]);
+
+	const [fileList, setFileList] = useState([]);
+	const [noteList, setNoteList] = useState([]);
+
+	const onFileChange = (files) => {
+		const fileData = files.map((file) => ({
+			name: file.name,
+			size: file.size,
+			type: file.type,
+			lastModified: file.lastModified,
+		}));
+		setFileList(fileData); 
 	};
 
-	const [notes, setNote] = useState(null);
-	const onNotesChange = (notes) => {
-		setNote(notes);
+	const onNotesChange = (files) => {
+		const fileData = files.map((file) => ({
+			name: file.name,
+			size: file.size,
+			type: file.type,
+			lastModified: file.lastModified,
+		})); 
+		setNoteList(fileData); 
 	};
 
-	// console.log("This is the notes: ", notes);
-	// console.log("This is the files: ", file);
 	const [course_code, setCourseCode] = useState("");
 	const [course_title, setCourseTitle] = useState("");
 	const [course_category, setCourseCategory] = useState("");
 	const [description, setDescription] = useState("");
 
-	const handleCreateCourse = async () => {
+	const handleCreateCourse = async (e) => {
+		e.preventDefault();
+		const data = {
+			course_code,
+			course_title,
+			course_category,
+			description,
+			fileList,
+			noteList,
+		};
+
+		console.log(data);
 
 		try {
-			await fetch(buildUrl("/create-course"), {
+			await fetch(buildUrl("/auth/create-course"), {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({
-					course_code,
-					course_title,
-					course_category,
-					description,
-					files,
-					notes,
-				}),
+				body: JSON.stringify(data),
 			}).then((res) => {
 				if (res.ok) {
 					toast.success("Course created!");
@@ -68,7 +86,7 @@ export const CreateCourse = () => {
 				<div className="bg-primaryColor w-full h-[140px]">
 					<div className="ml-[220px] h-full grid items-end">
 						<div className="pb-10">
-							<h1 className="text-white text-3xl font-bold">Create Course</h1>
+							<h1 className="text-white text-x3l font-bold">Create Course</h1>
 							<p className="text-white text-sm">
 								Create reviewers, drop down notes, and even
 							</p>
@@ -87,9 +105,21 @@ export const CreateCourse = () => {
 							<div className="border border-primaryColor h-autO rounded relative">
 								<div className="p-5">
 									<form action="">
+										<div className="flex items-center gap-2 py-2">
+											<label htmlFor="" className="text-sm font-medium text-primaryColor">
+												Course Code:
+											</label>
+											<input
+												type="text"
+												placeholder="ex. 'IT109'"
+												value={course_code}
+												onChange={(e) => setCourseCode(e.target.value)}
+												className="border border-primaryColor text-xs px-4 h-10 rounded outline-none"
+											/>
+										</div>
 										<div className="flex items-center justify-between">
 											<div className="flex items-center gap-4">
-												<div className="flex items-center justify-between gap-2">
+												<div className="flex items-center justify-between gap-4">
 													<label
 														htmlFor=""
 														className="text-sm font-medium text-primaryColor">
@@ -97,10 +127,10 @@ export const CreateCourse = () => {
 													</label>
 													<input
 														type="text"
-														placeholder=""
+														placeholder="ex. 'Integrative Programming'"
 														value={course_title}
 														onChange={(e) => setCourseTitle(e.target.value)}
-														className="border border-primaryColor text-xs px-4 h-8 rounded outline-none"
+														className="border border-primaryColor text-xs px-4 h-10 rounded outline-none"
 													/>
 												</div>
 												<div className="flex items-center justify-between gap-2">
@@ -109,25 +139,26 @@ export const CreateCourse = () => {
 														className="text-sm font-medium text-primaryColor">
 														Category:
 													</label>
+													{/* add drop dox component here for easy categorizing */}
 													<input
 														type="text"
-														placeholder=""
+														placeholder="ex. Information Technology"
 														value={course_category}
 														onChange={(e) => setCourseCategory(e.target.value)}
-														className="border border-primaryColor text-xs px-4 h-8 rounded outline-none"
+														className="border border-primaryColor text-xs px-4 h-10 rounded outline-none"
 													/>
 												</div>
 											</div>
 											<div className="flex items-center gap-1">
-												<div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center gap-2">
+												<div className="bg-primaryColor px-4 rounded text-white text-sm h-10 flex items-center gap-2">
 													<AiFillPlusCircle size={16} className="text-white" />
 													<button>Notes</button>
 												</div>
-												<div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center gap-2">
+												<div className="bg-primaryColor px-4 rounded text-white text-sm h-10 flex items-center gap-2">
 													<AiFillPlusCircle size={16} className="text-white" />
 													<button>Links</button>
 												</div>
-												<div className="bg-primaryColor px-4 rounded text-white text-sm h-8 flex items-center gap-2">
+												<div className="bg-primaryColor px-4 rounded text-white text-sm h-10 flex items-center gap-2">
 													<AiFillPlusCircle size={16} className="text-white" />
 													<button>Quiz</button>
 												</div>
@@ -156,7 +187,7 @@ export const CreateCourse = () => {
 										</div>
 									</form>
 									<div className="p-5 absolute bottom-0 right-0">
-										<div className="bg-primaryColor px-4 rounded h-8 flex items-center">
+										<div className="bg-primaryColor px-4 rounded h-10 flex items-center">
 											<button onClick={handleCreateCourse} className="text-white text-xs">
 												Create
 											</button>
