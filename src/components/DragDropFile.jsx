@@ -1,32 +1,35 @@
 import React, { useRef, useState } from "react";
 import { BsFillCloudArrowDownFill } from "react-icons/bs";
 
-import fileDefault from "../../public/static/images/file-blank-solid-240.png";
-import fileCSS from "../../public/static/images/file-css-solid-240.png";
-import filePdf from "../../public/static/images/file-pdf-solid-240.png";
-import filePng from "../../public/static/images/file-png-solid-240.png";
+import fileDefault from "/static/images/file-blank-solid-240.png";
+import fileCSS from "/static/images/file-css-solid-240.png";
+import filePdf from "/static/images/file-pdf-solid-240.png";
+import filePng from "/static/images/file-png-solid-240.png";
 
 export const DragDropFile = (props) => {
 	const wrapperRef = useRef(null);
 
-	 const ImageConfig = {
-			default: fileDefault,
-			pdf: filePdf,
-			png: filePng,
-			css: fileCSS,
-		};
+	const ImageConfig = {
+		default: fileDefault,
+		pdf: filePdf,
+		png: filePng,
+		css: fileCSS,
+	};
 
 	const [fileList, setFileList] = useState([]);
 
-	const onDragEnter = () => wrapperRef.current.classList.add("dragover");
-	const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
+	const onDragEnter = (e) => {
+		e.preventDefault();
+		wrapperRef.current.classList.add("dragover");
+	};
+
 	const onDrop = (e) => {
 		e.preventDefault();
 		wrapperRef.current.classList.remove("dragover");
 
-		const newFile = e.dataTransfer.files[0];
-		if (newFile) {
-			const updatedList = [...fileList, newFile];
+		const newFiles = Array.from(e.dataTransfer.files);
+		if (newFiles.length > 0) {
+			const updatedList = [...fileList, ...newFiles];
 			setFileList(updatedList);
 			props.onFileChange(updatedList);
 		}
@@ -34,9 +37,9 @@ export const DragDropFile = (props) => {
 
 	const onFileDrop = (e) => {
 		e.preventDefault();
-		const newFile = e.target.files[0];
-		if (newFile) {
-			const updatedList = [...fileList, newFile];
+		const newFiles = Array.from(e.target.files);
+		if (newFiles.length > 0) {
+			const updatedList = [...fileList, ...newFiles];
 			setFileList(updatedList);
 			props.onFileChange(updatedList);
 		}
@@ -55,20 +58,19 @@ export const DragDropFile = (props) => {
 				ref={wrapperRef}
 				className="relative text-center p-5"
 				onDragEnter={onDragEnter}
-				onDragLeave={onDragLeave}
+				// onDragLeave={onDragLeave}
 				onDrop={onDrop}>
 				<label
 					htmlFor="fileInput"
-					className="relative cursor-pointer p-7 flex flex-col items-center justify-center border border-dashed border-blue-700 rounded"
+					className="relative cursor-pointer p-10 flex flex-col items-center justify-center border border-dashed border-blue-700 rounded"
 					onDragOver={(e) => e.preventDefault()} // Prevent the default behavior
 				>
 					<BsFillCloudArrowDownFill size={80} className="text-blue-400" />
 					<input
 						type="file"
-						value=""
 						className="opacity-0 text-xs pointer-events-none"
 						id="fileInput"
-						onDrop={onFileDrop}
+						onChange={onFileDrop} // Trigger file selection on input change
 					/>
 					<p className="text-blue-500 text-xs">
 						Drag and drop your reviewers here or click here and select a file
@@ -85,8 +87,10 @@ export const DragDropFile = (props) => {
 								className="w-14"
 							/>
 							<div className="p-4 w-full bg-blue-100 rounded-md flex items-center justify-between">
-								<div>
-									<p className="text-xs text-gray-500">{item.name}</p>
+								<div className="w-2/3 overflow-hidden">
+									<p className="text-xs text-gray-500 whitespace-nowrap overflow-hidden">
+										{item.name}
+									</p>
 									<p className="text-xs text-gray-500">{item.size}B</p>
 								</div>
 								<p

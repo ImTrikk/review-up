@@ -137,7 +137,7 @@ export const CreateCourse = () => {
 												/>
 											</div>
 										</div>
-										<div className="w-[320px] h-auto bg-white shadow rounded">
+										<div className="w-[350px] h-auto bg-white shadow rounded">
 											<DragDropFile onFileChange={(files) => onFileChange(files)}/>
 										</div>
 									</form>
