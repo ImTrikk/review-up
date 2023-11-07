@@ -38,6 +38,7 @@ export const CreateCourse = () => {
 	// 	setFileList(fileData);
 	// };
 	const onFileChange = (files) => {
+		console.log(files);
 		setFileList(files);
 	};
 
@@ -46,27 +47,23 @@ export const CreateCourse = () => {
 
 		// Create a FormData object to send the files
 		const formData = new FormData();
-		formData.append("course_code", course_code);
-		formData.append("course_title", course_title);
-		formData.append("course_category", course_category);
-		formData.append("description", description);
-		formData.append("user_id", user_id);
-		formData.append("first_name", first_name);
-		formData.append("last_name", last_name);
+		// formData.append("course_code", course_code);
+		// formData.append("course_title", course_title);
+		// formData.append("course_category", course_category);
+		// formData.append("description", description);
+		// formData.append("user_id", user_id);
+		// formData.append("first_name", first_name);
+		// formData.append("last_name", last_name);
 
 		// Append each selected file to the FormData
-		fileList.forEach((file, index) => {
-			formData.append(`file${index}`, file);
+
+		fileList.forEach((file) => {
+			formData.append("file", file);
 		});
 		try {
 			await fetch(buildUrl("/auth/create-course"), {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					formData,
-				}),
+				body: formData,
 			}).then((res) => {
 				if (res.status === 201) {
 					return res.json().then((data) => {
@@ -111,7 +108,7 @@ export const CreateCourse = () => {
 						<div className="mt-10">
 							<div className="border border-primaryColor rounded relative h-auto">
 								<div className="p-5">
-									<form action="">
+									<form action="" enctype="multipart/form-data">
 										<div className="flex gap-10">
 											<div className="w-full">
 												<div className="flex gap-8">

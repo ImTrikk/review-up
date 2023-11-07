@@ -19,7 +19,11 @@ router.post("/login", TwoFactorAuth, login);
 router.get("/user-info", Userinfo);
 
 // add middle ware to check for tokens
-router.post("/create-course", upload.array('fileList'), CreateCourse);
+// router.post("/create-course", upload.array("file"), CreateCourse);
+router.post("/create-course", upload.array("file"), (req, res) => {
+	const file = req.file;
+	console.log(file)
+});
 
 
 

@@ -1,33 +1,39 @@
 import { dbConnection } from "../Database/database.js";
 
 export const CreateCourse = async (req, res) => {
-	const {
-		course_code,
-		course_title,
-		course_category,
-		description,
-		fileList,
-		user_id,
-	} = req.body;
+	// const {
+	// 	course_code,
+	// 	course_title,
+	// 	course_category,
+	// 	description,
+	// 	fileList,
+	// 	user_id,
+	// } = req.body;
 
-	try {
-		const newCourseQuery = `
-			INSERT INTO courses (course_code, course_title, course_category, description, user_id)
-			VALUES ($1, $2, $3, $4, $5)
-			RETURNING course_id;
-		`;
-		const courseResult = await dbConnection.query(newCourseQuery, [
-			course_code,
-			course_title,
-			course_category,
-			description,
-			user_id,
-		]);
-		return res.status(201).json({ message: "Success creating course!" });
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ message: "Internal server error" });
-	}
+	console.log("Endpoint...");
+	// console.log(fileList)
+
+
+	console.log(file);
+
+	// try {
+	// 	const newCourseQuery = `
+	// 		INSERT INTO courses (course_code, course_title, course_category, description, user_id)
+	// 		VALUES ($1, $2, $3, $4, $5)
+	// 		RETURNING course_id;
+	// 	`;
+	// 	const courseResult = await dbConnection.query(newCourseQuery, [
+	// 		course_code,
+	// 		course_title,
+	// 		course_category,
+	// 		description,
+	// 		user_id,
+	// 	]);
+	// 	return res.status(201).json({ message: "Success creating course!" });
+	// } catch (err) {
+	// 	console.error(err);
+	// 	res.status(500).json({ message: "Internal server error" });
+	// }
 };
 
 // retrieve course module

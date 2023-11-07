@@ -1,10 +1,11 @@
 import multer from "multer";
-import path from "path";
+import { fileURLToPath } from "url";
+import path from "path";	
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		const uploadDir = path.join(__dirname, "uploads"); // Absolute path to the uploads directory
-		cb(null, uploadDir);
+		// const uploadDir = path.join(__dirname, "uploads");
+		cb(null, "./public/uploads");
 	},
 	filename: (req, file, cb) => {
 		console.log(file);
