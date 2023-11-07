@@ -1,6 +1,7 @@
 import { dbConnection } from "../Database/database.js";
 
 export const CreateCourse = async (req, res) => {
+	
 	const {
 		course_code,
 		course_title,
@@ -11,17 +12,12 @@ export const CreateCourse = async (req, res) => {
 		user_id,
 	} = req.body;
 
-	console.log(fileList);
-	console.log(noteList);
-
-	console.log("User ID: ", user_id);
-
 	try {
 		const newCourseQuery = `
 	     INSERT INTO courses (course_code, course_title, course_category, description, user_id)
 	     VALUES ($1, $2, $3, $4, $5)
+						 RETURNING course_id;
 	   `;
-
 		const courseResult = await dbConnection.query(newCourseQuery, [
 			course_code,
 			course_title,
@@ -30,26 +26,48 @@ export const CreateCourse = async (req, res) => {
 			user_id,
 		]);
 
-		if (courseResult.rows.length === 0) {
-			// Handle the case where no rows were returned (e.g., due to a failed insert)
-			return res.status(500).json({ message: "Failed to create the course" });
-		}
-
 		const course_id = courseResult.rows[0].course_id;
 
-		const newFileQuery = `
-	     INSERT INTO files (file_name, course_id)
-	     VALUES ($1, $2)
-	   `;
-		await dbConnection.query(newFileQuery, [fileList.name, course_id]);
+	console.log("This is the course ID: ", course_id)
 
-		const newNoteQuery = `
-	     INSERT INTO notes (note_name, course_id)
-	     VALUES ($1, $2)
-	   `;
-		await dbConnection.query(newNoteQuery, [noteList.name, course_id]);
+		// handle insert files to table files
+		fileList.forEach(async (data) => {
+			const { name, size, type, lastModified } = data;
+			console.log(
+				`Name: ${name}, Size: ${size}, Type: ${type}, Last Modified: ${lastModified}`,
+			);
+			const newFileQuery = `
+    INSERT INTO files (file_name, course_id)
+    VALUES ($1, $2)
+  `;
+			try {
+				await dbConnection.query(newFileQuery, [name, course_id]);
+				console.log(`File "${name}" inserted successfully.`);
+			} catch (error) {
+				console.error(`Error inserting file "${name}":`, error);
+			}
+		});
 
-		return res.status(201).json({ message: "Success creating course!" });
+		// handle insert files to table notes
+		noteList.forEach(async (data) => {
+			const { name, size, type, lastModified } = data;
+			console.log(
+				`Name: ${name}, Size: ${size}, Type: ${type}, Last Modified: ${lastModified}`,
+			);
+			const newNoteQuery = `
+    INSERT INTO notes (note_name, course_id)
+    VALUES ($1, $2)
+  `;
+			try {
+				await dbConnection.query(newNoteQuery, [name, course_id]);
+				console.log(`Notes "${name}" inserted successfully.`);
+			} catch (error) {
+				console.error(`Error inserting file "${name}":`, error);
+			}
+		});
+		return res
+			.status(201)
+			.json({ fileList, noteList, message: "Success creating course!" });
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: "Internal server error" });
@@ -74,6 +92,7 @@ export const RetrieveCourse = async (req, res) => {
 	}
 };
 
+// finding specific courses
 export const findCourse = async (req, res) => {
 	try {
 		const { course_title } = req.body;

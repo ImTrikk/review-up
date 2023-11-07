@@ -24,7 +24,7 @@ export const CreateCourse = () => {
 	const user_id = localStorage.getItem("user_id");
 
 
-	const onFileChange = (files) => {
+	const onFileChange = (files) => {	
 		const fileData = files.map((file) => ({
 			name: file.name,
 			size: file.size,
@@ -69,9 +69,14 @@ export const CreateCourse = () => {
 				body: JSON.stringify(data),
 			}).then((res) => {
 				if (res.status === 201) {
-					toast.success("Course created!");
+					return res.json().then((data) => {
+						toast.success("Course created!");
+					});
 				} else {
+					return res.json().then((data) => {
+						console.log(data)
 					toast.error("There was a problem creating course");
+					})
 				}
 			});
 		} catch (err) {
