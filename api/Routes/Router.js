@@ -7,6 +7,7 @@ import {
 	sendOtp,
 } from "../MIddleware/CheckValidEmail.js";
 import { CreateCourse } from "../Controllers/CourseModule.js";
+import { upload } from "../MIddleware/FileMulter.js";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.post("/login", TwoFactorAuth, login);
 router.get("/user-info", Userinfo);
 
 // add middle ware to check for tokens
-router.post("/create-course", CreateCourse);
+router.post("/create-course", upload.array('fileList'), CreateCourse);
 
 
 

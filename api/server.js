@@ -6,7 +6,7 @@ import { dbConnection } from "./Database/database.js";
 
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
  cors({
@@ -14,7 +14,7 @@ app.use(
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
  })
-);
+); 
 
 app.use("/api/auth", UserRouter);
 

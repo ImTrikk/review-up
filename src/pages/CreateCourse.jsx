@@ -9,74 +9,75 @@ import LoadingBar from "react-top-loading-bar";
 import { FileUploader } from "react-drag-drop-files";
 import { DragDropFile } from "../components/DragDropFile";
 import { NotesDragDrop } from "../components/NotesDragDrop";
+import { QuizModal } from "../components/Modal/QuizModal";
+import { LinkResourcesModal } from "../components/Modal/LinkResourcesModal";
+import { SessionNoticeModal } from "../components/Modal/SessionNoticeModal";
 
 export const CreateCourse = () => {
-	let first_name = localStorage.getItem("first_name");
-	let last_name = localStorage.getItem("last_name");
-	const fileTypes = ["JPG", "PNG", "GIF"];
-
-	const [files, setFiles] = useState([]);
-	const [notes, setNotes] = useState([]);
-
-	const [fileList, setFileList] = useState([]);
-	const [noteList, setNoteList] = useState([]);
-
-	const user_id = localStorage.getItem("user_id");
-
-
-	const onFileChange = (files) => {	
-		const fileData = files.map((file) => ({
-			name: file.name,
-			size: file.size,
-			type: file.type,
-			lastModified: file.lastModified,
-		}));
-		setFileList(fileData);
-	};
-
-	const onNotesChange = (files) => {
-		const fileData = files.map((file) => ({
-			name: file.name,
-			size: file.size,
-			type: file.type,
-			lastModified: file.lastModified,
-		}));
-		setNoteList(fileData);
-	};
-
 	const [course_code, setCourseCode] = useState("");
 	const [course_title, setCourseTitle] = useState("");
 	const [course_category, setCourseCategory] = useState("");
 	const [description, setDescription] = useState("");
 
+	let first_name = localStorage.getItem("first_name");
+	let last_name = localStorage.getItem("last_name");
+	const [quizModal, setQuizModal] = useState(false);
+	const [linkModal, setLinkModal] = useState(false);
+	const user_id = localStorage.getItem("user_id");
+
+	const [fileList, setFileList] = useState([]);
+
+	// const onFileChange = (files) => {
+	// 	const fileData = files.map((file) => ({
+	// 		name: file.name,
+	// 		size: file.size,
+	// 		type: file.type,
+	// 		lastModified: file.lastModified,
+	// 		content: file.content,
+	// 	}));
+	// 	setFileList(fileData);
+	// };
+	const onFileChange = (files) => {
+		setFileList(files);
+	};
+
 	const handleCreateCourse = async (e) => {
 		e.preventDefault();
-		const data = {
-			course_code,
-			course_title,
-			course_category,
-			description,
-			fileList,
-			noteList,
-			user_id,
-		};
+
+		// Create a FormData object to send the files
+		const formData = new FormData();
+		formData.append("course_code", course_code);
+		formData.append("course_title", course_title);
+		formData.append("course_category", course_category);
+		formData.append("description", description);
+		formData.append("user_id", user_id);
+		formData.append("first_name", first_name);
+		formData.append("last_name", last_name);
+
+		// Append each selected file to the FormData
+		fileList.forEach((file, index) => {
+			formData.append(`file${index}`, file);
+		});
 		try {
 			await fetch(buildUrl("/auth/create-course"), {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify({
+					formData,
+				}),
 			}).then((res) => {
 				if (res.status === 201) {
 					return res.json().then((data) => {
+						console.log(data);
 						toast.success("Course created!");
 					});
 				} else {
 					return res.json().then((data) => {
-						console.log(data)
-					toast.error("There was a problem creating course");
-					})
+						console.log(data);
+						toast.error("There was a problem creating course");
+					});
 				}
 			});
 		} catch (err) {
@@ -108,96 +109,125 @@ export const CreateCourse = () => {
 							<hr className="border-1 border-primaryColor" />
 						</div>
 						<div className="mt-10">
-							<div className="border border-primaryColor h-autO rounded relative">
+							<div className="border border-primaryColor rounded relative h-auto">
 								<div className="p-5">
 									<form action="">
-										<div className="flex items-center gap-2 py-2">
-											<label htmlFor="" className="text-sm font-medium text-primaryColor">
-												Course Code:
-											</label>
-											<input
-												type="text"
-												placeholder="ex. 'IT109'"
-												value={course_code}
-												onChange={(e) => setCourseCode(e.target.value)}
-												className="border border-primaryColor text-xs px-4 h-10 rounded outline-none"
-											/>
-										</div>
-										<div className="flex items-center justify-between">
-											<div className="flex items-center gap-4">
-												<div className="flex items-center justify-between gap-4">
-													<label
-														htmlFor=""
-														className="text-sm font-medium text-primaryColor">
-														Course Title:
-													</label>
-													<input
-														type="text"
-														placeholder="ex. 'Integrative Programming'"
-														value={course_title}
-														onChange={(e) => setCourseTitle(e.target.value)}
-														className="border border-primaryColor text-xs px-4 h-10 rounded outline-none"
-													/>
-												</div>
-												<div className="flex items-center justify-between gap-2">
-													<label
-														htmlFor=""
-														className="text-sm font-medium text-primaryColor">
-														Category:
-													</label>
-													{/* add drop dox component here for easy categorizing */}
-													<input
-														type="text"
-														placeholder="ex. Information Technology"
-														value={course_category}
-														onChange={(e) => setCourseCategory(e.target.value)}
-														className="border border-primaryColor text-xs px-4 h-10 rounded outline-none"
-													/>
-												</div>
-											</div>
-											<div className="flex items-center gap-1">
-												<div className="bg-primaryColor px-4 rounded text-white text-sm h-10 flex items-center gap-2">
-													<AiFillPlusCircle size={16} className="text-white" />
-													<button>Notes</button>
-												</div>
-												<div className="bg-primaryColor px-4 rounded text-white text-sm h-10 flex items-center gap-2">
-													<AiFillPlusCircle size={16} className="text-white" />
-													<button>Links</button>
-												</div>
-												<div className="bg-primaryColor px-4 rounded text-white text-sm h-10 flex items-center gap-2">
-													<AiFillPlusCircle size={16} className="text-white" />
-													<button>Quiz</button>
-												</div>
-											</div>
-										</div>
-										<div className="pt-5 flex flex-col">
-											<label htmlFor="" className="text-sm text-primaryColor">
-												Description:
-											</label>
-											<div className="pt-2 w-full">
-												<textarea
-													placeholder="Description"
-													value={description}
-													onChange={(e) => setDescription(e.target.value)}
-													className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none w-full "
-												/>
-											</div>
-										</div>
 										<div className="flex gap-10">
-											<div className="w-[350px] h-auto bg-white shadow rounded">
-												<DragDropFile onFileChange={(files) => onFileChange(files)} />
+											<div className="w-full">
+												<div className="flex gap-8">
+													<div className="flex flex-col">
+														<label htmlFor="" className="text-sm text-primaryColor">
+															Course Code:
+														</label>
+														<input
+															type="text"
+															placeholder="ex. 'IT109'"
+															value={course_code}
+															onChange={(e) => setCourseCode(e.target.value)}
+															className="border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+														/>
+													</div>
+													<div className="flex flex-col">
+														<label htmlFor="" className="text-sm text-primaryColor">
+															Course Title:
+														</label>
+														<input
+															type="text"
+															placeholder="ex. 'Integrative Programming'"
+															value={course_title}
+															onChange={(e) => setCourseTitle(e.target.value)}
+															className="border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+														/>
+													</div>
+												</div>
+												<div className="flex items-center pt-5">
+													<div className="flex flex-col">
+														<label htmlFor="" className="text-sm text-primaryColor">
+															Category:
+														</label>
+														{/* add drop dox component here for easy categorizing */}
+														<input
+															type="text"
+															placeholder="ex. Information Technology"
+															value={course_category}
+															onChange={(e) => setCourseCategory(e.target.value)}
+															className="border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+														/>
+													</div>
+												</div>
+												<div className="pt-5 flex flex-col">
+													<label htmlFor="" className="text-sm text-primaryColor">
+														Description:
+													</label>
+													<div className="pt-2 w-full">
+														<textarea
+															placeholder="Description"
+															value={description}
+															onChange={(e) => setDescription(e.target.value)}
+															className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none w-full lg:w-[630px] "
+														/>
+													</div>
+												</div>
+												<div className="pt-5">
+													<hr className="border-1 border-primaryColor" />
+												</div>
+												<div className="pt-10">
+													<div className="flex items-center justify-between">
+														<h1 className="text-sm text-primaryColor">Make practice quiz?</h1>
+														{quizModal ? (
+															<button
+																onClick={() => setQuizModal(false)}
+																type="button"
+																className="bg-red-600 h-8 rounded px-4 text-xs text-white">
+																Close
+															</button>
+														) : (
+															<button
+																onClick={() => setQuizModal(true)}
+																type="button"
+																className="bg-primaryColor h-8 rounded px-4 text-xs text-white">
+																Add
+															</button>
+														)}
+													</div>
+													{quizModal ? <QuizModal /> : ""}
+												</div>
+												<div className="pt-5">
+													<hr className="border-1 border-primaryColor" />
+												</div>
+												<div className="pt-10">
+													<div className="flex items-center justify-between">
+														<h1 className="text-sm text-primaryColor">Add more resources?</h1>
+														{linkModal ? (
+															<button
+																onClick={() => setLinkModal(false)}
+																type="button"
+																className="bg-red-600 h-8 rounded px-4 text-xs text-white">
+																Close
+															</button>
+														) : (
+															<button
+																onClick={() => setLinkModal(true)}
+																type="button"
+																className="bg-primaryColor h-8 rounded px-4 text-xs text-white">
+																Add
+															</button>
+														)}
+													</div>
+													{linkModal ? <LinkResourcesModal /> : ""}
+												</div>
 											</div>
-											<div className="w-[350px] h-auto bg-white shadow rounded">
-												<NotesDragDrop onNotesChange={(notes) => onNotesChange(notes)} />
+											<div className="w-[600px] h-auto bg-white shadow rounded">
+												<DragDropFile onFileChange={(files) => onFileChange(files)} />
 											</div>
 										</div>
 									</form>
-									<div className="p-5 absolute bottom-0 right-0">
-										<div className="bg-primaryColor px-4 rounded h-10 flex items-center">
-											<button onClick={handleCreateCourse} className="text-white text-xs">
-												Create
-											</button>
-										</div>
+									<div className=" flex items-center justify-end mt-10">
+										<button
+											onClick={handleCreateCourse}
+											className="text-white bg-primaryColor px-4 rounded h-10 text-xs">
+											Create
+										</button>
 									</div>
 								</div>
 							</div>
