@@ -21,6 +21,9 @@ export const CreateCourse = () => {
 	const [fileList, setFileList] = useState([]);
 	const [noteList, setNoteList] = useState([]);
 
+	const user_id = localStorage.getItem("user_id");
+
+
 	const onFileChange = (files) => {
 		const fileData = files.map((file) => ({
 			name: file.name,
@@ -28,7 +31,7 @@ export const CreateCourse = () => {
 			type: file.type,
 			lastModified: file.lastModified,
 		}));
-		setFileList(fileData); 
+		setFileList(fileData);
 	};
 
 	const onNotesChange = (files) => {
@@ -37,8 +40,8 @@ export const CreateCourse = () => {
 			size: file.size,
 			type: file.type,
 			lastModified: file.lastModified,
-		})); 
-		setNoteList(fileData); 
+		}));
+		setNoteList(fileData);
 	};
 
 	const [course_code, setCourseCode] = useState("");
@@ -55,10 +58,8 @@ export const CreateCourse = () => {
 			description,
 			fileList,
 			noteList,
+			user_id,
 		};
-
-		console.log(data);
-
 		try {
 			await fetch(buildUrl("/auth/create-course"), {
 				method: "POST",
@@ -67,7 +68,7 @@ export const CreateCourse = () => {
 				},
 				body: JSON.stringify(data),
 			}).then((res) => {
-				if (res.ok) {
+				if (res.status === 201) {
 					toast.success("Course created!");
 				} else {
 					toast.error("There was a problem creating course");

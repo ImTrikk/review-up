@@ -28,7 +28,6 @@ export const NotesDragDrop = (notes) => {
 		console.log("Thi is dropping");
 		e.preventDefault();
 		wrapperRef.current.classList.remove("dragover");
-
 		const newFiles = Array.from(e.dataTransfer.files);
 		if (newFiles.length > 0) {
 			const updatedList = [...noteList, ...newFiles];
@@ -47,13 +46,12 @@ export const NotesDragDrop = (notes) => {
 		}
 	};
 
-	// const fileRemove = (file) => {
-	// 	const updatedList = [...noteList];
-	// 	updatedList.splice(noteList.indexOf(file), 1);
-	// 	console.log("Updated List:", updatedList); // Add this line
-	// 	setNoteList(updatedList);
-	// 	notes.onFileChange(updatedList);
-	// };
+	const fileRemove = (file) => {
+		const updatedList = [...noteList];
+		updatedList.splice(noteList.indexOf(file), 1);
+		setNoteList(updatedList);
+		// notes.onFileChange(updatedList);
+	};
 
 	return (
 		<>
