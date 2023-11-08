@@ -12,6 +12,7 @@ import { NotesDragDrop } from "../components/NotesDragDrop";
 import { QuizModal } from "../components/Modal/QuizModal";
 import { LinkResourcesModal } from "../components/Modal/LinkResourcesModal";
 import { SessionNoticeModal } from "../components/Modal/SessionNoticeModal";
+import { SuccessCreateCourse } from "../components/Modal/SuccessCreateCourse";
 
 export const CreateCourse = () => {
 	const [course_code, setCourseCode] = useState("");
@@ -23,74 +24,88 @@ export const CreateCourse = () => {
 	let last_name = localStorage.getItem("last_name");
 	const [quizModal, setQuizModal] = useState(false);
 	const [linkModal, setLinkModal] = useState(false);
+	const [successModal, setSuccessModal] = useState(false);
 	const user_id = localStorage.getItem("user_id");
-
 	const [fileList, setFileList] = useState([]);
 
-	// const onFileChange = (files) => {
-	// 	const fileData = files.map((file) => ({
-	// 		name: file.name,
-	// 		size: file.size,
-	// 		type: file.type,
-	// 		lastModified: file.lastModified,
-	// 		content: file.content,
-	// 	}));
-	// 	setFileList(fileData);
-	// };
 	const onFileChange = (files) => {
-		console.log(files);
 		setFileList(files);
 	};
 
 	const handleCreateCourse = async (e) => {
 		e.preventDefault();
 
-		// Create a FormData object to send the files
-		const formData = new FormData();
-		// formData.append("course_code", course_code);
-		// formData.append("course_title", course_title);
-		// formData.append("course_category", course_category);
-		// formData.append("description", description);
-		// formData.append("user_id", user_id);
-		// formData.append("first_name", first_name);
-		// formData.append("last_name", last_name);
-
-		// Append each selected file to the FormData
-
-		fileList.forEach((file) => {
-			formData.append("file", file);
-		});
-		try {
-			await fetch(buildUrl("/auth/create-course"), {
-				method: "POST",
-				body: formData,
-			}).then((res) => {
-				if (res.status === 201) {
-					return res.json().then((data) => {
-						console.log(data);
-						toast.success("Course created!");
-					});
-				} else {
-					return res.json().then((data) => {
-						console.log(data);
-						toast.error("There was a problem creating course");
-					});
-				}
+		if (
+			course_code == "" ||
+			course_title == "" ||
+			course_category == "" ||
+			description == "" ||
+			fileList.length === 0
+		) {
+			toast.error("Fields are required to make the course");
+		} else {
+			const formData = new FormData();
+			formData.append("course_code", course_code);
+			formData.append("course_title", course_title);
+			formData.append("course_category", course_category);
+			formData.append("description", description);
+			formData.append("user_id", user_id);
+			formData.append("first_name", first_name);
+			formData.append("last_name", last_name);
+			// Append each selected file to the FormData
+			fileList.forEach((file) => {
+				formData.append("file", file);
 			});
-		} catch (err) {
-			console.log(err);
+
+			try {
+				await fetch(buildUrl("/create-course"), {
+					method: "POST",
+					body: formData,
+				}).then((res) => {
+					if (res.status === 201) {
+						return res.json().then((data) => {
+							setSuccessModal(true);
+							setTimeout(() => {
+								setSuccessModal(false);
+							}, 6000);
+							toast.success("Course created!");
+						});
+					} else {
+						return res.json().then((data) => {
+							console.log(data);
+							toast.error("There was a problem creating course");
+						});
+					}
+				});
+			} catch (err) {
+				console.log(err);
+			}
 		}
 	};
 
 	return (
 		<>
-			<div className="">
+			<div className="relative">
 				<ToastContainer />
+				<div
+					className={`fixed inset-0 flex items-center justify-center ${
+						successModal ? "z-10" : "hidden"
+					}`}>
+					{successModal ? (
+						<>
+							<div className="fixed inset-0 bg-black opacity-50 z-0"></div>{" "}
+							{/* Dark background */}
+							<SuccessCreateCourse />
+						</>
+					) : (
+						""
+					)}
+				</div>
 				<SideBar />
 				<div className="bg-primaryColor w-full h-[140px]">
 					<div className="ml-[220px] h-full grid items-end">
 						<div className="pb-10">
-							<h1 className="text-white text-x3l font-bold">Create Course</h1>
+							<h1 className="text-white text-3xl font-bold">Create Course</h1>
 							<p className="text-white text-sm">
 								Create reviewers, drop down notes, and even
 							</p>
@@ -108,8 +123,8 @@ export const CreateCourse = () => {
 						<div className="mt-10">
 							<div className="border border-primaryColor rounded relative h-auto">
 								<div className="p-5">
-									<form action="" enctype="multipart/form-data">
-										<div className="flex gap-10">
+									<div className="flex gap-10">
+										<form>
 											<div className="w-full">
 												<div className="flex gap-8">
 													<div className="flex flex-col">
@@ -170,7 +185,14 @@ export const CreateCourse = () => {
 												</div>
 												<div className="pt-10">
 													<div className="flex items-center justify-between">
-														<h1 className="text-sm text-primaryColor">Make practice quiz?</h1>
+														<div>
+															<h1 className="text-sm text-primaryColor">
+																Make practice quiz?
+															</h1>
+															<p className="text-gray-600 text-xs">
+																You can add this later on after creating the course
+															</p>
+														</div>
 														{quizModal ? (
 															<button
 																onClick={() => setQuizModal(false)}
@@ -194,7 +216,14 @@ export const CreateCourse = () => {
 												</div>
 												<div className="pt-10">
 													<div className="flex items-center justify-between">
-														<h1 className="text-sm text-primaryColor">Add more resources?</h1>
+														<div>
+															<h1 className="text-sm text-primaryColor">
+																Add more resources?
+															</h1>
+															<p className="text-gray-600 text-xs">
+																You can add this later on after creating the course
+															</p>
+														</div>
 														{linkModal ? (
 															<button
 																onClick={() => setLinkModal(false)}
@@ -214,11 +243,11 @@ export const CreateCourse = () => {
 													{linkModal ? <LinkResourcesModal /> : ""}
 												</div>
 											</div>
-											<div className="w-[600px] h-auto bg-white shadow rounded">
-												<DragDropFile onFileChange={(files) => onFileChange(files)} />
-											</div>
+										</form>
+										<div className="w-[600px] h-auto bg-white shadow rounded">
+											<DragDropFile onFileChange={(files) => onFileChange(files)} />
 										</div>
-									</form>
+									</div>
 									<div className=" flex items-center justify-end mt-10">
 										<button
 											onClick={handleCreateCourse}

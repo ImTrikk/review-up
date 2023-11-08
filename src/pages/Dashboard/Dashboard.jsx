@@ -25,7 +25,7 @@ const Dashboard = () => {
      <div className="p-8">
       <div className="flex items-start justify-between">
        <h1 className="font-semibold text-lg text-primaryColor">
-        Welcome back, <span className="font-bold text-2xl">{first_name + "!"}</span>
+        Welcome back, <span className="font-bold">{first_name + "!"}</span>
        </h1>
        <div>
         <form action="">
