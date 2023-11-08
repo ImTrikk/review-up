@@ -2,19 +2,7 @@ import { dbConnection } from "../Database/database.js";
 
 
 export const CreateCourse = async (req, res) => {
-	console.log("Endpoint...");
-
-	// Access the uploaded files in req.files
-	// const uploadedFiles = req.files;
-
-	// console.log(uploadedFiles)
-
-	// Access the batchID from req
-	const batchID = req.batchID;
-
-	// Log the batchID
-	console.log("Batch ID in ENPOINT:", batchID);
-
+	const file_id = req.batchID;
 	const {
 		course_code,
 		course_title,
@@ -38,20 +26,26 @@ export const CreateCourse = async (req, res) => {
 	);
 
 	try {
-		// const newCourseQuery = `
-		// 	INSERT INTO courses (course_code, course_title, course_category, description, first_name, last_name, email, user_id)
-		// 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-		// 	RETURNING course_id;
-		// `;
-		// const courseResult = await dbConnection.query(newCourseQuery, [
-		// 	course_code,
-		// 	course_title,
-		// 	course_category,
-		// 	description,
-		// 	user_id,
-		// ]);
+		const newCourseQuery = `
+			INSERT INTO courses (course_code, course_title, course_category, description, first_name, last_name, email, user_id, file_id)
+			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+			RETURNING course_id;
+		`;
+		const courseResult = await dbConnection.query(newCourseQuery, [
+			course_code,
+			course_title,
+			course_category,
+			description,
+			first_name,
+			last_name,
+			email,
+			user_id,
+			file_id,
+		]);
 
-		return res.status(201).json({ message: "Success creating course!" });
+		return res
+			.status(201)
+			.json({ courseResult, message: "Success creating course!" });
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: "Internal server error" });
