@@ -29,9 +29,6 @@ export const Courses = () => {
       <div className="pt-10">
        <div className="flex flex-wrap gap-2">
         <ReviewModuleCard />
-        <ReviewModuleCard />
-        <ReviewModuleCard />
-        <ReviewModuleCard />
        </div>
       </div>
      </div>

@@ -65,16 +65,16 @@ export const RetrieveCourse = async (req, res) => {
 				.json({ message: "There are no available courses as of the moment" });
 		}
 
-		// Retrieve files associated with the course from the file system
-    const files = course.files.map((filePath) => {
-      // You can   the file path based on your directory structure
-      const fileFullPath = path.join(__dirname, 'uploads', filePath);
-      return fileFullPath;
-    });
+		// // Retrieve files associated with the course from the file system
+  //   const files = course.files.map((filePath) => {
+  //     // You can   the file path based on your directory structure
+  //     const fileFullPath = path.join(__dirname, 'uploads', filePath);
+  //     return fileFullPath;
+  //   });
 
 		return res
 			.status(200)
-			.json({ fileList, noteList, allCourses, message: "Courses found!" });
+			.json({allCourses, message: "Courses found!" });
 	} catch (err) {
 		console.log(err);
 	}

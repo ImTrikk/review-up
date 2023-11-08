@@ -72,7 +72,6 @@ export const CreateCourse = () => {
 				}).then((res) => {
 					if (res.status === 201) {
 						return res.json().then((data) => {
-							console.log(data);
 							setSuccessModal(true);
 							setTimeout(() => {
 								setSuccessModal(false);
