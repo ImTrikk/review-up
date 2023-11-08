@@ -22,11 +22,14 @@ export const CreateCourse = () => {
 
 	let first_name = localStorage.getItem("first_name");
 	let last_name = localStorage.getItem("last_name");
+	let email = localStorage.getItem("email");
+
 	const [quizModal, setQuizModal] = useState(false);
 	const [linkModal, setLinkModal] = useState(false);
 	const [successModal, setSuccessModal] = useState(false);
 	const user_id = localStorage.getItem("user_id");
 	const [fileList, setFileList] = useState([]);
+	const [isEmpty, setIsEmpty] = useState(false);
 
 	const onFileChange = (files) => {
 		setFileList(files);
@@ -42,6 +45,10 @@ export const CreateCourse = () => {
 			description == "" ||
 			fileList.length === 0
 		) {
+			setIsEmpty(true);
+			setTimeout(() => {
+				setIsEmpty(false);
+			}, 5000);
 			toast.error("Fields are required to make the course");
 		} else {
 			const formData = new FormData();
@@ -52,13 +59,14 @@ export const CreateCourse = () => {
 			formData.append("user_id", user_id);
 			formData.append("first_name", first_name);
 			formData.append("last_name", last_name);
+			formData.append("email", email);
 			// Append each selected file to the FormData
 			fileList.forEach((file) => {
 				formData.append("file", file);
 			});
 
 			try {
-				await fetch(buildUrl("/create-course"), {
+				await fetch(buildUrl("/course/create-course"), {
 					method: "POST",
 					body: formData,
 				}).then((res) => {
@@ -136,7 +144,11 @@ export const CreateCourse = () => {
 															placeholder="ex. 'IT109'"
 															value={course_code}
 															onChange={(e) => setCourseCode(e.target.value)}
-															className="border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															className={`${
+																isEmpty
+																	? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+																	: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															}`}
 														/>
 													</div>
 													<div className="flex flex-col">
@@ -148,7 +160,11 @@ export const CreateCourse = () => {
 															placeholder="ex. 'Integrative Programming'"
 															value={course_title}
 															onChange={(e) => setCourseTitle(e.target.value)}
-															className="border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															className={`${
+																isEmpty
+																	? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+																	: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															}`}
 														/>
 													</div>
 												</div>
@@ -163,7 +179,11 @@ export const CreateCourse = () => {
 															placeholder="ex. Information Technology"
 															value={course_category}
 															onChange={(e) => setCourseCategory(e.target.value)}
-															className="border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															className={`${
+																isEmpty
+																	? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+																	: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															}`}
 														/>
 													</div>
 												</div>
