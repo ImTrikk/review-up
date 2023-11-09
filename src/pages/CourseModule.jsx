@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 
 export const CourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
+	const [reviewers, setReviewers] = useState([]);
 
 	const { id } = useParams();
 
@@ -20,6 +21,7 @@ export const CourseModule = () => {
 			}
 
 			const data = await response.json();
+			setReviewers(data.downloadLinks);
 			setCourseInfo(data);
 		} catch (error) {
 			console.error("Error fetching data:", error);
@@ -35,7 +37,7 @@ export const CourseModule = () => {
 			<div className="">
 				<SideBar />
 				<div className="bg-primaryColor w-full h-[140px]">
-					<div className="ml-[220px] h-full grid items-end">
+					<div className="ml-[240px] h-full grid items-end">
 						<div className="pb-10">
 							<h1 className="text-white text-3xl font-bold">
 								{courseInfo.courseInfoFound?.course_code}
@@ -59,10 +61,11 @@ export const CourseModule = () => {
 								</p>
 							</div>
 							<div className="py-5 flex items-center gap-5">
-								<div className="border border-primaryColor h-56 w-56 rounded"></div>
-								<div className="border border-primaryColor h-56 w-56 rounded"></div>
-								<div className="border border-primaryColor h-56 w-56 rounded"></div>
-								<div className="border border-primaryColor h-56 w-56 rounded"></div>
+								{reviewers.map((files, index) => (
+									<div key={files} className="">
+										{files}
+									</div>
+								))}
 							</div>
 						</div>
 						<div>

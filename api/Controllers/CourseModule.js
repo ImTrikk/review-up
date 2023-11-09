@@ -94,16 +94,31 @@ export const getCourseInfo = async (req, res) => {
 
 		console.log("Filed_id: ", fileId);
 		// Use the fileId to get the list of files from the uploads folder
-		const filesPath = path.join(__dirname, "uploads", fileId);
+		const filesPath = path.join("./public/uploads");
 		const files = fs.readdirSync(filesPath);
 
-		return res.status(200).json({ courseInfoFound, message: "Found info" });
+		console.log(files);
+
+		const matchingFiles = files.filter((filename) => filename.startsWith(fileId));
+
+		// Generate download links for each file
+		const downloadLinks = matchingFiles.map((filename) => {
+			return `${req.protocol}://${req.get("host")}/downloads/${filename}`;
+		});
+
+		console.log("Matched files: ", matchingFiles);
+		console.log("This is the downalod links: ", downloadLinks)
+
+		return res.status(200).json({ downloadLinks, courseInfoFound, message: "Found info" });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json({ message: "Internal server error" });
 	}
 };
 
+
+
+// ? this is for searching functionatilities
 // finding specific courses
 export const findCourse = async (req, res) => {
 	try {

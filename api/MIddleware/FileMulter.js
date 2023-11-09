@@ -1,8 +1,6 @@
 import multer from "multer";
 import path from "path";
-import { v4 as uuidID in MULTER: ", batchID);
-		// Use the batchID in the filename
-		const newFilename = `${batv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 // Initialize the multer storage and upload instance
 const storage = multer.diskStorage({
@@ -13,10 +11,12 @@ const storage = multer.diskStorage({
 		// Generate a new batch ID
 		const batchID = req.batchID;
 		
-		console.log("Batch chID}_${Date.now()}${path.extname(
-			file.originalname,
+		console.log("Batch ID in MULTER: ", batchID);
+		// Use the batchID in the filename
+		const newFilename = `${batchID}_${Date.now()}${path.extname(
+			file.originalname,	
 		)}`;
-		console.log("File: ", newFilename);
+		console.log("File: ", newFilename);	
 		cb(null, newFilename);
 	},
 });
