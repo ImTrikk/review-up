@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { CreateCourse, RetrieveCourse } from "../Controllers/CourseModule.js";
+import { CreateCourse, RetrieveCourse, getCourseInfo } from "../Controllers/CourseModule.js";
 import { upload } from "../MIddleware/FileMulter.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -25,5 +25,6 @@ router.post(
 
 // retrieving courses
 router.get("/retrieve-course", RetrieveCourse);
+router.get("/get-course-info/:id", getCourseInfo)
 
 export { router as CourseRouter };

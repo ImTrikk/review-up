@@ -29,7 +29,7 @@ function App() {
      <Route path="/profile" element={<Profile />} />
      <Route path="/settings" element={<Settings />} />
      <Route path="/create-course" element={<CreateCourse />} />
-     <Route path="/course-module/{id}" element={<CourseModule />} />
+     <Route path="/course-module/:id" element={<CourseModule />} />
     </Routes>
    </Routers>
   </>

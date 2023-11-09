@@ -6,8 +6,9 @@ import { buildUrl } from "../utils/buildUrl";
 export const ReviewModuleCard = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
 
+
 	const getCourseInfo = async () => {
-		await fetch(buildUrl("/course/retrieve-course"), {
+		await fetch(buildUrl(`/course/retrieve-course`), {
 			method: "GET",
 			// headers: {
 			// 	"Content-type": "application/json",
@@ -39,18 +40,18 @@ export const ReviewModuleCard = () => {
 							<div className="bg-primaryColor rounded h-[140px]"></div>
 							<div className="pt-2 overflow-hidden h-[100px]">
 								<h1 className="font-black text-xl text-primaryColor">
-									{course.course_code}
+									{course?.course_code}
 								</h1>
 								<p className="text-sm font-medium text-gray-600">
-									{course.course_title}
+									{course?.course_title}
 								</p>
 								<p className="text-xs text-gray-600">
-									By: {course.first_name} {course.last_name}
+									By: {course?.first_name} {course?.last_name}
 								</p>
-								<p className="text-xs text-gray-600">{course.description}</p>
+								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>
 							<div className="flex items-center justify-end mt-2">
-								<Link key={course.course_id} to={`/course-module/${course.course_id}`}>
+								<Link key={course?.course_id} to={`/course-module/${course?.course_id}`}>
 									<button className="bg-primaryColor text-xs text-white rounded h-7 px-2 ">
 										ReviewUP
 									</button>

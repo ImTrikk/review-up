@@ -1,5 +1,6 @@
 import { dbConnection } from "../Database/database.js";
-
+import fs from "fs";
+import path from "path";
 
 export const CreateCourse = async (req, res) => {
 	const file_id = req.batchID;
@@ -65,18 +66,41 @@ export const RetrieveCourse = async (req, res) => {
 				.json({ message: "There are no available courses as of the moment" });
 		}
 
-		// // Retrieve files associated with the course from the file system
-  //   const files = course.files.map((filePath) => {
-  //     // You can   the file path based on your directory structure
-  //     const fileFullPath = path.join(__dirname, 'uploads', filePath);
-  //     return fileFullPath;
-  //   });
-
-		return res
-			.status(200)
-			.json({allCourses, message: "Courses found!" });
+		return res.status(200).json({ allCourses, message: "Courses found!" });
 	} catch (err) {
 		console.log(err);
+	}
+};
+
+export const getCourseInfo = async (req, res) => {
+	const { id } = req.params;
+
+	console.log("This is the id: ", id);
+
+	try {
+		const courseInfo = await dbConnection.query(
+			"select * from courses where course_id = $1",
+			[id],
+		);
+		const courseInfoFound = courseInfo.rows[0];
+
+		if (!courseInfo) {
+			return res.status(400).json({ message: "Course info doest not exist" });
+		}
+
+		console.log(courseInfoFound);
+
+		const fileId = courseInfoFound.file_id;
+
+		console.log("Filed_id: ", fileId);
+		// Use the fileId to get the list of files from the uploads folder
+		const filesPath = path.join(__dirname, "uploads", fileId);
+		const files = fs.readdirSync(filesPath);
+
+		return res.status(200).json({ courseInfoFound, message: "Found info" });
+	} catch (err) {
+		console.log(err);
+		return res.status(400).json({ message: "Internal server error" });
 	}
 };
 
