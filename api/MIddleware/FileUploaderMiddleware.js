@@ -40,8 +40,6 @@ export const firebaseUpload = async (req, res, next) => {
 
 		console.log("BatchID: ", batchID);
 
-		const downloadLinks = [];
-
 		for (let i = 0; i < files.length; i++) {
 			const file = files[i];
 			const filename = batchID;
@@ -58,10 +56,8 @@ export const firebaseUpload = async (req, res, next) => {
 
 			// Upload the file to Firebase Storage
 			await uploadBytes(storageRef, file.buffer);
-			const downloadURL = await getDownloadURL(storageRef);
-			downloadLinks.push(downloadURL);
-			req.fileURL = downloadURL || [];
 		}
+
 		// Handle the next middleware or response
 		next();
 	} catch (err) {
