@@ -14,15 +14,14 @@ export const CourseModule = () => {
 		try {
 			const response = await fetch(buildUrl(`/course/get-course-info/${id}`), {
 				method: "GET",
+			}).then((res) => {
+				return res.json().then((data) => {
+					if (res.ok) {
+						console.log(data);
+						setCourseInfo;
+					}
+				});
 			});
-
-			if (!response.ok) {
-				throw new Error(`Failed to fetch data. Status: ${response.status}`);
-			}
-
-			const data = await response.json();
-			setReviewers(data.downloadLinks);
-			setCourseInfo(data);
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}

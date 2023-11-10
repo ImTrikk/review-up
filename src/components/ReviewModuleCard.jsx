@@ -8,9 +8,12 @@ export const ReviewModuleCard = () => {
 
 
 	const getCourseInfo = async () => {
-		await fetch(buildUrl(`/course/retrieve-course`), {}).then((res) => {
+		await fetch(buildUrl(`/course/retrieve-course`), {
+			method: "GET",
+		}).then((res) => {
 			if (res.ok) {
 				return res.json().then((data) => {
+					console.log(data);
 					setCourseInfo(data.allCourses.rows);
 				});
 			} else {
@@ -29,7 +32,9 @@ export const ReviewModuleCard = () => {
 		<>
 			<div className="flex flex-wrap gap-5">
 				{courseInfo.map((course, index) => (
-					<div className="border border-gray-200 w-[300px] rounded h-auto shadow-lg">
+					<div
+						key={index}
+						className="border border-gray-200 w-[300px] rounded h-auto shadow-lg">
 						<div className="p-3">
 							<div className="bg-primaryColor rounded h-[140px]"></div>
 							<div className="pt-2 overflow-hidden h-[100px]">
