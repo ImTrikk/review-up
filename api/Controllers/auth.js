@@ -7,7 +7,6 @@ import fetch from "node-fetch";
 
 // login endpoint
 export const login = async (req, res) => {
-
 	const { userData } = req;
 	try {
 		const [email, password] = userData;
@@ -33,7 +32,12 @@ export const login = async (req, res) => {
 		}
 
 		const jwtToken = jwtGenerator(user.rows[0].user_id);
-		res.cookie(jwtToken, "secret");
+
+		// Set the cookie with an expiration date //one day from now
+		const expirationDate = new Date();
+		expirationDate.setDate(expirationDate.getDate() + 1);
+
+		res.cookie(jwtToken, "secret", { expires: expirationDate, httpOnly: true });
 
 		return res.status(200).json({ jwtToken, foundUser, message: "User found" });
 	} catch (err) {
@@ -41,11 +45,9 @@ export const login = async (req, res) => {
 	}
 };
 
-
-
 // signup endpoint
 export const signup = async (req, res) => {
-	 const { userData } = req;
+	const { userData } = req;
 	try {
 		const [first_name, last_name, email, password, phone] = userData;
 
@@ -79,3 +81,15 @@ export const signup = async (req, res) => {
 	}
 };
 
+// logout functionality
+export const Logout = (req, res) => {
+	try {
+		res.cookie("jwtToken", "", { expires: new Date(0), httpOnly: true });
+
+		return res.status(200).json({ message: "Logout successful" });
+	} catch (err) {
+		console.log(err);
+		// Handle the error appropriately
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+};

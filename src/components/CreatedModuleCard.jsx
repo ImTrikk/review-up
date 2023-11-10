@@ -3,12 +3,14 @@ import StarRating from "./StarRating";
 import { Link } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
 
-export const ReviewModuleCard = () => {
+export const CreatedModuleCard = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
-
+	
 
 	const getCourseInfo = async () => {
-		await fetch(buildUrl(`/course/retrieve-course`), {}).then((res) => {
+		await fetch(buildUrl(`/course/retrieve-course`), {
+			method: "GET"
+		}).then((res) => {
 			if (res.ok) {
 				return res.json().then((data) => {
 					setCourseInfo(data.allCourses.rows);

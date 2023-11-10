@@ -1,11 +1,11 @@
 import express from "express";
-import { login, signup } from "../Controllers/auth.js";
+import { Logout, login, signup } from "../Controllers/auth.js";
 import { Userinfo } from "../Controllers/Userinfo.js";
-import { TwoFactorAuth, checkEmailValidity } from "../MIddleware/CheckValidEmail.js";
 import {
-	checkEligibleEmail,
-	sendOtp,
+	TwoFactorAuth,
+	checkEmailValidity,
 } from "../MIddleware/CheckValidEmail.js";
+import { checkEligibleEmail, sendOtp } from "../MIddleware/CheckValidEmail.js";
 import { CreateCourse } from "../Controllers/CourseModule.js";
 import { upload } from "../MIddleware/FileMulter.js";
 
@@ -17,6 +17,7 @@ router.post("/send-otp-login", checkEmailValidity, sendOtp);
 router.post("/signup", TwoFactorAuth, signup);
 router.post("/login", TwoFactorAuth, login);
 router.get("/user-info", Userinfo);
+router.post("/logout", Logout);
 
 // add middle ware to check for tokens
 // router.post("/create-course", upload.array("file"), CreateCourse);

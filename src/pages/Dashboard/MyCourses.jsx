@@ -3,7 +3,10 @@ import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
 import { ReviewModuleCard } from "../../components/ReviewModuleCard";
 
 export const MyCourses = () => {
- return (
+
+	const user_id = localStorage.getItem("user_id");
+
+	return (
 		<>
 			<div className="">
 				<SideBar />
@@ -19,9 +22,12 @@ export const MyCourses = () => {
 				</div>
 				<div className="ml-[200px]">
 					<div className="p-8">
-						<h1>My Courses</h1>
-						<div>
-							<ReviewModuleCard />
+						<h1 className="text-lg font-bold text-primaryColor">My Courses</h1>
+						<div className="py-3">
+						<hr className="border-1 border-primaryColor" />
+						</div>
+						<div className="pt-5">
+							<ReviewModuleCard user_id={user_id} />
 						</div>
 					</div>
 				</div>

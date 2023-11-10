@@ -53,7 +53,7 @@ import path from "path";
 		}
 	};
 
-// retrieve course module
+// retrieve all course module
 export const RetrieveCourse = async (req, res) => {
 	try {
 		const allCourses = await dbConnection.query("select * from courses");

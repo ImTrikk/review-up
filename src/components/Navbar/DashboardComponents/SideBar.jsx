@@ -8,25 +8,38 @@ import { CgProfile } from "react-icons/cg";
 import { IoSettingsOutline } from "react-icons/io5";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { buildUrl } from "../../../utils/buildUrl";
 
 export const SideBar = () => {
- const navigate = useNavigate();
+	const navigate = useNavigate();
 
- const handleLogout = () => {
-  toast.info("Logging out...");
+	const handleLogout = async () => {
+		toast.info("Logging out...");
 
-  localStorage.removeItem("token");
-  localStorage.removeItem("first_name");
-  localStorage.removeItem("last_name");
-  localStorage.removeItem("phone");
-  localStorage.removeItem("user_id");
-  localStorage.removeItem("email");
-  setTimeout(() => {
-   navigate("/");
-  }, 3000);
- };
+		setTimeout(async () => {
+			localStorage.removeItem("token");
+			localStorage.removeItem("first_name");
+			localStorage.removeItem("last_name");
+			localStorage.removeItem("phone");
+			localStorage.removeItem("user_id");
+			localStorage.removeItem("email");
 
- return (
+			await fetch(buildUrl("/auth/logout"), {
+				method: "POST",
+			}).then((res) => {
+				if (res.ok) {
+					toast.success("Success logout!");
+					setTimeout(() => {
+						navigate("/");
+					}, 5000);
+				} else {
+					toast.error("Internal server error");
+				}
+			});
+		}, 3000);
+	};
+
+	return (
 		<>
 			<div className="fixed bg-white h-screen w-[200px] shadow-lg">
 				<ToastContainer />

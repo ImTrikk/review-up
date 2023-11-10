@@ -12,31 +12,31 @@ import { CreateCourse } from "./pages/CreateCourse";
 import { CourseModule } from "./pages/CourseModule";
 import { CodeVerification } from "./pages/authentication/CodeVerification";
 import { Signup } from "./pages/authentication/Signup";
+import { ProtectedRoutes } from "./utils/ProtectedRoute";
 
 function App() {
-
-
-
- return (
-  <>
-   <Routers>
-    <Routes>
-     <Route path="/" element={<Mainpage />} />
-     <Route path="/login" element={<Login />} />
-     <Route path="/signup" element={<Signup />} />
-     <Route path="/verify" element={<CodeVerification />} />
-     <Route path="/dashboard" element={<Dashboard />} />
-     <Route path="/courses" element={<Courses />} />
-     <Route path="/my-courses" element={<MyCourses />} />
-     <Route path="/archived" element={<Archived />} />
-     <Route path="/profile" element={<Profile />} />
-     <Route path="/settings" element={<Settings />} />
-     <Route path="/create-course" element={<CreateCourse />} />
-     <Route path="/course-module/:id" element={<CourseModule />} />
-    </Routes>
-   </Routers>
-  </>
- );
+	return (
+		<>
+			<Routers>
+				<Routes>
+					<Route path="/" element={<Mainpage />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/signup" element={<Signup />} />
+					<Route path="/verify" element={<CodeVerification />} />
+					<Route element={<ProtectedRoutes />}>
+						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/courses" element={<Courses />} />
+						<Route path="/my-courses" element={<MyCourses />} />
+						<Route path="/archived" element={<Archived />} />
+						<Route path="/profile" element={<Profile />} />
+						<Route path="/settings" element={<Settings />} />
+						<Route path="/create-course" element={<CreateCourse />} />
+						<Route path="/course-module/:id" element={<CourseModule />} />
+					</Route>
+				</Routes>
+			</Routers>
+		</>
+	);
 }
 
 export default App;

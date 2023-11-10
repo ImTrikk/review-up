@@ -25,6 +25,7 @@ router.post(
 
 // retrieving courses
 router.get("/retrieve-course", RetrieveCourse);
+
 router.get("/get-course-info/:id", getCourseInfo)
 
 export { router as CourseRouter };
