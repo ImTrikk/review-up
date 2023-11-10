@@ -1,63 +1,60 @@
 import { dbConnection } from "../Database/database.js";
-import fs from "fs";
-import path from "path";
+import { list, getDownloadURL, ref } from "firebase/storage";
+import { firebaseStorage } from "../Database/firebase.js";
 
-	export const CreateCourse = async (req, res) => {
-		const file_id = req.batchID;
-		const {
-			course_code,
-			course_title,
-			course_category,
-			description,
-			first_name,
-			last_name,
-			email,
-			user_id,
-		} = req.body;
+export const CreateCourse = async (req, res) => {
+	const file_id = req.batchID;
+	const {
+		course_code,
+		course_title,
+		course_category,
+		description,
+		first_name,
+		last_name,
+		email,
+		user_id,
+	} = req.body;
 
-		console.log(
-			course_code,
-			course_title,
-			course_category,
-			description,
-			first_name,
-			last_name,
-			email,
-			user_id,
-		);
+	console.log(
+		course_code,
+		course_title,
+		course_category,
+		description,
+		first_name,
+		last_name,
+		email,
+		user_id,
+	);
 
-		try {
-			const newCourseQuery = `
+	try {
+		const newCourseQuery = `
 				INSERT INTO courses (course_code, course_title, course_category, description, first_name, last_name, email, user_id, file_id)
 				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 				RETURNING course_id;
 			`;
-			const courseResult = await dbConnection.query(newCourseQuery, [
-				course_code,
-				course_title,
-				course_category,
-				description,
-				first_name,
-				last_name,
-				email,
-				user_id,
-				file_id,
-			]);
+		const courseResult = await dbConnection.query(newCourseQuery, [
+			course_code,
+			course_title,
+			course_category,
+			description,
+			first_name,
+			last_name,
+			email,
+			user_id,
+			file_id,
+		]);
 
-			return res
-				.status(201)
-				.json({message: "Success creating course!" });
-		} catch (err) {
-			console.error(err);
-			res.status(500).json({ message: "Internal server error" });
-		}
-	};
+		return res.status(201).json({ message: "Success creating course!" });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: "Internal server error" });
+	}
+};
 
 // retrieve all course module
 export const RetrieveCourse = async (req, res) => {
 	try {
 		const allCourses = await dbConnection.query("select * from courses");
-
 		// console.log("These are all the courses available: ", allCourses);
 
 		if (allCourses.rows.length === 0) {
@@ -73,10 +70,8 @@ export const RetrieveCourse = async (req, res) => {
 };
 
 export const getCourseInfo = async (req, res) => {
+	// id link from the URL
 	const { id } = req.params;
-
-	console.log("This is the id: ", id);
-
 	try {
 		const courseInfo = await dbConnection.query(
 			"select * from courses where course_id = $1",
@@ -92,33 +87,33 @@ export const getCourseInfo = async (req, res) => {
 
 		const fileId = courseInfoFound.file_id;
 
-		console.log("Filed_id: ", fileId);
-		// Use the fileId to get the list of files from the uploads folder
-		const filesPath = path.join("./public/uploads");
-		const files = fs.readdirSync(filesPath);
+		const uploadRef = ref(firebaseStorage, "uploads");
 
-		console.log(files);
+		const result = await list(uploadRef);
+		let fileDownloadURLs = [];
 
-		const matchingFiles = files.filter((filename) => filename.startsWith(fileId));
+		// Use for...of loop to handle asynchronous operations
+		for (const itemRef of result.items) {
+			if (itemRef.name.includes(fileId)) {
+				try {
+					const downloadURL = await getDownloadURL(itemRef);
+					fileDownloadURLs.push(downloadURL);
+				} catch (error) {
+					console.error("Error getting download URL:", error);
+				}
+			}
+		}
 
-		// Generate download links for each file
-		const downloadLinks = matchingFiles.map((filename) => {
-			return `${req.protocol}://${req.get("host")}/downloads/${filename}`;
-		});
-
-		// console.log("Matched files: ", matchingFiles);
-		// console.log("This is the downalod links: ", downloadLinks)
+		console.log("Urls: ", fileDownloadURLs);
 
 		return res
 			.status(200)
-			.json({ downloadLinks, courseInfoFound, message: "Found info" });
+			.json({ courseInfoFound, fileDownloadURLs, message: "Found info" });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json({ message: "Internal server error" });
 	}
 };
-
-
 
 // ? this is for searching functionatilities
 // finding specific courses
@@ -149,7 +144,3 @@ export const findCourse = async (req, res) => {
 
 // delete course module
 export const DeleteCourse = async () => {};
-
-
-
-

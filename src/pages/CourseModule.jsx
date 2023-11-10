@@ -18,7 +18,7 @@ export const CourseModule = () => {
 				return res.json().then((data) => {
 					if (res.ok) {
 						console.log(data);
-						setCourseInfo;
+						setCourseInfo(data);
 					}
 				});
 			});
@@ -60,9 +60,16 @@ export const CourseModule = () => {
 								</p>
 							</div>
 							<div className="py-5 flex items-center gap-5">
-								{reviewers.map((files, index) => (
-									<div key={files} className="">
-										{files}
+								{reviewers.map((reviewer) => (
+									<div>
+										{reviewer.fileDownloadURLs.map((downloadURL, urlIndex) => (
+											<div key={urlIndex}>
+												{/* Display or use the downloadURL as needed */}
+												<a href={downloadURL} target="_blank" rel="noopener noreferrer">
+													Download File {urlIndex + 1}
+												</a>
+											</div>
+										))}
 									</div>
 								))}
 							</div>
