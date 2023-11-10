@@ -7,7 +7,6 @@ import {
 } from "../MIddleware/CheckValidEmail.js";
 import { checkEligibleEmail, sendOtp } from "../MIddleware/CheckValidEmail.js";
 import { CreateCourse } from "../Controllers/CourseModule.js";
-import { upload } from "../MIddleware/FileMulter.js";
 
 const router = express.Router();
 

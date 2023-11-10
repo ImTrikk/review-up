@@ -29,6 +29,7 @@ try {
 		}
 	});
 } catch (err) {
+		console.log("error connecting to postgre db", err);
 	console.log(err);
 }
 

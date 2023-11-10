@@ -15,7 +15,14 @@ export const SuccessCreateCourse = () => {
 			<div className="bg-white shadow w-[700px] h-[500px] rounded p-5 absolute">
 				<div className="flex items-center justify-center">
 					<div className="pt-5">
-						<h1 className="text-xl text-primaryColor font-bold">
+						<div>
+							<img
+								src="public\static\images\success.jpg"
+								alt=""
+								className="w-[500px] rounded object-contain"
+							/>
+						</div>
+						<h1 className="text-lg text-center text-primaryColor font-semibold">
 							Success creating a review course!
 						</h1>
 					</div>
@@ -24,7 +31,7 @@ export const SuccessCreateCourse = () => {
 					<button
 						onClick={handleClose}
 						className="bg-primaryColor flex items-center px-4 h-10 rounded text-xs text-white">
-						My courses <BiRightArrowAlt size={20}/>
+						My courses <BiRightArrowAlt size={20} />
 					</button>
 				</div>
 			</div>
