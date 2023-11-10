@@ -14,6 +14,9 @@ import { CodeVerification } from "./pages/authentication/CodeVerification";
 import { Signup } from "./pages/authentication/Signup";
 
 function App() {
+
+
+
  return (
   <>
    <Routers>

@@ -20,13 +20,17 @@ app.use("/api/auth", UserRouter);
 app.use("/api/course", CourseRouter);
 
 // add database connection here
-dbConnection.connect((err) => {
- if (err) {
-  console.log("error connecting to postgre db", err);
- } else {
-  console.log("Connected to PostgreSQL Database");
- }
-});
+try {
+	dbConnection.connect((err) => {
+		if (err) {
+			console.log("error connecting to postgre db", err);
+		} else {
+			console.log("Connected to PostgreSQL Database");
+		}
+	});
+} catch (err) {
+	console.log(err);
+}
 
 
 app.listen(4242, () => console.log("Server running on localhost 4242"));

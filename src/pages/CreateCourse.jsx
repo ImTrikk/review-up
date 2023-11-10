@@ -70,7 +70,7 @@ export const CreateCourse = () => {
 					method: "POST",
 					body: formData,
 				});
-				const data = await response.json();
+				const data = await response;
 				if (response.ok) {
 					console.log(data);
 					setSuccessModal(true);

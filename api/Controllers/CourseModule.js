@@ -2,37 +2,9 @@ import { dbConnection } from "../Database/database.js";
 import fs from "fs";
 import path from "path";
 
-export const CreateCourse = async (req, res) => {
-	const file_id = req.batchID;
-	const {
-		course_code,
-		course_title,
-		course_category,
-		description,
-		first_name,
-		last_name,
-		email,
-		user_id,
-	} = req.body;
-
-	console.log(
-		course_code,
-		course_title,
-		course_category,
-		description,
-		first_name,
-		last_name,
-		email,
-		user_id,
-	);
-
-	try {
-		const newCourseQuery = `
-			INSERT INTO courses (course_code, course_title, course_category, description, first_name, last_name, email, user_id, file_id)
-			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-			RETURNING course_id;
-		`;
-		const courseResult = await dbConnection.query(newCourseQuery, [
+	export const CreateCourse = async (req, res) => {
+		const file_id = req.batchID;
+		const {
 			course_code,
 			course_title,
 			course_category,
@@ -41,24 +13,52 @@ export const CreateCourse = async (req, res) => {
 			last_name,
 			email,
 			user_id,
-			file_id,
-		]);
+		} = req.body;
 
-		return res
-			.status(201)
-			.json({ courseResult, message: "Success creating course!" });
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ message: "Internal server error" });
-	}
-};
+		console.log(
+			course_code,
+			course_title,
+			course_category,
+			description,
+			first_name,
+			last_name,
+			email,
+			user_id,
+		);
+
+		try {
+			const newCourseQuery = `
+				INSERT INTO courses (course_code, course_title, course_category, description, first_name, last_name, email, user_id, file_id)
+				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+				RETURNING course_id;
+			`;
+			const courseResult = await dbConnection.query(newCourseQuery, [
+				course_code,
+				course_title,
+				course_category,
+				description,
+				first_name,
+				last_name,
+				email,
+				user_id,
+				file_id,
+			]);
+
+			return res
+				.status(201)
+				.json({ courseResult, message: "Success creating course!" });
+		} catch (err) {
+			console.error(err);
+			res.status(500).json({ message: "Internal server error" });
+		}
+	};
 
 // retrieve course module
 export const RetrieveCourse = async (req, res) => {
 	try {
 		const allCourses = await dbConnection.query("select * from courses");
 
-		console.log("These are all the courses available: ", allCourses);
+		// console.log("These are all the courses available: ", allCourses);
 
 		if (allCourses.rows.length === 0) {
 			return res
@@ -106,10 +106,12 @@ export const getCourseInfo = async (req, res) => {
 			return `${req.protocol}://${req.get("host")}/downloads/${filename}`;
 		});
 
-		console.log("Matched files: ", matchingFiles);
-		console.log("This is the downalod links: ", downloadLinks)
+		// console.log("Matched files: ", matchingFiles);
+		// console.log("This is the downalod links: ", downloadLinks)
 
-		return res.status(200).json({ downloadLinks, courseInfoFound, message: "Found info" });
+		return res
+			.status(200)
+			.json({ downloadLinks, courseInfoFound, message: "Found info" });
 	} catch (err) {
 		console.log(err);
 		return res.status(400).json({ message: "Internal server error" });
