@@ -1,13 +1,12 @@
 {
-	"rewrites": [
-		{
-			"source": "/api/(.*)",
-			"destination": "/api/index.js"
+	"routes": {
+		"/api/*": {
+			"src": "/api/index.js",
+			"dest": "/api/index.js"
 		},
-		{
-			"source": "/(.*)",
-			"destination": "/api/index.html"
+		"/:path*": {
+			"src": "/api/index.html",
+			"dest": "/api/index.html"
 		}
-	],
-	"cleanUrls": false
+	}
 }
