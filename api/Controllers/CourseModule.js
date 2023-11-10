@@ -46,7 +46,7 @@ import path from "path";
 
 			return res
 				.status(201)
-				.json({ courseResult, message: "Success creating course!" });
+				.json({message: "Success creating course!" });
 		} catch (err) {
 			console.error(err);
 			res.status(500).json({ message: "Internal server error" });
