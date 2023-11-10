@@ -1,3 +1,4 @@
+import { BiRightArrow, BiRightArrowAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 export const SuccessCreateCourse = () => {
@@ -5,22 +6,26 @@ export const SuccessCreateCourse = () => {
 
 	const handleClose = () => {
 		setTimeout(() => {
-			navigator("/dashboard");
+			navigator("/my-courses");
 		}, 3000);
 	};
 
 	return (
 		<>
-			<div className="bg-white shadow w-[700px] h-[500px] rounded p-5 fixed">
-				<div className="h-auto">
-					<h1>Success creating a review course!</h1>
-					<div className="mt-auto flex justify-end items-end">
-						<button
-							onClick={handleClose}
-							className="bg-primaryColor px-4 h-10 rounded text-xs text-white">
-							dashboard
-						</button>
+			<div className="bg-white shadow w-[700px] h-[500px] rounded p-5 absolute">
+				<div className="flex items-center justify-center">
+					<div className="pt-5">
+						<h1 className="text-xl text-primaryColor font-bold">
+							Success creating a review course!
+						</h1>
 					</div>
+				</div>
+				<div className="mt-auto flex justify-end items-end absolute right-5 bottom-5">
+					<button
+						onClick={handleClose}
+						className="bg-primaryColor flex items-center px-4 h-10 rounded text-xs text-white">
+						My courses <BiRightArrowAlt size={20}/>
+					</button>
 				</div>
 			</div>
 		</>

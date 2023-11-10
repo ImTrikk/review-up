@@ -26,7 +26,7 @@ export const CreateCourse = () => {
 
 	const [quizModal, setQuizModal] = useState(false);
 	const [linkModal, setLinkModal] = useState(false);
-	const [successModal, setSuccessModal] = useState(false);
+	const [successModal, setSuccessModal] = useState(true);
 	const user_id = localStorage.getItem("user_id");
 	const [fileList, setFileList] = useState([]);
 	const [isEmpty, setIsEmpty] = useState(false);

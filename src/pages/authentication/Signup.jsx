@@ -56,6 +56,11 @@ export const Signup = () => {
 			setShowredborder(true);
 			setShowerror(true);
 			showToast("Input fields are required", "error");
+		} else if (password.length <= 12) {
+			setShowredborder(true);
+			setShowerror(true);
+			showToast("Password is too short", "error");
+		
 		} else if (!emailRegex.test(email)) {
 			setShowredborder(true);
 			setShowerror(true);
@@ -71,12 +76,8 @@ export const Signup = () => {
 		} else if (!/[!@#$%^&*]/.test(password)) {
 			setShowredborder(true);
 			setShowerror(true);
-			showToast("Password must have symbols (!@#$%^&*)", "error");
-		} else if (password.length <= 12) {
-			setShowredborder(true);
-			setShowerror(true);
-			showToast("Password is too short", "error");
 		} else if (cPassword !== password) {
+			showToast("Password must have symbols (!@#$%^&*)", "error");
 			setShowredborder(true);
 			setShowerror(true);
 			showToast("Password does not match", "error");

@@ -30,12 +30,12 @@ export const SideBar = () => {
 		<>
 			<div className="fixed bg-white h-screen w-[200px] shadow-lg">
 				<ToastContainer />
-				<div className="">
+				<div className="relative h-screen">
 					<div className="flex items-center gap-2 p-10">
 						<img src="/static/images/mainlogo.png" alt="" className="w-[20px]" />
 						<div className="font-black text-primaryColor text-lg">ReviewUP</div>
 					</div>
-					<div className="mt-2">
+					<div className="mt-2 h-auto">
 						<div className="px-10 pb-2">
 							<p className="text-xs text-gray-400">Menu</p>
 						</div>
@@ -79,7 +79,7 @@ export const SideBar = () => {
 									</div>
 								)}
 							</NavLink>
-							<NavLink to="/archived">
+							{/* <NavLink to="/archived">
 								{({ isActive }) => (
 									<div
 										className={`border border-gray-100 h-10 text-primaryColor ${
@@ -91,7 +91,7 @@ export const SideBar = () => {
 										</div>
 									</div>
 								)}
-							</NavLink>
+							</NavLink> */}
 							<NavLink to="/profile">
 								{({ isActive }) => (
 									<div
@@ -105,7 +105,7 @@ export const SideBar = () => {
 									</div>
 								)}
 							</NavLink>
-							<NavLink to="/settings">
+							{/* <NavLink to="/settings">
 								{({ isActive }) => (
 									<div
 										className={`border border-gray-100 h-10 text-primaryColor ${
@@ -117,15 +117,17 @@ export const SideBar = () => {
 										</div>
 									</div>
 								)}
-							</NavLink>
+							</NavLink> */}
 						</div>
-						<div className="flex items-center justify-between px-4 mt-60">
-							<p className="text-xs text-gray-400">Need help?</p>
-							<button
-								onClick={handleLogout}
-								className="text-xs text-white h-8 px-4 bg-primaryColor rounded">
-								Logout
-							</button>
+						<div className=" absolute bottom-5 left-0 right-0 px-4">
+							<div className="flex items-center justify-between">
+								<p className="text-xs text-gray-400">Need help?</p>
+								<button
+									onClick={handleLogout}
+									className="text-xs text-white h-6 px-2 bg-primaryColor rounded">
+									Logout
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
