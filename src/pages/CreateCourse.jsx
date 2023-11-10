@@ -66,27 +66,42 @@ export const CreateCourse = () => {
 			});
 
 			try {
-				await fetch(buildUrl("/course/create-course"), {
+				let response = await fetch(buildUrl("/course/create-course"), {
 					method: "POST",
 					body: formData,
-				}).then((res) => {
-					if (res.status === 201) {
-						return res.json().then((data) => {
-							setSuccessModal(true);
-							setTimeout(() => {
-								setSuccessModal(false);
-							}, 6000);
-							toast.success("Course created!");
-						});
-					} else {
-						return res.json().then((data) => {
-							console.log(data);
-							toast.error("There was a problem creating course");
-						});
-					}
 				});
+				const data = await response.json();
+				if (response.ok) {
+					console.log(data);
+					setSuccessModal(true);
+					setTimeout(() => {
+						setSuccessModal(false);
+					}, 6000);
+					toast.success("Course created!");
+				} else {
+					console.log(data);
+					toast.error("There was a problem creating course");
+				}
+
+				// 	.then((res) => {
+				// 	if (res.status === 201) {
+				// 		return res.json().then((data) => {
+				// 			setSuccessModal(true);
+				// 			setTimeout(() => {
+				// 				setSuccessModal(false);
+				// 			}, 6000);
+				// 			toast.success("Course created!");
+				// 		});
+				// 	} else {
+				// 		return res.json().then((data) => {
+				// 			console.log(data);
+				// 			toast.error("There was a problem creating course");
+				// 		});
+				// 	}
+				// });
 			} catch (err) {
 				console.log(err);
+				toast.error("There was a problem making course ")
 			}
 		}
 	};

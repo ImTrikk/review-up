@@ -8,7 +8,7 @@
   "build": "vite build",
   "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
   "preview": "vite preview",
-  "server": "nodemon api/server.js"
+  "server": "nodemon api/index.js"
  },
  "dependencies": {
   "bcrypt": "^5.1.1",
