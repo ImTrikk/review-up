@@ -45,7 +45,7 @@ export const firebaseUpload = async (req, res, next) => {
 		}
 
 		// Handle the next middleware or response
-		// next();
+		next();
 	} catch (err) {
 		console.error("Error uploading to Firebase:", err);
 		res.status(500).json({ error: "Internal server error" });
