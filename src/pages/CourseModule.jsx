@@ -60,18 +60,17 @@ export const CourseModule = () => {
 								</p>
 							</div>
 							<div className="py-5 flex items-center gap-5">
-								{reviewers.map((reviewer) => (
-									<div>
-										{reviewer.fileDownloadURLs.map((downloadURL, urlIndex) => (
-											<div key={urlIndex}>
-												{/* Display or use the downloadURL as needed */}
-												<a href={downloadURL} target="_blank" rel="noopener noreferrer">
-													Download File {urlIndex + 1}
-												</a>
-											</div>
-										))}
-									</div>
-								))}
+								{courseInfo.fileDownloadURLs &&
+									courseInfo.fileDownloadURLs.map((url, urlIndex) => (
+										<div
+											key={urlIndex}
+											className="h-56 w-56 shadow rounded flex items-center justify-center">
+											{/* Display or use the downloadURL as needed */}
+											<a href={url} target="_blank" rel="noopener noreferrer">
+												Download File {urlIndex + 1}
+											</a>
+										</div>
+									))}
 							</div>
 						</div>
 						<div>
