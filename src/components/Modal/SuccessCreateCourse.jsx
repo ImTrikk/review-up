@@ -17,7 +17,7 @@ export const SuccessCreateCourse = () => {
 					<div className="pt-5">
 						<div>
 							<img
-								src="public\static\images\success.jpg"
+								src="/static/images/success.jpg"
 								alt=""
 								className="w-[500px] rounded object-contain"
 							/>
