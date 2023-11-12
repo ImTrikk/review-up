@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { BsJournalBookmarkFill } from "react-icons/bs";
 import { BiBookmarkAltPlus } from "react-icons/bi";
@@ -38,6 +38,13 @@ export const SideBar = () => {
 			});
 		}, 3000);
 	};
+
+	// useEffect(() => {
+	// 	const cookiesExist = document.cookie.includes(`${jwtToken}=`);
+	// 	if (!cookiesExist) {
+	// 		localStorage.clear();
+	// 	}
+	// }, []);
 
 	return (
 		<>
@@ -137,7 +144,7 @@ export const SideBar = () => {
 								<p className="text-xs text-gray-400">Need help?</p>
 								<button
 									onClick={handleLogout}
-									className="text-xs text-white h-6 px-2 bg-primaryColor rounded">
+									className="text-xs text-white h-8 px-2 bg-primaryColor rounded">
 									Logout
 								</button>
 							</div>

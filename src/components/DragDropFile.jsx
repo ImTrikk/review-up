@@ -100,6 +100,9 @@ export const DragDropFile = (props) => {
 					</label>
 				</div>
 			</form>
+			<div className="px-5">
+				<p className="text-xs font-light text-primaryColor">Post reviewer with the file extensions [.pdf , doxc, doc, .pptx, .png, .jpeg]</p>
+			</div>
 			{fileList.length > 0 ? (
 				<div className="px-5 pb-5">
 					<p className="font-semibold text-sm text-gray-600">Ready to upload</p>
