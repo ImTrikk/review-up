@@ -70,7 +70,7 @@ export const DragDropFile = (props) => {
 			const updatedList = [...fileList, ...newFiles];
 			setFileList(updatedList);
 			props.onFileChange(updatedList); // Call the callback here
-		}
+		}	
 	};
 
 	const fileRemove = (file) => {

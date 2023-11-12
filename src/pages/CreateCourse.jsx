@@ -13,7 +13,6 @@ import { QuizModal } from "../components/Modal/QuizModal";
 import { LinkResourcesModal } from "../components/Modal/LinkResourcesModal";
 import { SessionNoticeModal } from "../components/Modal/SessionNoticeModal";
 import { SuccessCreateCourse } from "../components/Modal/SuccessCreateCourse";
-import { header } from "express/lib/request";
 
 export const CreateCourse = () => {
 	const [course_code, setCourseCode] = useState("");
