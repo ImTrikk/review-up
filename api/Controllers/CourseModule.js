@@ -7,7 +7,7 @@ export const CreateCourse = async (req, res) => {
 	const {
 		course_code,
 		course_title,
-		course_category,
+		course_program,
 		description,
 		first_name,
 		last_name,
@@ -18,7 +18,7 @@ export const CreateCourse = async (req, res) => {
 	console.log(
 		course_code,
 		course_title,
-		course_category,
+		course_program,
 		description,
 		first_name,
 		last_name,
@@ -28,14 +28,14 @@ export const CreateCourse = async (req, res) => {
 
 	try {
 		const newCourseQuery = `
-				INSERT INTO courses (course_code, course_title, course_category, description, first_name, last_name, email, user_id, file_id)
+				INSERT INTO courses (course_code, course_title, course_program, description, first_name, last_name, email, user_id, file_id)
 				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 				RETURNING course_id;
 			`;
 		const courseResult = await dbConnection.query(newCourseQuery, [
 			course_code,
 			course_title,
-			course_category,
+			course_program,
 			description,
 			first_name,
 			last_name,
@@ -92,7 +92,7 @@ export const getCourseInfo = async (req, res) => {
 		const result = await list(uploadRef);
 		let fileDownloadURLs = [];
 
-		// Use for...of loop to handle asynchronous operations
+		// Use for...	 loop to handle asynchronous operations
 		for (const itemRef of result.items) {
 			if (itemRef.name.includes(fileId)) {
 				try {

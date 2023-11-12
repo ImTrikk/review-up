@@ -36,15 +36,5 @@ dbConnection.connect().then(() => {
 	console.log(err)
 })
 
-// dbConnection
-// 	.end()
-// 	.then(() => {
-// 		console.log("Connection to PostgreSQL closed");
-// 	})
-// 	.catch((err) => {
-// 		console.error("Error closing PostgreSQL connection:", err);
-// 	});
-
-
 app.listen(4242, () => console.log("Server running on localhost 4242"));
  

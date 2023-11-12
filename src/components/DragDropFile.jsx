@@ -5,6 +5,7 @@ import fileDefault from "/static/images/file-blank-solid-240.png";
 import fileCSS from "/static/images/file-css-solid-240.png";
 import filePdf from "/static/images/file-pdf-solid-240.png";
 import filePng from "/static/images/file-png-solid-240.png";
+import filePpts from "/static/icons/PPT.png";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +18,7 @@ export const DragDropFile = (props) => {
 		pdf: filePdf,
 		png: filePng,
 		css: fileCSS,
+		pptx: filePpts,
 	};
 	const [fileList, setFileList] = useState([]);
 
@@ -43,7 +45,15 @@ export const DragDropFile = (props) => {
 	};
 
 	const validateAndAddFiles = (newFiles) => {
-		const allowedFileExtensions = ["png", "jpeg", "jpg", "docx", ,"pptx", "xlsx", "pdf"];
+		const allowedFileExtensions = [
+			"png",
+			"jpeg",
+			"jpg",
+			"docx",
+			"pptx",
+			"xlsx",
+			"pdf",
+		];
 
 		// Check if each file has an allowed extension
 		const isSupportedFiles = newFiles.every((file) => {
@@ -101,7 +111,10 @@ export const DragDropFile = (props) => {
 				</div>
 			</form>
 			<div className="px-5">
-				<p className="text-xs font-light text-primaryColor">Post reviewer with the file extensions [.pdf , doxc, doc, .pptx, .png, .jpeg]</p>
+				<p className="text-xs font-light text-primaryColor">
+					Post reviewer with the file extensions [.pdf , doxc, doc, .pptx, .png,
+					.jpeg]
+				</p>
 			</div>
 			{fileList.length > 0 ? (
 				<div className="px-5 pb-5">
@@ -117,7 +130,7 @@ export const DragDropFile = (props) => {
 									<p className="text-xs text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis">
 										{item.name}
 									</p>
-									<p className="text-xs text-gray-500">{item.size}B</p>
+									<p className="text-xs text-gray-500">{item.size} B</p>
 								</div>
 								<p
 									className="text-red-500 text-xs font-bold h-[30px] w-[30px] bg-red-200 flex items-center justify-center p-4 rounded-full text-md cursor-pointer"

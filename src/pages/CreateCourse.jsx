@@ -17,7 +17,7 @@ import { SuccessCreateCourse } from "../components/Modal/SuccessCreateCourse";
 export const CreateCourse = () => {
 	const [course_code, setCourseCode] = useState("");
 	const [course_title, setCourseTitle] = useState("");
-	const [course_category, setCourseCategory] = useState("");
+	const [course_program, setCourseProgram] = useState("");
 	const [description, setDescription] = useState("");
 
 	let first_name = localStorage.getItem("first_name");
@@ -41,7 +41,7 @@ export const CreateCourse = () => {
 		if (
 			course_code == "" ||
 			course_title == "" ||
-			course_category == "" ||
+			course_program == "" ||
 			description == "" ||
 			fileList.length === 0
 		) {
@@ -54,7 +54,7 @@ export const CreateCourse = () => {
 			const formData = new FormData();
 			formData.append("course_code", course_code);
 			formData.append("course_title", course_title);
-			formData.append("course_category", course_category);
+			formData.append("course_program", course_program);
 			formData.append("description", description);
 			formData.append("user_id", user_id);
 			formData.append("first_name", first_name);
@@ -84,7 +84,7 @@ export const CreateCourse = () => {
 				}
 			} catch (err) {
 				console.log(err);
-				toast.error("There was a problem making course ")
+				toast.error("There was a problem making course ");
 			}
 		}
 	};
@@ -166,17 +166,44 @@ export const CreateCourse = () => {
 														/>
 													</div>
 												</div>
-												<div className="flex items-center pt-5">
+												<div className="flex items-center justify-between pt-5">
+													<div className="flex flex-col">
+														<label htmlFor="program" className="text-sm text-primaryColor">
+															Program
+														</label>
+														<select
+															id="program"
+															name="program"
+															value={course_program}
+															onChange={setCourseProgram}
+															className={`${
+																isEmpty
+																	? "border border-red-500 text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+																	: "border border-primaryColor text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															}`}>
+															<option className="text-xs text-primaryColor">
+																Select course program
+															</option>
+															<option value="it" className="text-xs text-primaryColor">
+																Information Technology
+															</option>
+															<option value="cs" className="text-xs text-primaryColor">
+																Computer Science
+															</option>
+															<option value="is" className="text-xs text-primaryColor">
+																Information System
+															</option>
+														</select>
+													</div>
 													<div className="flex flex-col">
 														<label htmlFor="" className="text-sm text-primaryColor">
-															Category:
+															Course Title:
 														</label>
-														{/* add drop dox component here for easy categorizing */}
 														<input
 															type="text"
-															placeholder="ex. Information Technology"
-															value={course_category}
-															onChange={(e) => setCourseCategory(e.target.value)}
+															placeholder="Link to an online"
+															// value={course_title}
+															// onChange={(e) => setCourseTitle(e.target.value)}
 															className={`${
 																isEmpty
 																	? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
