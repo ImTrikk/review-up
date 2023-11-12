@@ -13,12 +13,14 @@ import { QuizModal } from "../components/Modal/QuizModal";
 import { LinkResourcesModal } from "../components/Modal/LinkResourcesModal";
 import { SessionNoticeModal } from "../components/Modal/SessionNoticeModal";
 import { SuccessCreateCourse } from "../components/Modal/SuccessCreateCourse";
+import { header } from "express/lib/request";
 
 export const CreateCourse = () => {
 	const [course_code, setCourseCode] = useState("");
 	const [course_title, setCourseTitle] = useState("");
 	const [course_program, setCourseProgram] = useState("");
 	const [description, setDescription] = useState("");
+	const [headerUrl, setHeaderUrl] = useState("");
 
 	let first_name = localStorage.getItem("first_name");
 	let last_name = localStorage.getItem("last_name");
@@ -43,6 +45,7 @@ export const CreateCourse = () => {
 			course_title == "" ||
 			course_program == "" ||
 			description == "" ||
+			headerUrl == "" ||
 			fileList.length === 0
 		) {
 			setIsEmpty(true);
@@ -60,6 +63,7 @@ export const CreateCourse = () => {
 			formData.append("first_name", first_name);
 			formData.append("last_name", last_name);
 			formData.append("email", email);
+			formData.append("header_url", headerUrl);
 			// Append each selected file to the FormData
 			fileList.forEach((file) => {
 				formData.append("file", file);
@@ -202,8 +206,8 @@ export const CreateCourse = () => {
 														<input
 															type="text"
 															placeholder="Link to an online"
-															// value={course_title}
-															// onChange={(e) => setCourseTitle(e.target.value)}
+															value={headerUrl}
+															onChange={(e) => setHeaderUrl(e.target.value)}
 															className={`${
 																isEmpty
 																	? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"

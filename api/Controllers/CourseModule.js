@@ -13,6 +13,7 @@ export const CreateCourse = async (req, res) => {
 		last_name,
 		email,
 		user_id,
+		header_url
 	} = req.body;
 
 	console.log(
@@ -24,6 +25,7 @@ export const CreateCourse = async (req, res) => {
 		last_name,
 		email,
 		user_id,
+		header_url
 	);
 
 	try {
