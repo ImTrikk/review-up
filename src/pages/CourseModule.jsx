@@ -45,10 +45,10 @@ const fileIconType = (url) => {
 		doc: doc,
 		pptx: pptx,
 		jpg: jpg,
-		png: png
+		png: png,
 	};
 
-	return iconMappings[extension] || <DefaultIconComponent />;
+	return iconMappings[extension];
 };
 
 useEffect(() => {

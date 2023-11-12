@@ -178,7 +178,7 @@ export const CreateCourse = () => {
 															id="program"
 															name="program"
 															value={course_program}
-															onChange={setCourseProgram}
+															onChange={(e) => setCourseProgram(e.target.value)}
 															className={`${
 																isEmpty
 																	? "border border-red-500 text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
