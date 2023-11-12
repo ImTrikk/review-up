@@ -43,7 +43,7 @@ export const DragDropFile = (props) => {
 	};
 
 	const validateAndAddFiles = (newFiles) => {
-		const allowedFileExtensions = ["png", "jpeg", "jpg", "docx", "xlsx", "pdf"];
+		const allowedFileExtensions = ["png", "jpeg", "jpg", "docx", ,"pptx", "xlsx", "pdf"];
 
 		// Check if each file has an allowed extension
 		const isSupportedFiles = newFiles.every((file) => {

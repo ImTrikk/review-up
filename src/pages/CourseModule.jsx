@@ -25,7 +25,6 @@ export const CourseModule = () => {
 			}).then((res) => {
 				return res.json().then((data) => {
 					if (res.ok) {
-						console.log(data);
 						setCourseInfo(data);
 					}
 				});
@@ -89,10 +88,15 @@ return (
 								courseInfo.fileDownloadURLs.map((url, urlIndex) => (
 									<div
 										key={urlIndex}
-										className="h-56 w-56 flex flex-col items-center justify-center">
+										className="h-48 w-48 shadow flex flex-col items-center justify-center">
 										{/* Display or use the downloadURL as needed */}
-										<img src={fileIconType(url)} alt="" className="w-[100px]"/>
-										<a href={url} target="_blank" rel="noopener noreferrer" className="text-xs font font-semibold text-primaryColor pt-2">
+										<img src={fileIconType(url)} alt="" className="w-[100px]" />
+										<div></div>
+										<a
+											href={url}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="text-xs font font-semibold text-primaryColor pt-2">
 											Download File {urlIndex + 1}
 										</a>
 									</div>

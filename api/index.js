@@ -20,18 +20,30 @@ app.use("/api/auth", UserRouter);
 app.use("/api/course", CourseRouter);
 
 // add database connection here
-try {
-	dbConnection.connect((err) => {
-		if (err) {
-			console.log("error connecting to postgre db", err);
-		} else {
-			console.log("Connected to PostgreSQL Database");
-		}
-	});
-} catch (err) {
-		console.log("error connecting to postgre db", err);
-	console.log(err);
-}
+
+// dbConnection.connect((err) => {
+// 	if (err) {
+// 		console.log("error connecting to postgre db", err);
+// 	} else {
+// 		console.log("Connected to PostgreSQL Database");
+// 	}
+// });
+
+dbConnection.connect().then(() => { 
+	console.log("Postgre connection success")
+}).catch((err) => { 
+	console.log("Error connecting with vercel postgre DB")
+	console.log(err)
+})
+
+// dbConnection
+// 	.end()
+// 	.then(() => {
+// 		console.log("Connection to PostgreSQL closed");
+// 	})
+// 	.catch((err) => {
+// 		console.error("Error closing PostgreSQL connection:", err);
+// 	});
 
 
 app.listen(4242, () => console.log("Server running on localhost 4242"));

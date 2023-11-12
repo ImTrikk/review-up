@@ -82,23 +82,6 @@ export const CreateCourse = () => {
 					console.log(data);
 					toast.error("There was a problem creating course");
 				}
-
-				// 	.then((res) => {
-				// 	if (res.status === 201) {
-				// 		return res.json().then((data) => {
-				// 			setSuccessModal(true);
-				// 			setTimeout(() => {
-				// 				setSuccessModal(false);
-				// 			}, 6000);
-				// 			toast.success("Course created!");
-				// 		});
-				// 	} else {
-				// 		return res.json().then((data) => {
-				// 			console.log(data);
-				// 			toast.error("There was a problem creating course");
-				// 		});
-				// 	}
-				// });
 			} catch (err) {
 				console.log(err);
 				toast.error("There was a problem making course ")
