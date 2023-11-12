@@ -54,7 +54,7 @@ export const CodeVerification = () => {
 					concatenatedCode,
 				}),
 			}).then((res) => {
-				if (res.status === 200) {
+				if (res.status === 200 || res.status === 201) {
 					if (reqEndpoint === "/signup") {
 						toast.success("Account created, redirecting to login page...");
 						loadingBar.current.continuousStart(60);
@@ -91,6 +91,8 @@ export const CodeVerification = () => {
 							}, 1000);
 						});
 					}
+				} else if (res.status === 201) { 
+					
 				} else {
 					toast.error("Entered wrong OTP code!");
 				}

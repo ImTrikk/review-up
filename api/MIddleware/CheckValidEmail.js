@@ -68,6 +68,8 @@ export const sendOtp = async (req, res, next) => {
 		});
 		sentCode = verifyEmail;
 
+		console.log("Sent code: ", sentCode);
+
 		//unto the next middleware which is the 2FA mail verfication
 		return res.status(200).json({ message: "OTP code sent to email account" });
 	} catch (err) {
@@ -80,7 +82,7 @@ export const TwoFactorAuth = async (req, res, next) => {
 	const { userData, concatenatedCode } = req.body;
 	try {
 		if (concatenatedCode === sentCode) {
-			req.userData = userData
+			req.userData = userData;
 			return next();
 		} else {
 			return res.status(400).json({ message: "Wrong otp password!" });
@@ -111,7 +113,7 @@ const OtpVerificationEmail = async ({ user_id, email }) => {
 			from: "reviewupofficial@gmail.com",
 			to: email,
 			subject: "Your Verification Code",
-			text: `Your verification code is: ${otp}`,
+			text: `Your verification code is: ${otp}. \n Please do not share this one time password with anyone for security purposes`,
 		};
 
 		//  for checking responses only
