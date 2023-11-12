@@ -79,6 +79,7 @@ export const CreateCourse = () => {
 					setSuccessModal(true);
 					setTimeout(() => {
 						setSuccessModal(false);
+						navigator("/dashboard");
 					}, 6000);
 					toast.success("Course created!");
 				} else {
