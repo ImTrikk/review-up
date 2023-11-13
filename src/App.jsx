@@ -13,6 +13,7 @@ import { CourseModule } from "./pages/CourseModule";
 import { CodeVerification } from "./pages/authentication/CodeVerification";
 import { Signup } from "./pages/authentication/Signup";
 import { ProtectedRoutes } from "./utils/ProtectedRoute";
+import { SavedCourses } from "./pages/Dashboard/SavedCourses";
 
 function App() {
 	return (
@@ -24,12 +25,13 @@ function App() {
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/verify" element={<CodeVerification />} />
 					<Route element={<ProtectedRoutes />}>
-						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="//dashboard" element={<Dashboard />} />
 						<Route path="/courses" element={<Courses />} />
-						<Route path="/my-courses" element={<MyCourses />} />
-						<Route path="/archived" element={<Archived />} />
+						<Route path="my-courses" element={<MyCourses />} />
+						{/* <Route path="/archived" element={<Archived />} /> */}
 						<Route path="/profile" element={<Profile />} />
-						<Route path="/settings" element={<Settings />} />
+						<Route path="/saved" element={<SavedCourses/>} />
+						{/* <Route path="/settings" element={<Settings />} /> */}
 						<Route path="/create-course" element={<CreateCourse />} />
 						<Route path="/course-module/:id" element={<CourseModule />} />
 					</Route>

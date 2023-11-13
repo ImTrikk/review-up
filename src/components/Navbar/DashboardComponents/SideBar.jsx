@@ -1,6 +1,7 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AiFillHome } from "react-icons/ai";
+import { BsSave2 } from "react-icons/bs";
 import { BsJournalBookmarkFill } from "react-icons/bs";
 import { BiBookmarkAltPlus } from "react-icons/bi";
 import { BiArchiveIn } from "react-icons/bi";
@@ -121,6 +122,19 @@ export const SideBar = () => {
 										<div className="px-10 flex items-center h-full gap-2">
 											<CgProfile size={15} />
 											<p className="text-xs">Profile</p>
+										</div>
+									</div>
+								)}
+							</NavLink>
+							<NavLink to="/saved">
+								{({ isActive }) => (
+									<div
+										className={`border border-gray-100 h-10 text-primaryColor ${
+											isActive ? "bg-primaryColor text-white" : ""
+										}`}>
+										<div className="px-10 flex items-center h-full gap-2">
+											<BsSave2 size={13} />
+											<p className="text-xs">Saved Courses</p>
 										</div>
 									</div>
 								)}

@@ -1,6 +1,6 @@
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
 
-export const Settings = () => {
+export const  Settings = () => {
  return (
   <>
    <div className="">
