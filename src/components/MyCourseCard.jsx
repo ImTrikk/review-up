@@ -56,7 +56,13 @@ export const MyCourseCard = ({ handleIsEmpty	 }) => {
 						key={index}
 						className="border border-gray-200 w-[300px] rounded h-auto shadow-lg">
 						<div className="p-3">
-							<div className="bg-primaryColor rounded h-[140px]"></div>
+							<div className="rounded h-[140px]">
+								<img
+									src={course?.header_url}
+									alt=""
+									className="rounded w-full h-[140px] overflow-clip"
+								/>
+							</div>
 							<div className="pt-2 overflow-hidden h-[100px]">
 								<h1 className="font-black text-xl text-primaryColor">
 									{course?.course_code}
