@@ -9,7 +9,7 @@ import fetch from "node-fetch";
 export const login = async (req, res) => {
 	const { userData } = req;
 	try {
-		const [email, password] = userData;
+		const { email, password } = userData;
 
 		const user = await dbConnection.query(
 			"SELECT * from users where email = $1",
@@ -49,7 +49,7 @@ export const login = async (req, res) => {
 export const signup = async (req, res) => {
 	const { userData } = req;
 	try {
-		const [first_name, last_name, email, password, phone] = userData;
+		const { first_name, last_name, email, password, phone } = userData;
 
 		// Check if the email already exists
 		const existingEmail = await dbConnection.query(

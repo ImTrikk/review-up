@@ -13,10 +13,10 @@ export const checkEligibleEmail = async (req, res, next) => {
 			"SELECT * from users where email = $1",
 			[email],
 		);
+
 		const foundEmail = emailExist.rows[0];
 
 		if (foundEmail) {
-			console.log("Email already taken");
 			return res.status(400).json({ message: "Email already taken" });
 		}
 
@@ -67,9 +67,6 @@ export const sendOtp = async (req, res, next) => {
 			email: email,
 		});
 		sentCode = verifyEmail;
-
-		console.log("Sent code: ", sentCode);
-
 		//unto the next middleware which is the 2FA mail verfication
 		return res.status(200).json({ message: "OTP code sent to email account" });
 	} catch (err) {

@@ -9,130 +9,150 @@ export const CodeVerification = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const userData = location.state ? location.state.userData : null;
-	const reqEndpoint = location.state ? location.state.endpoint : null;
-	const [countdown, setCountdown] = useState(30);
+		const reqEndpoint = location.state ? location.state.endpoint : null;
+		const [countdown, setCountdown] = useState(30);
 
-	const [verificationCode, setVerificationCode] = useState([
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-	]);
+		// const email = userData.email;
+		// const password = userData.password;
 
-	const loadingBar = useRef(null);
-	const inputRefs = verificationCode.map(() => useRef());
+		const [verificationCode, setVerificationCode] = useState([
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+		]);
 
-	const navigator = useNavigate();
+		const loadingBar = useRef(null);
+		const inputRefs = verificationCode.map(() => useRef());
 
-	const handleInputChange = (index, value) => {
-		setVerificationCode((prevCodes) => {
-			const newVerificationCode = [...prevCodes];
-			newVerificationCode[index] = value;
-			return newVerificationCode;
-		});
+		const navigator = useNavigate();
 
-		// If a single number is entered, move to the next input field
-		if (value.length === 1 && index < inputRefs.length - 1) {
-			inputRefs[index + 1].current.focus();
-		}
-	};
+		const handleInputChange = (index, value) => {
+			setVerificationCode((prevCodes) => {
+				const newVerificationCode = [...prevCodes];
+				newVerificationCode[index] = value;
+				return newVerificationCode;
+			});
 
-	const concatenatedCode = verificationCode.join("");
+			// If a single number is entered, move to the next input field
+			if (value.length === 1 && index < inputRefs.length - 1) {
+				inputRefs[index + 1].current.focus();
+			}
+		};
 
-	// send data to server side
-	const handleVerifyCode = async () => {
-		try {
-			// this should go to the TwoFactorAtuh endpoint
-			await fetch(buildUrl(`/auth${reqEndpoint}`), {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					userData,
-					concatenatedCode,
-				}),
-			}).then((res) => {
-				if (res.status === 200 || res.status === 201) {
-					if (reqEndpoint === "/signup") {
-						toast.success("Account created, redirecting to login page...");
-						loadingBar.current.continuousStart(60);
-						setTimeout(() => {
-							loadingBar.current.complete();
-							setTimeout(() => {
-								navigator("/login");
-							}, 1200);
-						}, 1000);
-					} else {
-						return res.json().then((data) => {
-							localStorage.setItem("user_id", data.foundUser.user_id);
-							localStorage.setItem("token", data.jwtToken);
-							localStorage.setItem("first_name", data.foundUser.first_name);
-							localStorage.setItem("last_name", data.foundUser.last_name);
-							localStorage.setItem("email", data.foundUser.email);
-							localStorage.setItem("phone", data.foundUser.phone);
-							toast.success("Verified email, login successful!", {
-								position: "top-right",
-								autoClose: 2000,
-								hideProgressBar: false,
-								closeOnClick: true,
-								pauseOnHover: true,
-								draggable: true,
-								progress: undefined,
-								theme: "light",
-							});
-							loadingBar.current.continuousStart(50);
+		let concatenatedCode = verificationCode.join("");
+
+		// send data to server side
+		const handleVerifyCode = async () => {
+			try {
+				// this should go to the TwoFactorAtuh endpoint
+				await fetch(buildUrl(`/auth${reqEndpoint}`), {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						userData,
+						concatenatedCode,
+					}),
+				}).then((res) => {
+					if (res.status === 200 || res.status === 201) {
+						if (reqEndpoint === "/signup") {
+							toast.success("Account created, redirecting to login page...");
+							loadingBar.current.continuousStart(60);
 							setTimeout(() => {
 								loadingBar.current.complete();
 								setTimeout(() => {
-									navigator("/dashboard");
+									navigator("/login");
 								}, 1200);
 							}, 1000);
-						});
+						} else {
+							return res.json().then((data) => {
+								localStorage.setItem("user_id", data.foundUser.user_id);
+								localStorage.setItem("token", data.jwtToken);
+								localStorage.setItem("first_name", data.foundUser.first_name);
+								localStorage.setItem("last_name", data.foundUser.last_name);
+								localStorage.setItem("email", data.foundUser.email);
+								localStorage.setItem("phone", data.foundUser.phone);
+								toast.success("Verified email, login successful!", {
+									position: "top-right",
+									autoClose: 2000,
+									hideProgressBar: false,
+									closeOnClick: true,
+									pauseOnHover: true,
+									draggable: true,
+									progress: undefined,
+									theme: "light",
+								});
+								loadingBar.current.continuousStart(50);
+								setTimeout(() => {
+									loadingBar.current.complete();
+									setTimeout(() => {
+										navigator("/dashboard");
+									}, 1200);
+								}, 1000);
+							});
+						}
+					} else {
+						toast.error("Entered wrong OTP code!");
 					}
-				} else if (res.status === 201) {
-				} else {
-					toast.error("Entered wrong OTP code!");
-				}
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setCountdown((prevCountdown) => {
-				if (prevCountdown === 0) {
-					clearInterval(timer);
-					return 0;
-				}
-				return prevCountdown - 1;
-			});
-		}, 1000);
-		return () => {
-			clearInterval(timer);
+				});
+			} catch (err) {
+				console.log(err);
+			}
 		};
-	}, []);
 
-	const handleResendOtp = async () => {
-		try {
-			await fetch(buildUrl(`/auth/${reqEndpoint}`), {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					userData,
-					concatenatedCode,
-				}),
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	};
+		useEffect(() => {
+			const timer = setInterval(() => {
+				setCountdown((prevCountdown) => {
+					if (prevCountdown === 0) {
+						clearInterval(timer);
+						return 0;
+					}
+					return prevCountdown - 1;
+				});
+			}, 1000);
+			return () => {
+				clearInterval(timer);
+			};
+		}, []);
+
+		const handleResendOtp = async () => {
+			let reqEndpointOtp;
+			const { email, password } = userData;
+			let requestBody = {};
+			concatenatedCode = "";
+			try {
+				if (reqEndpoint === "/signup") {
+					reqEndpointOtp = "send-otp";
+				} else {
+					reqEndpointOtp = "send-otp-login";
+				}
+
+				// Set the request body based on reqEndpoint
+				if (reqEndpoint === "/signup") {
+					requestBody = userData;
+				}
+
+				await fetch(buildUrl(`/auth/${reqEndpointOtp}`), {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ email, password, requestBody }),
+				}).then((res) => {
+					return res.json().then((data) => {
+						if (res.ok) {
+							toast.info("Code has been sent to your email account!");
+						}
+					});
+				});
+			} catch (err) {
+				console.log(err);
+			}
+		};
 
 	return (
 		<>

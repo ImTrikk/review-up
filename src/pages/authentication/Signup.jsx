@@ -19,7 +19,13 @@ export const Signup = () => {
 
 	const endpoint = location.pathname;
 
-	const userData = [first_name, last_name, email, password, phone];
+	const userData = {
+		first_name: first_name,
+		last_name: last_name,
+		email: email,
+		password: password,
+		phone: phone,
+	};
 
 	const navigator = useNavigate();
 

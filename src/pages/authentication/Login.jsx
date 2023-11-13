@@ -12,10 +12,9 @@ export const Login = () => {
 	const navDashboard = useNavigate();
 	const navigator = useNavigate();
 	const loadingBar = useRef(null);
-
 	const endpoint = location.pathname;
 
-	const userData = [email, password];
+	const userData = { email: email, password: password };
 
 	const handleLoginRequest = async (event) => {
 		event.preventDefault();
@@ -30,7 +29,6 @@ export const Login = () => {
 					password,
 				}),
 			});
-			console.log(response.status)
 			if (response.ok) {
 				loadingBar.current.continuousStart(60);
 				setTimeout(() => {
@@ -51,6 +49,7 @@ export const Login = () => {
 				}
 			}
 		} catch (err) {
+			toast.error("Internal Server Error, please retry in another time	");
 			console.log(err);
 		}
 	};
