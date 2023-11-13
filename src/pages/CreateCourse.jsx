@@ -201,11 +201,11 @@ export const CreateCourse = () => {
 													</div>
 													<div className="flex flex-col">
 														<label htmlFor="" className="text-sm text-primaryColor">
-															Course Title:
+															Header image
 														</label>
 														<input
 															type="text"
-															placeholder="Link to an online"
+															placeholder="Link to an online image"
 															value={headerUrl}
 															onChange={(e) => setHeaderUrl(e.target.value)}
 															className={`${
