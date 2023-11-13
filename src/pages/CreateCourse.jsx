@@ -208,7 +208,7 @@ export const CreateCourse = () => {
 														</label>
 														<input
 															type="text"
-															placeholder="Link to an online image"
+															placeholder="Use copy image address on online images"
 															value={headerUrl}
 															onChange={(e) => setHeaderUrl(e.target.value)}
 															className={`${

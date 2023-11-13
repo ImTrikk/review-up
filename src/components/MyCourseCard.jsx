@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 import { Link } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
+import { toast } from "react-toastify";
 
-export const MyCourseCard = () => {
+export const MyCourseCard = ({ handleIsEmpty	 }) => {
 	const [courseInfo, setCourseInfo] = useState([]);
 
 	const user_id = localStorage.getItem("user_id");
@@ -18,15 +19,28 @@ export const MyCourseCard = () => {
 				user_id,
 			}),
 		}).then((res) => {
-			if (res.ok) {
-				return res.json().then((data) => {
+			return res.json().then((data) => {
+				if (res.ok) {
 					setCourseInfo(data.userCourses.rows);
-				});
-			} else {
-				return res.json().then((data) => {
+				} else if (res.status === 400) {
+					handleIsEmpty	(
+						data && data.userCourses && data.userCourses.rows.length === 0,
+					);
+				} else {
 					console.log(data);
-				});
-			}
+				}
+			});
+			// if (res.ok) {
+			// 	return res.json().then((data) => {
+			//
+			// 	});
+			// } else if (data.userCourses.rows.length === 0) {
+			//
+			// } else {
+			// 	return res.json().then((data) => {
+			// 		console.log(data);
+			// 	});
+			// }
 		});
 	};
 

@@ -13,20 +13,8 @@ export const CreateCourse = async (req, res) => {
 		last_name,
 		email,
 		user_id,
-		header_url
+		header_url,
 	} = req.body;
-
-	console.log(
-		course_code,
-		course_title,
-		course_program,
-		description,
-		first_name,
-		last_name,
-		email,
-		user_id,
-		header_url
-	);
 
 	try {
 		const newCourseQuery = `
@@ -58,12 +46,12 @@ export const CreateCourse = async (req, res) => {
 export const RetrieveCourse = async (req, res) => {
 	try {
 		const allCourses = await dbConnection.query("select * from courses");
-		// console.log("These are all the courses available: ", allCourses);
 
 		if (allCourses.rows.length === 0) {
-			return res
-				.status(400)
-				.json({ message: "There are no available courses as of the moment" });
+			return res.status(400).json({
+				allCourses,
+				message: "There are no available courses as of the moment",
+			});
 		}
 
 		return res.status(200).json({ allCourses, message: "Courses found!" });
@@ -86,8 +74,6 @@ export const getCourseInfo = async (req, res) => {
 			return res.status(400).json({ message: "Course info doest not exist" });
 		}
 
-		console.log(courseInfoFound);
-
 		const fileId = courseInfoFound.file_id;
 
 		const uploadRef = ref(firebaseStorage, "uploads");
@@ -107,8 +93,6 @@ export const getCourseInfo = async (req, res) => {
 			}
 		}
 
-		console.log("Urls: ", fileDownloadURLs);
-
 		return res
 			.status(200)
 			.json({ courseInfoFound, fileDownloadURLs, message: "Found info" });
@@ -120,25 +104,24 @@ export const getCourseInfo = async (req, res) => {
 
 //retrieve users courses
 export const UserCourses = async (req, res) => {
-	
-	const { user_id } = req.body
+	const { user_id } = req.body;
 
 	try {
+		const userCourses = await dbConnection.query(
+			"select * from courses where user_id = $1",
+			[user_id],
+		);
 
-		const userCourses = await dbConnection.query("select * from courses where user_id = $1", [user_id])
-
-		
-		if (!userCourses.rows.length === 0) {
-			return res.status(400).json({ messagae: "No create course!" })
+		if (userCourses.rows.length === 0) {
+			return res.status(400).json({ userCourses, messagae: "No create course!" });
 		}
 
-		return res.status(200).json({userCourses, messagae: "User courses"})
-
-	} catch (err) { 
-		return res.status(500).json({ messagae: "Internal Server Error"})
-		console.log(err)
+		return res.status(200).json({ userCourses, messagae: "User courses" });
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ messagae: "Internal Server Error" });
 	}
-}
+};
 
 // ? this is for searching functionatilities
 // finding specific courses
@@ -156,11 +139,7 @@ export const findCourse = async (req, res) => {
 				.status(400)
 				.json({ message: `There is no course title ${course_title}` });
 		}
-
 		const foundCourse = course.rows[0];
-
-		console.log(foundCourse);
-
 		return res.status(200).json({ foundCourse, message: "Found courses!" });
 	} catch (err) {
 		console.log(err);

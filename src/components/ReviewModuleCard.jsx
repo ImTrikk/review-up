@@ -3,25 +3,30 @@ import StarRating from "./StarRating";
 import { Link } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
 
-export const ReviewModuleCard = () => {
+export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 	const [courseInfo, setCourseInfo] = useState([]);
 
-
 	const getCourseInfo = async () => {
-		await fetch(buildUrl(`/course/retrieve-course`), {
-			method: "GET",
-		}).then((res) => {
+		try {
+			const res = await fetch(buildUrl(`/course/retrieve-course`), {
+				method: "GET",
+			});
+
+			const data = await res.json();
+
 			if (res.ok) {
-				return res.json().then((data) => {
-					console.log(data);
-					setCourseInfo(data.allCourses.rows);
-				});
+				setCourseInfo(data.allCourses.rows);
+			} else if (res.status === 400) {
+				onIsEmptyChange(
+					data && data.allCourses && data.allCourses.rows.length === 0,
+				);
 			} else {
-				return res.json().then((data) => {
-					console.log(data);
-				});
+				console.log(error);
+				toast.error("Internal server error");
 			}
-		});
+		} catch (error) {
+			console.error("Error fetching course information:", error);
+		}
 	};
 
 	useEffect(() => {

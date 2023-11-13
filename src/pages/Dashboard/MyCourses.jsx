@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CreateButton } from "../../components/CreateButton";
 import { MyCourseCard } from "../../components/MyCourseCard";
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
@@ -5,6 +6,12 @@ import { ReviewModuleCard } from "../../components/ReviewModuleCard";
 
 export const MyCourses = () => {
 	const user_id = localStorage.getItem("user_id");
+
+	const [isEmpty, setIsEmpty] = useState("");
+
+	const handleIsEmpty = (value) => {
+		setIsEmpty(value);
+	};
 
 	return (
 		<>
@@ -27,7 +34,13 @@ export const MyCourses = () => {
 							<hr className="border-1 border-primaryColor" />
 						</div>
 						<div className="pt-5">
-							<MyCourseCard />
+							{isEmpty ? (
+								<div className="flex items-center justify-center">
+									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
+								</div>
+							) : (
+								<MyCourseCard handleIsEmpty={handleIsEmpty} />
+							)}
 						</div>
 					</div>
 				</div>

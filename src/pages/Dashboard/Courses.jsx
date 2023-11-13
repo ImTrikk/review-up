@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
 import { CreateButton } from "../../components/CreateButton";
@@ -6,6 +7,13 @@ import { useEffect } from "react";
 import { buildUrl } from "../../utils/buildUrl";
 
 export const Courses = () => {
+
+		const [isEmpty, setIsEmpty] = useState("");
+
+		const handleIsEmptyChange = (value) => {
+			setIsEmpty(value);
+		};
+	
 	return (
 		<>
 			<div className="">
@@ -29,8 +37,14 @@ export const Courses = () => {
 							<hr className="border-1 border-primaryColor" />
 						</div>
 						<div className="pt-10">
-							<div className="flex flex-wrap gap-2">
-								<ReviewModuleCard />
+							<div className="pt-5">
+								{isEmpty ? (
+									<div className="flex items-center justify-center">
+										<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
+									</div>
+								) : (
+									<ReviewModuleCard onIsEmptyChange={handleIsEmptyChange} />
+								)}
 							</div>
 						</div>
 					</div>
