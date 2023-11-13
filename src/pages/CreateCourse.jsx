@@ -13,6 +13,7 @@ import { QuizModal } from "../components/Modal/QuizModal";
 import { LinkResourcesModal } from "../components/Modal/LinkResourcesModal";
 import { SessionNoticeModal } from "../components/Modal/SessionNoticeModal";
 import { SuccessCreateCourse } from "../components/Modal/SuccessCreateCourse";
+import { useNavigate } from "react-router-dom";
 
 export const CreateCourse = () => {
 	const [course_code, setCourseCode] = useState("");
@@ -35,6 +36,8 @@ export const CreateCourse = () => {
 	const onFileChange = (files) => {
 		setFileList(files);
 	};
+
+	const navigator = useNavigate();
 
 	const handleCreateCourse = async (e) => {
 		e.preventDefault();
@@ -179,7 +182,7 @@ export const CreateCourse = () => {
 															id="program"
 															name="program"
 															value={course_program}
-															onChange={(e) => setCourseProgram(e.target.value	)}
+															onChange={(e) => setCourseProgram(e.target.value)}
 															className={`${
 																isEmpty
 																	? "border border-red-500 text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
