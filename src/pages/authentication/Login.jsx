@@ -93,29 +93,24 @@ export const Login = () => {
 										className="text-xs font-light border border-gray-200 px-4 h-10 py-2 rounded outline-none"
 									/>
 								</div>
-								<div className="flex items-center justify-between">
-									<div className="flex items-center gap-2 pt-2">
+								<div className="flex items-center justify-between mt-2">
+									<div className="flex items-center gap-2 ">
 										<input
 											type="checkbox"
 											placeholder="password"
-											className="text-sm font-light border border-gray-200 px-4 py-2 rounded outline-none"
+											className="text-sm font-light border border-gray-100 px-4 py-2 rounded outline-none"
 										/>
 										<label htmlFor="" className="text-xs text-gray-400">
 											Remember me
 										</label>
 									</div>
-									<div className="pt-2">
-										<a href="">
+									<div className="">
+										<Link to="/forgot-pass">
 											<p className="text-xs text-gray-400">Forgot password?</p>
-										</a>
+										</Link>
 									</div>
 								</div>
-								<div className="mt-10">
-									<p className="text-xs text-gray-500">
-										<i>Try another way to login</i>
-									</p>
-								</div>
-								<div className="mt-2 space-y-2">
+								<div className="mt-12 space-y-2">
 									<button
 										type="submit"
 										onClick={handleLoginRequest}

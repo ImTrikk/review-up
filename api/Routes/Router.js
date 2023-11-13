@@ -18,10 +18,6 @@ router.post("/login", TwoFactorAuth, login);
 router.get("/user-info", Userinfo);
 router.post("/logout", Logout);
 
-// add middle ware to check for tokens
-// router.post("/create-course", upload.array("file"), CreateCourse);
-
-
 export { router as UserRouter };
 
 

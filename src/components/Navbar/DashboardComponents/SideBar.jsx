@@ -10,6 +10,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { buildUrl } from "../../../utils/buildUrl";
+import { BiHomeAlt2 } from "react-icons/bi";
 
 export const SideBar = () => {
 	const navigate = useNavigate();
@@ -68,7 +69,7 @@ export const SideBar = () => {
 											isActive ? "bg-primaryColor text-white" : ""
 										}`}>
 										<div className="px-10 flex items-center h-full gap-2">
-											<AiFillHome size={15} />
+											<BiHomeAlt2 size={17		} />
 											<p className="text-xs">Dashboard</p>
 										</div>
 									</div>
@@ -113,19 +114,6 @@ export const SideBar = () => {
 									</div>
 								)}
 							</NavLink> */}
-							<NavLink to="/profile">
-								{({ isActive }) => (
-									<div
-										className={`border border-gray-100 h-10 text-primaryColor ${
-											isActive ? "bg-primaryColor text-white" : ""
-										}`}>
-										<div className="px-10 flex items-center h-full gap-2">
-											<CgProfile size={15} />
-											<p className="text-xs">Profile</p>
-										</div>
-									</div>
-								)}
-							</NavLink>
 							<NavLink to="/saved">
 								{({ isActive }) => (
 									<div
@@ -139,6 +127,20 @@ export const SideBar = () => {
 									</div>
 								)}
 							</NavLink>
+							<NavLink to="/profile">
+								{({ isActive }) => (
+									<div
+										className={`border border-gray-100 h-10 text-primaryColor ${
+											isActive ? "bg-primaryColor text-white" : ""
+										}`}>
+										<div className="px-10 flex items-center h-full gap-2">
+											<CgProfile size={15} />
+											<p className="text-xs">Profile</p>
+										</div>
+									</div>
+								)}
+							</NavLink>
+
 							{/* <NavLink to="/settings">
 								{({ isActive }) => (
 									<div

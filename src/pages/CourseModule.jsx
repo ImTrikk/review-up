@@ -83,12 +83,12 @@ return (
 								Reviewers posted by the creator
 							</p>
 						</div>
-						<div className="py-5 flex items-center gap-5">
+						<div className="py-5 flex flex-wrap items-center gap-5">
 							{courseInfo.fileDownloadURLs &&
 								courseInfo.fileDownloadURLs.map((url, urlIndex) => (
 									<div
 										key={urlIndex}
-										className="h-48 w-48 shadow flex flex-col items-center justify-center">
+										className="h-56 w-56 shadow flex flex-col items-center justify-center">
 										{/* Display or use the downloadURL as needed */}
 										<img src={fileIconType(url)} alt="" className="w-[100px]" />
 										<div></div>

@@ -5,44 +5,20 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
 
-export const CodeVerification = () => {
+export const PasswordReset = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const userData = location.state ? location.state.userData : null;
 	const reqEndpoint = location.state ? location.state.endpoint : null;
 	const [countdown, setCountdown] = useState(30);
 
-	const [verificationCode, setVerificationCode] = useState([
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-	]);
-
 	const loadingBar = useRef(null);
-	const inputRefs = verificationCode.map(() => useRef());
 
 	const navigator = useNavigate();
 
-	const handleInputChange = (index, value) => {
-		setVerificationCode((prevCodes) => {
-			const newVerificationCode = [...prevCodes];
-			newVerificationCode[index] = value;
-			return newVerificationCode;
-		});
-
-		// If a single number is entered, move to the next input field
-		if (value.length === 1 && index < inputRefs.length - 1) {
-			inputRefs[index + 1].current.focus();
-		}
-	};
-
-	const concatenatedCode = verificationCode.join("");
-
 	// send data to server side
 	const handleVerifyCode = async () => {
+		const concatenatedCode = verificationCode.join("");
 		try {
 			// this should go to the TwoFactorAtuh endpoint
 			await fetch(buildUrl(`/auth${reqEndpoint}`), {
@@ -55,7 +31,7 @@ export const CodeVerification = () => {
 					concatenatedCode,
 				}),
 			}).then((res) => {
-				if (res.status === 200 || res.status === 201) {
+				if (res.status === 200) {
 					if (reqEndpoint === "/signup") {
 						toast.success("Account created, redirecting to login page...");
 						loadingBar.current.continuousStart(60);
@@ -92,7 +68,6 @@ export const CodeVerification = () => {
 							}, 1000);
 						});
 					}
-				} else if (res.status === 201) {
 				} else {
 					toast.error("Entered wrong OTP code!");
 				}
@@ -112,6 +87,7 @@ export const CodeVerification = () => {
 				return prevCountdown - 1;
 			});
 		}, 1000);
+
 		return () => {
 			clearInterval(timer);
 		};
@@ -119,15 +95,14 @@ export const CodeVerification = () => {
 
 	const handleResendOtp = async () => {
 		try {
-			await fetch(buildUrl(`/auth/${reqEndpoint}`), {
+			await fetch(buildUrl("/auth/resend-verify"), {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({
-					userData,
-					concatenatedCode,
-				}),
+				body: {
+					email,
+				},
 			});
 		} catch (err) {
 			console.log(err);
@@ -141,53 +116,37 @@ export const CodeVerification = () => {
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
 					<div className="flex items-center justify-center w-full h-screen">
-						<div className="flex gap-10 justify-between">
+						<div className="flex items-center gap-10 justify-between">
 							<div className="w-[400px]">
-								<h1 className="font-black text-4xl text-white">Almost there</h1>
-								<p className="text-white text-sm font-light pt-5">
-									One time password is sent to your email account, Please look through
-									your Gmail account and enter the provided code
-								</p>
-								<Link to="/login">
-									<p className="text-white text-sm underline font-light pt-5">
-										Choose a different account
-									</p>
-								</Link>
+								<img src="public\static\images\Forgot password-amico.png" alt="" />
 							</div>
-							<div className="w-[500px] bg-white h-[270px] rounded p-5">
+							<div className="w-[500px] bg-white h-[230px] rounded p-5">
 								<div>
-									<p className="text-sm font-semibold text-primaryColor">
-										Email verification code
+									<p className="text-3xl font-semibold text-primaryColor">
+										Forgot Your Password?
 									</p>
 									<p className="text-xs pt-2">
-										Input the code received from your email account
+										To proceed with changing your password, please enter your registered
+										email for the email verification.
 									</p>
 								</div>
-								<div className="flex items-center justify-center pt-10">
-									<div className="flex gap-2">
-										{verificationCode.map((value, index) => (
-											<input
-												key={index}
-												type="text"
-												className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
-												value={value}
-												onChange={(e) => handleInputChange(index, e.target.value)}
-												ref={inputRefs[index]}
-												inputMode="numeric"
-											/>
-										))}
-									</div>
+								<div className="flex py-5">
+									<input
+										type="email"
+										placeholder="ex. trikku.raiker@carsu.edu.ph"
+										className="text-xs font-light border border-gray-200 px-4 w-[458px] h-10 py-2 rounded outline-none"
+									/>
 								</div>
-								<div className="flex justify-between items-center pt-16">
-										<button
-											onClick={handleResendOtp}
-											className="text-xs text-primaryColor"
-											disabled={countdown > 0}>
-											Resend in {countdown}
-										</button>
+								<div className="flex justify-between items-center">
+									<button
+										onClick={handleResendOtp}
+										className="text-xs text-primaryColor"
+										disabled={countdown > 0}>
+										Resend in {countdown}s
+									</button>
 									<button
 										onClick={handleVerifyCode}
-										className="bg-primaryColor text-white px-2 h-8 rounded text-xs">
+										className="bg-primaryColor text-white px-5 h-8 rounded text-xs">
 										Send
 									</button>
 								</div>
