@@ -1,9 +1,9 @@
 import { CreateButton } from "../../components/CreateButton";
+import { MyCourseCard } from "../../components/MyCourseCard";
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
 import { ReviewModuleCard } from "../../components/ReviewModuleCard";
 
 export const MyCourses = () => {
-
 	const user_id = localStorage.getItem("user_id");
 
 	return (
@@ -24,10 +24,10 @@ export const MyCourses = () => {
 					<div className="p-8">
 						<h1 className="text-lg font-bold text-primaryColor">My Courses</h1>
 						<div className="py-3">
-						<hr className="border-1 border-primaryColor" />
+							<hr className="border-1 border-primaryColor" />
 						</div>
 						<div className="pt-5">
-							<ReviewModuleCard user_id={user_id} />
+							<MyCourseCard />
 						</div>
 					</div>
 				</div>

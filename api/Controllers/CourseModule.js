@@ -118,6 +118,28 @@ export const getCourseInfo = async (req, res) => {
 	}
 };
 
+//retrieve users courses
+export const UserCourses = async (req, res) => {
+	
+	const { user_id } = req.body
+
+	try {
+
+		const userCourses = await dbConnection.query("select * from courses where user_id = $1", [user_id])
+
+		
+		if (!userCourses.rows.length === 0) {
+			return res.status(400).json({ messagae: "No create course!" })
+		}
+
+		return res.status(200).json({userCourses, messagae: "User courses"})
+
+	} catch (err) { 
+		return res.status(500).json({ messagae: "Internal Server Error"})
+		console.log(err)
+	}
+}
+
 // ? this is for searching functionatilities
 // finding specific courses
 export const findCourse = async (req, res) => {
