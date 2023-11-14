@@ -12,9 +12,6 @@ export const CodeVerification = () => {
 		const reqEndpoint = location.state ? location.state.endpoint : null;
 		const [countdown, setCountdown] = useState(30);
 
-		// const email = userData.email;
-		// const password = userData.password;
-
 		const [verificationCode, setVerificationCode] = useState([
 			"",
 			"",
@@ -104,8 +101,6 @@ export const CodeVerification = () => {
 			}
 		};
 
-	
-
 		const handleResendOtp = async () => {
 			setCountdown(30);
 			let reqEndpointOtp;
@@ -155,7 +150,7 @@ export const CodeVerification = () => {
 			return () => {
 				clearInterval(timer);
 			};
-		}, handleResendOtp);
+		});
 
 	return (
 		<>

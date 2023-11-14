@@ -17,11 +17,8 @@ const router = express.Router();
 router.post(
 	"/create-course",
 	(req, res, next) => {
-		// Generate a single batch ID for this request
 		const batchID = uuidv4();
-		// Pass the batch ID to multer storage configuration
 		req.batchID = batchID;
-		// Continue to the CreateCourse controller
 		next();
 	},
 	upload.array("file"),
@@ -32,6 +29,6 @@ router.post(
 // retrieving courses
 router.get("/retrieve-course", RetrieveCourse);
 router.post("/user-courses", UserCourses);
-router.get("/get-course-info/:id", getCourseInfo)
-
+router.get("/get-course-info/:id", getCourseInfo);
+	
 export { router as CourseRouter };

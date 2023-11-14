@@ -19,16 +19,6 @@ app.use(
 app.use("/api/auth", UserRouter);
 app.use("/api/course", CourseRouter);
 
-// add database connection here
-
-// dbConnection.connect((err) => {
-// 	if (err) {
-// 		console.log("error connecting to postgre db", err);
-// 	} else {
-// 		console.log("Connected to PostgreSQL Database");
-// 	}
-// });
-
 dbConnection.connect().then(() => { 
 	console.log("Postgre connection success")
 }).catch((err) => { 

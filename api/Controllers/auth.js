@@ -1,9 +1,6 @@
 import bcrypt from "bcrypt";
 import { dbConnection } from "../Database/database.js";
-import jwtGenerator from "../../src/utils/jwtGenerator.js";
-import nodemailer from "nodemailer";
-import { buildUrl } from "../../src/utils/buildUrl.js";
-import fetch from "node-fetch";
+import GenerateToken from "../Helpers/GenerateToken.js";
 
 // login endpoint
 export const login = async (req, res) => {
@@ -31,13 +28,27 @@ export const login = async (req, res) => {
 			return res.status(400).json({ message: "Wrong password" });
 		}
 
-		const jwtToken = jwtGenerator(user.rows[0].user_id);
+		const expirationDate = new Date();
+		expirationDate.setTime(expirationDate.getTime() + 12 * 60 * 60 * 1000);
+
+		// const expirationDate = "12h";
+
+		// const jwtToken = jwt.sign(
+		// 	{ userId: user.rows[0].user_id }, // Wrap user_id in an object
+		// 	process.env.ACCESS_TOKEN_SECRET,
+		// 	{
+		// 		expiresIn: expirationDate,
+		// 	},
+		// );
+
+		const jwtToken = GenerateToken(user.rows[0].user_id);
 
 		// Set the cookie with an expiration date //one day from now
-		const expirationDate = new Date();
-		expirationDate.setDate(expirationDate.getDate() + 1);
 
-		res.cookie(jwtToken, "secret", { expires: expirationDate, httpOnly: true });
+		res.cookie(jwtToken, process.env.ACCESS_TOKEN_SECRET, {
+			expires: expirationDate,
+			httpOnly: true,
+		});
 
 		return res.status(200).json({ jwtToken, foundUser, message: "User found" });
 	} catch (err) {
@@ -85,6 +96,7 @@ export const signup = async (req, res) => {
 export const Logout = (req, res) => {
 	try {
 		res.cookie("jwtToken", "", { expires: new Date(0), httpOnly: true });
+		res.clearCookie();
 
 		return res.status(200).json({ message: "Logout successful" });
 	} catch (err) {
