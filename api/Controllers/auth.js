@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { dbConnection } from "../Database/database.js";
 import GenerateToken from "../Helpers/GenerateToken.js";
+import jwt from "jsonwebtoken";
 
 // login endpoint
 export const login = async (req, res) => {
@@ -29,7 +30,7 @@ export const login = async (req, res) => {
 		}
 
 		const expirationDate = new Date();
-		expirationDate.setTime(expirationDate.getTime() + 12 * 60 * 60 * 1000);
+		expirationDate.setTime(expirationDate.getTime() + 2 * 60 * 1000);
 
 		// const expirationDate = "12h";
 
@@ -103,5 +104,32 @@ export const Logout = (req, res) => {
 		console.log(err);
 		// Handle the error appropriately
 		res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+
+export const ValidateToken = async (req, res) => {
+	const { token } = req.body; // Assuming the token is sent in the request
+
+	try {
+		// Verify the JWT
+		const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+		// Check if the token has expired manually
+		const currentTimestamp = Math.floor(Date.now() / 1000); // Get current time in seconds
+		if (decoded.exp < currentTimestamp) {
+			// Token has expired
+			console.error("JWT verification failed: Token has expired");
+			return res.status(401).json({ error: "Token has expired" });
+		}
+
+		// If verification is successful, you can do additional logic here
+		// For example, you can check if the user associated with the token exists in your database
+
+		// Send a success response
+		res.status(200).json({ message: "Token is valid", decoded });
+	} catch (err) {
+		// Other JWT verification errors
+		console.error("JWT verification failed:", err);
+		res.status(401).json({ error: "Unauthorized" });
 	}
 };

@@ -19,18 +19,12 @@ export const SideBar = () => {
 		toast.info("Logging out...");
 
 		setTimeout(async () => {
-			localStorage.removeItem("token");
-			localStorage.removeItem("first_name");
-			localStorage.removeItem("last_name");
-			localStorage.removeItem("phone");
-			localStorage.removeItem("user_id");
-			localStorage.removeItem("email");
-
 			await fetch(buildUrl("/auth/logout"), {
-				method: "POST",
+				method: "DELETE",
 			}).then((res) => {
 				if (res.ok) {
 					toast.success("Success logout!");
+					localStorage.clear();
 					setTimeout(() => {
 						navigate("/");
 					}, 5000);
@@ -41,17 +35,11 @@ export const SideBar = () => {
 		}, 3000);
 	};
 
-	// useEffect(() => {
-	// 	const cookiesExist = document.cookie.includes(`${jwtToken}=`);
-	// 	if (!cookiesExist) {
-	// 		localStorage.clear();
-	// 	}
-	// }, []);
-
 	return (
 		<>
 			<div className="fixed bg-white h-screen w-[200px] shadow-lg">
 				<ToastContainer />
+				<div className="absolute right-0 left-0 flex items-center justify-center"></div>
 				<div className="relative h-screen">
 					<div className="flex items-center gap-2 p-10">
 						<img src="/static/images/mainlogo.png" alt="" className="w-[20px]" />
@@ -69,7 +57,7 @@ export const SideBar = () => {
 											isActive ? "bg-primaryColor text-white" : ""
 										}`}>
 										<div className="px-10 flex items-center h-full gap-2">
-											<BiHomeAlt2 size={17		} />
+											<BiHomeAlt2 size={17} />
 											<p className="text-xs">Dashboard</p>
 										</div>
 									</div>
