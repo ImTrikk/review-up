@@ -104,22 +104,10 @@ export const CodeVerification = () => {
 			}
 		};
 
-		useEffect(() => {
-			const timer = setInterval(() => {
-				setCountdown((prevCountdown) => {
-					if (prevCountdown === 0) {
-						clearInterval(timer);
-						return 0;
-					}
-					return prevCountdown - 1;
-				});
-			}, 1000);
-			return () => {
-				clearInterval(timer);
-			};
-		}, []);
+	
 
 		const handleResendOtp = async () => {
+			setCountdown(30);
 			let reqEndpointOtp;
 			const { email, password } = userData;
 			let requestBody = {};
@@ -153,6 +141,21 @@ export const CodeVerification = () => {
 				console.log(err);
 			}
 		};
+
+		useEffect(() => {
+			const timer = setInterval(() => {
+				setCountdown((prevCountdown) => {
+					if (prevCountdown === 0) {
+						clearInterval(timer);
+						return 0;
+					}
+					return prevCountdown - 1;
+				});
+			}, 1000);
+			return () => {
+				clearInterval(timer);
+			};
+		}, handleResendOtp);
 
 	return (
 		<>

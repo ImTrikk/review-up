@@ -1,6 +1,8 @@
 import { dbConnection } from "../Database/database.js";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
 let sentCode;
 
@@ -101,13 +103,13 @@ const OtpVerificationEmail = async ({ user_id, email }) => {
 			port: 465,
 			secure: true,
 			auth: {
-				user: "reviewupofficial@gmail.com",
-				pass: "hase uosx uyks fhrq",
+				user: process.env.GMAIL_ACCOUNT,
+				pass: process.env.GMAIL_ACCOUNT_PASSWORD,
 			},
 		});
 
 		const mailOptions = {
-			from: "reviewupofficial@gmail.com",
+			from: process.env.GMAIL_ACCOUNT,
 			to: email,
 			subject: "Your Verification Code",
 			text: `Your verification code is: ${otp}. \n Please do not share this one time password with anyone for security purposes`,
