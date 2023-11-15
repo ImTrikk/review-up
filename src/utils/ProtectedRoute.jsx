@@ -21,10 +21,8 @@ export const ProtectedRoutes = () => {
 				});
 
 				if (response.ok) {
-					console.log("true")
 					setIsValidToken(true);
 				} else {
-					console.log("false")
 					setIsValidToken(false);
 				}
 			} catch (err) {

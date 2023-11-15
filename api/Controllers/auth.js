@@ -98,20 +98,14 @@ export const Logout = (req, res) => {
 
 export const ValidateToken = async (req, res) => {
 	const { token } = req.body; // Assuming the token is sent in the request
-
 	try {
-		console.log("Token from cookies: ", token);
 
 		// Verify the JWT
 		const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-		console.log("Token expiry: ", decoded.exp);
-
-		console.log("Decoded token: ", decoded);
 
 		// Check if the token has expired manually
 		const currentTimestamp = Math.floor(Date.now() / 1000); // Convert to seconds
-		console.log("Expiration Time:", decoded.exp);
-		console.log("Current Timestamp:", currentTimestamp);
+
 		if (decoded.exp && decoded.exp < currentTimestamp) {
 			// Token has expired
 			res.status(401).json({ error: "Token has expired" });
