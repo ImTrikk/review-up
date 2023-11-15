@@ -40,7 +40,7 @@ export const login = async (req, res) => {
 		return res.status(200).json({ jwtToken, foundUser, message: "User found" });
 	} catch (err) {
 		console.log(err);
-		return res.status(500).json({ message: "sdhash" });
+		return res.status(500).json({ message: err });
 	}
 };
 

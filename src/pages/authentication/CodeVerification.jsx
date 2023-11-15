@@ -98,6 +98,7 @@ export const CodeVerification = () => {
 				});
 			} catch (err) {
 				console.log(err);
+				toast.error(err);
 			}
 		};
 

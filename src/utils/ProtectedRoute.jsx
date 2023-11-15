@@ -36,7 +36,11 @@ export const ProtectedRoutes = () => {
 
 	if (isValidToken === null) {
 		// Loading state
-		return <p>Loading...</p>;
+		return (
+			<div className="flex items-center justify-center w-full h-screen">
+				<p>Loading...</p>
+			</div>
+		);
 	}
 
 	if (!isValidToken) {
