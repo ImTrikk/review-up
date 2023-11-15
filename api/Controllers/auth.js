@@ -29,31 +29,18 @@ export const login = async (req, res) => {
 			return res.status(400).json({ message: "Wrong password" });
 		}
 
-		const expirationDate = new Date();
-		expirationDate.setTime(expirationDate.getTime() + 2 * 60 * 1000);
-
-		// const expirationDate = "12h";
-
-		// const jwtToken = jwt.sign(
-		// 	{ userId: user.rows[0].user_id }, // Wrap user_id in an object
-		// 	process.env.ACCESS_TOKEN_SECRET,
-		// 	{
-		// 		expiresIn: expirationDate,
-		// 	},
-		// );
-
 		const jwtToken = GenerateToken(user.rows[0].user_id);
 
-		// Set the cookie with an expiration date //one day from now
-
-		res.cookie(jwtToken, process.env.ACCESS_TOKEN_SECRET, {
-			expires: expirationDate,
+		res.cookie("jwtToken", jwtToken, process.env.ACCESS_TOKEN_SECRET, {
+			secure: true,
 			httpOnly: true,
+			sameSite: "Strict",
 		});
 
 		return res.status(200).json({ jwtToken, foundUser, message: "User found" });
 	} catch (err) {
 		console.log(err);
+		return res.status(500).json({ message: "sdhash" });
 	}
 };
 
@@ -96,7 +83,7 @@ export const signup = async (req, res) => {
 // logout functionality
 export const Logout = (req, res) => {
 	try {
-		res.cookie("jwtToken", "", { expires: new Date(0), httpOnly: true });
+		res.cookie("jwtToken", { expires: new Date(0), httpOnly: true });
 		res.clearCookie();
 
 		return res.status(200).json({ message: "Logout successful" });
@@ -107,26 +94,31 @@ export const Logout = (req, res) => {
 	}
 };
 
+// validate token expiration data
+
 export const ValidateToken = async (req, res) => {
 	const { token } = req.body; // Assuming the token is sent in the request
 
 	try {
+		console.log("Token from cookies: ", token);
+
 		// Verify the JWT
 		const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+		console.log("Token expiry: ", decoded.exp);
+
+		console.log("Decoded token: ", decoded);
 
 		// Check if the token has expired manually
-		const currentTimestamp = Math.floor(Date.now() / 1000); // Get current time in seconds
-		if (decoded.exp < currentTimestamp) {
+		const currentTimestamp = Math.floor(Date.now() / 1000); // Convert to seconds
+		console.log("Expiration Time:", decoded.exp);
+		console.log("Current Timestamp:", currentTimestamp);
+		if (decoded.exp && decoded.exp < currentTimestamp) {
 			// Token has expired
-			console.error("JWT verification failed: Token has expired");
-			return res.status(401).json({ error: "Token has expired" });
+			res.status(401).json({ error: "Token has expired" });
+		} else {
+			// Token is valid
+			res.status(200).json({ message: "Token is valid", decoded });
 		}
-
-		// If verification is successful, you can do additional logic here
-		// For example, you can check if the user associated with the token exists in your database
-
-		// Send a success response
-		res.status(200).json({ message: "Token is valid", decoded });
 	} catch (err) {
 		// Other JWT verification errors
 		console.error("JWT verification failed:", err);
