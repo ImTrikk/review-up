@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SessionNoticeModal } from "./Modal/SessionNoticeModal";
 
-const YOUR_SESSION_TIMEOUT_DURATION = 10000; // 30 minutes in milliseconds
+
+// set sesssion timeout inactivity of 30 minutes
+const YOUR_SESSION_TIMEOUT_DURATION = 1800000; // 30 minutes in milliseconds
 
 const GlobalLayout = ({ children }) => {
 	const [sessionTimeoutModalOpen, setSessionTimeoutModalOpen] = useState(false);

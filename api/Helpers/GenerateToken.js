@@ -10,7 +10,7 @@ function GenerateToken(user_id) {
 	};
 
 	const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: "1m",
+		expiresIn: "5hrs",
 	});
 
 	return token;

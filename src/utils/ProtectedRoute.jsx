@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import { buildUrl } from "./buildUrl";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const ProtectedRoutes = () => {
 	const [isValidToken, setIsValidToken] = useState(null);
@@ -20,14 +22,22 @@ export const ProtectedRoutes = () => {
 					}),
 				});
 
+				const data = await response.json();
+
+				console.log(data);
+
 				if (response.ok) {
 					setIsValidToken(true);
 				} else {
-					setIsValidToken(false);
+					toast.error("Token already expired, login required", data);
+					
+					setTimeout(() => {
+						setIsValidToken(false);
+					}, 3000);
 				}
 			} catch (err) {
 				console.error(err);
-				setIsValidToken(false);
+				toast.error(err);
 			}
 		};
 
@@ -38,13 +48,18 @@ export const ProtectedRoutes = () => {
 		// Loading state
 		return (
 			<div className="flex items-center justify-center w-full h-screen">
+				<ToastContainer />
 				<p>Loading...</p>
 			</div>
 		);
 	}
 
 	if (!isValidToken) {
-		return <Navigate to="/login" />;
+		return (
+			<div>
+				<Navigate to="/login" />
+			</div>
+		);
 	}
 
 	return <Outlet />;
