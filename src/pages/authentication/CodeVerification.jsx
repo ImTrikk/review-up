@@ -38,7 +38,15 @@ export const CodeVerification = () => {
 		// If a single number is entered, move to the next input field
 		if (value.length === 1 && index < inputRefs.length - 1) {
 			inputRefs[index + 1].current.focus();
+		} else if (value.length === 0 && index > 0) {
+			// If Backspace is pressed with an empty input, move to the previous input field
+			inputRefs[index - 1].current.focus();
 		}
+
+		// // If a single number is entered, move to the next input field
+		// if (value.length === 1 && index < inputRefs.length - 1) {
+		// 	inputRefs[index + 1].current.focus();
+		// }
 	};
 
 	let concatenatedCode = verificationCode.join("");
