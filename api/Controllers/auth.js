@@ -158,12 +158,33 @@ export const ForgotPassword = async (req, res) => {
 	}
 };
 
-export const CheckOTP = () => {
-	const { concatenatedCode } = req.body;
+export const ResetPassword = async (req, res) => {
+	const { email, newPassword } = req.body;
 	try {
+		const hashed_password = await bcrypt.hash(newPassword, 10);
+		const user = await dbConnection.query(
+			"update users  set hashed_password = $1 where email = $2",
+			[hashed_password, email],
+		);
 
-		
+		return res.status(200).json({ message: "Password reset successful" });
+	} catch (err) {
+		return res.status(500).json({ message: `Internal server error: ${err}` });
+	}
+};
 
+let sentCode;
+
+export const CheckOTP = async (req, res) => {
+	const { concatenatedCode } = req.body;
+	console.log(concatenatedCode, sentCode);
+	try {
+		if (concatenatedCode === sentCode) {
+			console.log("Code match");
+			return res.status(200).json({ message: "Verified" });
+		} else {
+			return res.status(400).json({ message: "Wrong OTP" });
+		}
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ message: err });
@@ -193,10 +214,9 @@ const OtpVerificationEmail = async ({ user_id, email }) => {
 			subject: "Your Verification Code",
 			text: `Your verification code is: ${otp}. \n Please do not share this one time password with anyone for security purposes`,
 		};
-
 		//  for checking responses only
 		const info = await emailTransporter.sendMail(mailOptions);
-
+		sentCode = otp;
 		return otp;
 	} catch (err) {
 		console.log(err);
