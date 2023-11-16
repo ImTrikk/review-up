@@ -28,7 +28,7 @@ export const ProtectedRoutes = () => {
 					setIsValidToken(true);
 				} else {
 					toast.error("Token already expired, login required", data);
-					
+					localStorage.clear();
 					setTimeout(() => {
 						setIsValidToken(false);
 					}, 3000);
