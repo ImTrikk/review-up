@@ -5,8 +5,6 @@ import { buildUrl } from "../../utils/buildUrl";
 export const SessionNoticeModal = ({ isOpen, onClose }) => {
 	const nav = useNavigate();
 
-	console.log("Session notice modal");
-
 	useEffect(() => {
 		setTimeout(async () => {
 			onClose();
