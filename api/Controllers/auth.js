@@ -75,7 +75,7 @@ export const signup = async (req, res) => {
 
 		res.status(201).json({ newUserQuery, message: "New user created!" });
 	} catch (err) {
-		console.log(err);
+		console.log(err);	
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
@@ -107,7 +107,7 @@ export const ValidateToken = async (req, res) => {
 		const currentTimestamp = Math.floor(Date.now() / 1000); // Convert to seconds
 
 		if (decoded.exp && decoded.exp < currentTimestamp) {
-			// Token has expired
+			// Token has 	
 			res.status(401).json({ error: "Token has expired" });
 		} else {
 			// Token is valid
