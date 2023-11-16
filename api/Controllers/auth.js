@@ -126,12 +126,8 @@ export const ValidateToken = async (req, res) => {
 
 export const ForgotPassword = async (req, res) => {
 	const { email } = req.body;
-	console.log("Forgot password endpoint");
-	console.log("Email: ", email);
 	try {
 		// make logic for sending code to the email
-
-		// check first in the database
 
 		const user = await dbConnection.query(
 			"SELECT email from users where email = $1",
@@ -177,10 +173,8 @@ let sentCode;
 
 export const CheckOTP = async (req, res) => {
 	const { concatenatedCode } = req.body;
-	console.log(concatenatedCode, sentCode);
 	try {
 		if (concatenatedCode === sentCode) {
-			console.log("Code match");
 			return res.status(200).json({ message: "Verified" });
 		} else {
 			return res.status(400).json({ message: "Wrong OTP" });

@@ -90,6 +90,19 @@ export const PasswordReset = () => {
 
 	const navigate = useNavigate();
 
+	const showToast = (message, type) => {
+		toast[type](message, {
+			position: "top-right",
+			autoClose: 2000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
+	};
+
 	const handleResetPassword = async (event) => {
 		event.preventDefault();
 		// implement secure passsword
