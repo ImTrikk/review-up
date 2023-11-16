@@ -141,9 +141,7 @@ export const CodeVerification = () => {
 		}
 	};
 
-	const attemptCount = () => {};
-
-	useEffect(() => {
+		useEffect(() => {
 		const timer = setInterval(() => {
 			setCountdown((prevCountdown) => {
 				if (prevCountdown === 0) {

@@ -1,5 +1,8 @@
 import Pool from "pg";
+import dotenv from "dotenv";
+dotenv.config();
 
+// localhost connections
 // export const dbConnection = new Pool.Pool({
 //  user: "postgres",
 //  password: "trikkgwapo123",
@@ -13,8 +16,7 @@ import Pool from "pg";
 
 // for vercel postgre database
 export const dbConnection = new Pool.Pool({
-	connectionString:
-		"postgres://default:TjhcKo6v4rni@ep-aged-meadow-56946399-pooler.ap-southeast-1.postgres.vercel-storage.com:5432/verceldb?sslmode=require",
+	connectionString: process.env.POSTGRE_DATABASE_CONNECTION_URL,
 });
 
 

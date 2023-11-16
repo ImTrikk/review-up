@@ -1,11 +1,16 @@
 import express from "express";
-import { Logout, ValidateToken, login, signup } from "../Controllers/auth.js";
+import {
+	ForgotPassword,
+	Logout,
+	ValidateToken,
+	login,
+	signup,
+} from "../Controllers/auth.js";
 import {
 	TwoFactorAuth,
 	checkEmailValidity,
 } from "../MIddleware/CheckValidEmail.js";
 import { checkEligibleEmail, sendOtp } from "../MIddleware/CheckValidEmail.js";
-import { AuthToken } from "../MIddleware/AuthToken.js";
 
 const router = express.Router();
 
@@ -21,6 +26,10 @@ router.post("/login", TwoFactorAuth, login);
 router.delete("/logout", Logout);
 
 router.post("/validate-token", ValidateToken);
+
+// forgot password
+router.post("/forgot-password", ForgotPassword);
+router.post('/check-otp', )
 
 export { router as UserRouter };
 
