@@ -228,7 +228,7 @@ export const CodeVerification = () => {
 											{attemp === 0 ? (
 												<p className="text-xs">Retry in: {retryCountdown}</p>
 											) : (
-												<p className="text-xs">Attemps left: {attemp}</p>
+												<p className="text-xs text-red-400">Attemps left: {attemp}</p>
 											)}
 										</div>
 									</div>

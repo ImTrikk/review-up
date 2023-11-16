@@ -24,8 +24,6 @@ export const ProtectedRoutes = () => {
 
 				const data = await response.json();
 
-				console.log(data);
-
 				if (response.ok) {
 					setIsValidToken(true);
 				} else {
@@ -49,7 +47,9 @@ export const ProtectedRoutes = () => {
 		return (
 			<div className="flex items-center justify-center w-full h-screen">
 				<ToastContainer />
-				<p>Loading...</p>
+				<div>
+					<img src="/static/images/loading.jpg" alt="" />
+				</div>
 			</div>
 		);
 	}

@@ -48,13 +48,18 @@ const GlobalLayout = ({ children }) => {
 		};
 	}, []);
 
+
 	return (
 		<div>
 			{children}
-			<SessionNoticeModal
-				isOpen={sessionTimeoutModalOpen}
-				onClose={() => setSessionTimeoutModalOpen(false)}
-			/>
+			{sessionTimeoutModalOpen ? (
+				<SessionNoticeModal
+					isOpen={sessionTimeoutModalOpen}
+					onClose={() => setSessionTimeoutModalOpen(false)}
+				/>
+			) : (
+				""
+			)}
 		</div>
 	);
 };

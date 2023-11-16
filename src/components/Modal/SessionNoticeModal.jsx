@@ -5,6 +5,8 @@ import { buildUrl } from "../../utils/buildUrl";
 export const SessionNoticeModal = ({ isOpen, onClose }) => {
 	const nav = useNavigate();
 
+	console.log("Session notice modal");
+
 	useEffect(() => {
 		setTimeout(async () => {
 			onClose();
@@ -25,7 +27,6 @@ export const SessionNoticeModal = ({ isOpen, onClose }) => {
 			className={`fixed top-0 left-0 w-full h-full flex items-center justify-center ${
 				isOpen ? "" : "hidden"
 			}`}>
-			{/* Blurred background */}
 			<div
 				className="fixed top-0 left-0 w-full h-full backdrop-filter backdrop-blur-sm"
 				style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}></div>
@@ -50,5 +51,5 @@ export const SessionNoticeModal = ({ isOpen, onClose }) => {
 				</div>
 			</div>
 		</div>
-	);7
+	);
 };
