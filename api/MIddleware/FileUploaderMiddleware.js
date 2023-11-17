@@ -5,7 +5,11 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 
 const storage = multer.memoryStorage();
-export const upload = multer({ storage: storage });
+export const upload = multer({
+	storage: storage,
+	limits: { fileSize: 50 * 1024 * 1024 },
+});
+
 
 export const firebaseUpload = async (req, res, next) => {
 	try {
