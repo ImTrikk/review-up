@@ -178,7 +178,7 @@ export const CheckOTP = async (req, res) => {
 			return res.status(200).json({ message: "Verified" });
 		} else {
 			return res.status(400).json({ message: "Wrong OTP" });
-		}
+		} 
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ message: err });

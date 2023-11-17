@@ -156,7 +156,7 @@ export const PasswordReset = () => {
 					<div className="flex items-center justify-center w-full h-screen">
 						<div className="flex items-center gap-10 justify-between">
 							<div className="w-[400px]">
-								<img src="public\static\images\Forgot password-amico.png" alt="" />
+								<img src="/static/images/Forgot password-amico.png" alt="" />
 							</div>
 							<div className="w-[500px] bg-white rounded p-5">
 								<div>
