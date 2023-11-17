@@ -14,6 +14,11 @@ export const QuizModal = () => {
 		// Use the spread operator to create a new array with the existing questions and the new question
 		setQuestions([...questions, { quiz_id: questions.length + 1 }]);
 	};
+	const removeQuestion =(event) => {
+		event.preventDefault();
+		// Use the spread operator to create a new array with the existing questions and the new question
+		setQuestions([...questions, { quiz_id: questions.length - 1 }]);
+	};
 
 	return (
 		<>
@@ -25,7 +30,7 @@ export const QuizModal = () => {
 					<div>
 						<div className="pt-5">
 							{/* Main Container */}
-							<div className="bg-primaryColor w-full rounded-[10px] mt-5 shadow-lg p-4 text-white">
+							<div className="bg-primary	Color w-full rounded-[10px] mt-5 shadow-lg p-4 text-white">
 								<div>
 									<h3 className="font-bold">Steps</h3>
 									<div className="py-2">
@@ -55,7 +60,7 @@ export const QuizModal = () => {
 						<div>
 							{questions.map((quiz, index) => (
 								<div key={index}>
-									<div className="bg-primaryColor text-white shadow text-xs p-3 rounded mt-4">
+									<div className="bg-primaryColor text-white shadow text-xs p-3 py-5 rounded mt-4">
 										<div className="flex items-center gap-2">
 											<div className="flex gap-2">
 												<p>{index + 1}.</p>
@@ -109,11 +114,11 @@ export const QuizModal = () => {
 								</button>
 							</div>
 						</div>
-						<div className="flex justify-end pt-5">
+						{/* <div className="flex justify-end pt-5">
 							<button className="text-xs text-white bg-primaryColor rounded h-8 px-4">
 								Save
 							</button>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>
