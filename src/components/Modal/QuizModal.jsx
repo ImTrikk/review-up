@@ -24,14 +24,6 @@ export const QuizModal = () => {
 					</h1>
 					<div>
 						<div className="pt-5">
-							<div className="flex flex-wrap gap-2">
-								<button
-									onClick={addQuestion}
-									className="flex justify-center items-center border p-2 text-[15px] gap-2 bg-primaryColor rounded-[5px]">
-									<BsFillPlusCircleFill size={16} style={{ color: "white" }} />
-									<span className="text-white">Question</span>
-								</button>
-							</div>
 							{/* Main Container */}
 							<div className="bg-primaryColor w-full rounded-[10px] mt-5 shadow-lg p-4 text-white">
 								<div>
@@ -63,28 +55,59 @@ export const QuizModal = () => {
 						<div>
 							{questions.map((quiz, index) => (
 								<div key={index}>
-									<div className="bg-white shadow text-xs p-3 rounded mt-4">
-										<div className="flex gap-2">
-											<p>{index + 1}.</p>
-											<p>Enter Question: </p>
+									<div className="bg-primaryColor text-white shadow text-xs p-3 rounded mt-4">
+										<div className="flex items-center gap-2">
+											<div className="flex gap-2">
+												<p>{index + 1}.</p>
+												<p>Enter Question: </p>
+											</div>
+											<input
+												type="text"
+												placeholder=""
+												className="outline-none text-gray-500 bg-none text-xs"
+											/>
 										</div>
 									</div>
 									<div className="space-y-2 pt-2">
 										<div className="bg-white text-xs shadow p-3 rounded">
-											<input type="text" placeholder="add question here" className="outline-none text-xs"/>
+											<input
+												type="text"
+												placeholder="add question here"
+												className="outline-none text-xs"
+											/>
 										</div>
 										<div className="bg-white text-xs shadow p-3 rounded">
-											<input type="text" placeholder="add question here" className="outline-none text-xs"/>
+											<input
+												type="text"
+												placeholder="add question here"
+												className="outline-none text-xs"
+											/>
 										</div>
 										<div className="bg-white text-xs shadow p-3 rounded">
-											<input type="text" placeholder="add question here" className="outline-none text-xs"/>
+											<input
+												type="text"
+												placeholder="add question here"
+												className="outline-none text-xs"
+											/>
 										</div>
 										<div className="bg-white text-xs shadow p-3 rounded">
-											<input type="text" placeholder="add question here" className="outline-none text-xs"/>
+											<input
+												type="text"
+												placeholder="add question here"
+												className="outline-none text-xs"
+											/>
 										</div>
 									</div>
 								</div>
 							))}
+							<div className="flex justify-center pt-4">
+								<button
+									onClick={addQuestion}
+									className="flex justify-center items-center border p-2 text-[15px] gap-2 bg-primaryColor rounded-[5px]">
+									<BsFillPlusCircleFill size={14} style={{ color: "white" }} />
+									<span className="text-xs text-white">Question</span>
+								</button>
+							</div>
 						</div>
 						<div className="flex justify-end pt-5">
 							<button className="text-xs text-white bg-primaryColor rounded h-8 px-4">
