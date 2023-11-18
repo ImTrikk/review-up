@@ -17,15 +17,17 @@ app.use(
 	}),
 );
 
+// sets Content Security Policy
 app.use(
 	helmet.contentSecurityPolicy({
 		directives: {
 			defaultSrc: ["'self'"],
-			scriptSrc: ["'self'", "trusted-scripts.com"],
-			styleSrc: ["'self'", "styles.example.com"],
+			scriptSrc: ["'self'", " https://review-up.vercel.app"],
+			fontSrc: ["'self'", "https://fonts.gstatic.com"],
+			styleSrc: ["'self'", "styles.example.com", ""],
 		},
-		// reportOnly: true,
-		// reportUri: "/",
+		reportOnly: true,
+		reportUri: "/",
 	}),
 );
 

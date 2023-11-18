@@ -43,7 +43,10 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 						<div className="p-3">
 							<div className="rounded h-[140px]">
 								<img
-									src={course?.header_url}
+									src={
+										course?.header_url ||
+										"https://previews.123rf.com/images/artinspiring/artinspiring1805/artinspiring180500713/102430945-review-concept-illustration.jpg"
+									}
 									alt=""
 									className="rounded w-full h-[140px] overflow-clip"
 								/>
