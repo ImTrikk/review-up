@@ -3,10 +3,10 @@ import StarRating from "./StarRating";
 import { Link } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
 import { toast } from "react-toastify";
+import { EditCourseModal } from "./Modal/EditCourseModal";
 
-export const MyCourseCard = ({ handleIsEmpty	 }) => {
+export const MyCourseCard = ({ handleIsEmpty }) => {
 	const [courseInfo, setCourseInfo] = useState([]);
-
 	const user_id = localStorage.getItem("user_id");
 
 	const getCourseInfo = async () => {
@@ -23,7 +23,7 @@ export const MyCourseCard = ({ handleIsEmpty	 }) => {
 				if (res.ok) {
 					setCourseInfo(data.userCourses.rows);
 				} else if (res.status === 400) {
-					handleIsEmpty	(
+					handleIsEmpty(
 						data && data.userCourses && data.userCourses.rows.length === 0,
 					);
 				} else {
@@ -76,13 +76,10 @@ export const MyCourseCard = ({ handleIsEmpty	 }) => {
 								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>
 							<div className="flex items-center gap-1 justify-end mt-2">
-								<div>
-								<button className="border border-primaryColor text-primaryColor px-4 text-xs rounded h-8">edit</button>
-								</div>
 								<Link
 									key={course?.course_id}
-									to={`/course-module/${course?.course_id}`}>
-									<button className="bg-primaryColor text-xs text-white rounded h-8 px-2 ">
+									to={`/my-course-module/${course?.course_id}`}>
+									<button className="bg-primaryColor text-xs 	text-white rounded h-8 px-2 ">
 										ReviewUP
 									</button>
 								</Link>
@@ -90,6 +87,7 @@ export const MyCourseCard = ({ handleIsEmpty	 }) => {
 						</div>
 					</div>
 				))}
+				
 			</div>
 		</>
 	);

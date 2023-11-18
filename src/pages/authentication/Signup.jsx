@@ -47,7 +47,7 @@ export const Signup = () => {
 
 	const endpoint = location.pathname;
 
-const userData = {
+	const userData = {
 		first_name: first_name,
 		last_name: last_name,
 		email: email,
@@ -182,7 +182,7 @@ const userData = {
 			setShowerror(true);
 			showToast("Password does not match", "error");
 		} else {
-		try {
+			try {
 				let response = await fetch(buildUrl("/auth/send-otp"), {
 					method: "POST",
 					headers: {
@@ -214,11 +214,11 @@ const userData = {
 			<div className="bg-gradient-to-tr from-primaryColor to-violet-500 h-screen">
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<ToastContainer autoClose={2000} />
-					<img
-						src="static\images\Blob2.png"
-						alt=""
-						className="w-[532px] h-auto mt-10 absolute z-0 -rotate-12 opacity-70"
-					/>
+				<img
+					src="static\images\Blob2.png"
+					alt=""
+					className="w-[532px] h-auto mt-10 absolute z-0 -rotate-12 opacity-70"
+				/>
 				<div className="flex items-center justify-center lg:max-w-7xl mx-20 2xl:mx-auto relative z-10">
 					<div className="w-[50%]">
 						<div className="px-10 p-7">
@@ -374,7 +374,7 @@ const userData = {
 												}`}>
 												Password
 											</label>
-											<div class="relative">
+											<div className="relative">
 												<input
 													placeholder="Password"
 													className={` ${
@@ -488,7 +488,7 @@ const userData = {
 												}`}>
 												Confirm password
 											</label>
-											<div class="relative">
+											<div className="relative">
 												<input
 													type={showCPassword ? "text" : "password"}
 													value={cPassword}

@@ -14,6 +14,7 @@ import { ProtectedRoutes } from "./utils/ProtectedRoute";
 import { SavedCourses } from "./pages/Dashboard/SavedCourses";
 import { PasswordReset } from "./pages/authentication/PasswordReset";
 import GlobalLayout from "./components/GlobalLayout";
+import { MyCourseModule } from "./pages/MyCourseModule";
 
 function App() {
 	return (
@@ -79,6 +80,14 @@ function App() {
 							element={
 								<GlobalLayout>
 									<CourseModule />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/my-course-module/:id"
+							element={
+								<GlobalLayout>
+									<MyCourseModule />
 								</GlobalLayout>
 							}
 						/>
