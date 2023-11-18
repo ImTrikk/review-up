@@ -24,8 +24,8 @@ app.use(
 			scriptSrc: ["'self'", "trusted-scripts.com"],
 			styleSrc: ["'self'", "styles.example.com"],
 		},
-		reportOnly: true,
-		reportUri: "/report-violations",
+		// reportOnly: true,
+		// reportUri: "/",
 	}),
 );
 
