@@ -21,25 +21,22 @@ app.use(
 app.use(
 	helmet.contentSecurityPolicy({
 		directives: {
-			defaultSrc: ["'self'"],
 			scriptSrc: ["'self'", " https://review-up.vercel.app"],
-			fontSrc: ["'self'", "https://fonts.gstatic.com"],
-			styleSrc: ["'self'", "styles.example.com", ""],
 		},
-		reportOnly: true,
-		reportUri: "/",
 	}),
 );
 
 app.use("/api/auth", UserRouter);
 app.use("/api/course", CourseRouter);
 
-dbConnection.connect().then(() => { 
-	console.log("Postgre connection success")
-}).catch((err) => { 
-	console.log("Error connecting with vercel postgre DB")
-	console.log(err)
-})
+dbConnection
+	.connect()
+	.then(() => {
+		console.log("Postgre connection success");
+	})
+	.catch((err) => {
+		console.log("Error connecting with vercel postgre DB");
+		console.log(err);
+	});
 
 app.listen(4242, () => console.log("Server running on localhost 4242"));
- 
