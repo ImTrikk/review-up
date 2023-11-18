@@ -3,6 +3,7 @@ import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
 import { BsArrowRight } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { useState } from "react";
+import { stringAvatar } from "../../utils/StringAvatar";
 
 // BsArrowRight
 
@@ -11,11 +12,13 @@ export const Profile = () => {
 
 	const handleClick = () => {
 		setEdit(!edit);
- };
- 
- const first_name = localStorage.getItem("first_name")
- const last_name = localStorage.getItem("last_name")
- const email = localStorage.getItem("email")
+	};
+
+	const first_name = localStorage.getItem("first_name");
+	const last_name = localStorage.getItem("last_name");
+	const email = localStorage.getItem("email");
+
+	const StringAvatar = stringAvatar(first_name);
 
 	return (
 		<>
@@ -36,7 +39,7 @@ export const Profile = () => {
 						className="max-w-[900px] h-[525px] bg-white rounded-[10px] shadow border
                          border-black border-opacity-10 mt-10 ml-2 pt-6 ">
 						<div className="flex gap-3 border-b-2 items-center px-6 shadow-sm pb-8">
-							<div className="w-[75px] h-[75px] bg-indigo-500 rounded-full "></div>
+							<div>{StringAvatar}</div>
 							<div className="h-fit">
 								<h3 className="text-[20px] font-semibold text-[#0C046B]">
 									{first_name} {last_name}
@@ -81,7 +84,7 @@ export const Profile = () => {
 									<div className="w-[68px] h-[57px] bg-indigo-500 rounded-[5px] flex items-center justify-center text-white font-bold text-xl">
 										3
 									</div>
-									<Link to='/my-courses'>
+									<Link to="/my-courses">
 										<div className="flex gap-2 items-center text-gray-400 text-sm">
 											<span>See reviewers</span>
 											<BsArrowRight size={16} style={{ color: "light" }} />

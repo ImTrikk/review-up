@@ -30,7 +30,7 @@ export const QuizModal = () => {
 					<div>
 						<div className="pt-5">
 							{/* Main Container */}
-							<div className="bg-primary	Color w-full rounded-[10px] mt-5 shadow-lg p-4 text-white">
+							<div className="bg-primaryColor w-full rounded-[10px] mt-5 shadow-lg p-4 text-white">
 								<div>
 									<h3 className="font-bold">Steps</h3>
 									<div className="py-2">
