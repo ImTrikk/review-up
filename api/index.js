@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import { UserRouter } from "./Routes/Router.js";
 import { dbConnection } from "./Database/database.js";
 import { CourseRouter } from "./Routes/CourseRouters.js";
+import helmet from "helmet";
 
 const app = express();
 app.use(express.json({ limit: "50mb" }));
@@ -13,6 +14,15 @@ app.use(
 		origin: "*",
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
+	}),
+);
+
+app.use(
+	helmet.contentSecurityPolicy({
+		directives: {
+			defaultSrc: ["'self'"],
+			// Add more directives as needed based on your application requirements
+		},
 	}),
 );
 

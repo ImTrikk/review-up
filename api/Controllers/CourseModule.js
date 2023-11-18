@@ -147,4 +147,4 @@ export const findCourse = async (req, res) => {
 };
 
 // delete course module
-export const DeleteCourse = async () => {};
+export const DeleteCourse = async () => {}
