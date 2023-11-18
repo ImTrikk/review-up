@@ -75,11 +75,14 @@ export const MyCourseCard = ({ handleIsEmpty	 }) => {
 								</p>
 								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>
-							<div className="flex items-center justify-end mt-2">
+							<div className="flex items-center gap-1 justify-end mt-2">
+								<div>
+								<button className="border border-primaryColor text-primaryColor px-4 text-xs rounded h-8">edit</button>
+								</div>
 								<Link
 									key={course?.course_id}
 									to={`/course-module/${course?.course_id}`}>
-									<button className="bg-primaryColor text-xs text-white rounded h-7 px-2 ">
+									<button className="bg-primaryColor text-xs text-white rounded h-8 px-2 ">
 										ReviewUP
 									</button>
 								</Link>

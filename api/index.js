@@ -21,8 +21,11 @@ app.use(
 	helmet.contentSecurityPolicy({
 		directives: {
 			defaultSrc: ["'self'"],
-			// Add more directives as needed based on your application requirements
+			scriptSrc: ["'self'", "trusted-scripts.com"],
+			styleSrc: ["'self'", "styles.example.com"],
 		},
+		reportOnly: true,
+		reportUri: "/report-violations",
 	}),
 );
 
