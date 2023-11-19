@@ -106,7 +106,7 @@ export const CreateCourse = () => {
 					}`}>
 					{successModal ? (
 						<>
-							<div className="fixed inset-0 bg-black opacity-50 z-0"></div>{" "}
+							<div className="fixed inset-0 bg-black opacity-50 z-50"></div>{" "}
 							{/* Dark background */}
 							<SuccessCreateCourse />
 						</>

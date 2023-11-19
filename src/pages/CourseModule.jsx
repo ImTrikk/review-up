@@ -34,102 +34,107 @@ export const CourseModule = () => {
 		}
 	};
 
-const fileIconType = (url) => {
-	// Extract the filename from the URL
-	const filename = url.split("/").pop().split("?")[0];
-	const extension = filename.split(".").pop();
+	const fileIconType = (url) => {
+		// Extract the filename from the URL
+		const filename = url.split("/").pop().split("?")[0];
+		const extension = filename.split(".").pop();
 
-	// You can add more file types and corresponding icons as needed
-	const iconMappings = {
-		pdf: pdf,
-		doc: doc,
-		pptx: pptx,
-		jpg: jpg,
-		png: png,
+		// You can add more file types and corresponding icons as needed
+		const iconMappings = {
+			pdf: pdf,
+			doc: doc,
+			pptx: pptx,
+			jpg: jpg,
+			png: png,
+		};
+
+		return iconMappings[extension];
 	};
 
-	return iconMappings[extension];
-};
+	useEffect(() => {
+		getCourseInfo();
+	}, []);
 
-useEffect(() => {
-	getCourseInfo();
-}, []);
-
-return (
-	<>
-		<div className="">
-			<SideBar />
-			<div className="bg-primaryColor w-full h-[140px]">
-				<div className="ml-[240px] h-full grid items-end">
-					<div className="pb-10">
-						<h1 className="text-white text-3xl font-bold">
-							{courseInfo.courseInfoFound?.course_code}
-						</h1>
-						<p className="text-white text-sm">
-							{courseInfo.courseInfoFound?.description}
-						</p>
+	return (
+		<>
+			<div className="">
+				<SideBar />
+				<div className="bg-primaryColor w-full h-[140px] relative">
+					<img
+						src="/static/images/header.png"
+						alt=""
+						className="absolute w-full h-[140px]"
+					/>
+					<div className="w-full h-full flex justify-between items-center absolute z-10">
+						<div className="ml-[220px]">
+							<h1 className="text-white text-3xl font-bold">
+								My Course - {courseInfo.courseInfoFound?.course_code}
+							</h1>
+							<p className="text-white text-sm">
+								{courseInfo.courseInfoFound?.description}
+							</p>
+						</div>
+					</div>
+				</div>
+				<div className="ml-[220px]">
+					<div className="p-5">
+						<div>
+							<h1 className="text-lg font-bold text-primaryColor">Reviewers</h1>
+							<div className="text-primaryColor">
+								<hr className="border border-primaryColor" />
+							</div>
+							<div className="pt-2">
+								<p className="text-xs text-primaryColor">
+									Reviewers posted by the creator
+								</p>
+							</div>
+							<div className="py-5 flex flex-wrap items-center gap-5">
+								{courseInfo.fileDownloadURLs &&
+									courseInfo.fileDownloadURLs.map((url, urlIndex) => (
+										<div
+											key={urlIndex}
+											className="h-56 w-56 shadow flex flex-col items-center justify-center">
+											{/* Display or use the downloadURL as needed */}
+											<img src={fileIconType(url)} alt="" className="w-[100px]" />
+											<div></div>
+											<a
+												href={url}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="text-xs font font-semibold text-primaryColor pt-2">
+												Download File {urlIndex + 1}
+											</a>
+										</div>
+									))}
+							</div>
+						</div>
+						<div>
+							<h1 className="text-lg font-bold text-primaryColor">Quizzes</h1>
+							<div className="text-primaryColor">
+								<hr className="border border-primaryColor" />
+							</div>
+							<div className="pt-2">
+								<p className="text-xs text-primaryColor">Quizzes created by the user</p>
+							</div>
+							<div className="py-5 flex items-center gap-5"></div>
+						</div>
+						<div>
+							<h1 className="text-lg font-bold text-primaryColor">
+								Links and other resources
+							</h1>
+							<div className="text-primaryColor">
+								<hr className="border border-primaryColor" />
+							</div>
+							<div className="pt-2">
+								<p className="text-xs text-primaryColor">
+									Links and other resources to study on
+								</p>
+							</div>
+							<div className="pt-5 flex flex-wrap gap-2"></div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div className="ml-[220px]">
-				<div className="p-5">
-					<div>
-						<h1 className="text-lg font-bold text-primaryColor">Reviewers</h1>
-						<div className="text-primaryColor">
-							<hr className="border border-primaryColor" />
-						</div>
-						<div className="pt-2">
-							<p className="text-xs text-primaryColor">
-								Reviewers posted by the creator
-							</p>
-						</div>
-						<div className="py-5 flex flex-wrap items-center gap-5">
-							{courseInfo.fileDownloadURLs &&
-								courseInfo.fileDownloadURLs.map((url, urlIndex) => (
-									<div
-										key={urlIndex}
-										className="h-56 w-56 shadow flex flex-col items-center justify-center">
-										{/* Display or use the downloadURL as needed */}
-										<img src={fileIconType(url)} alt="" className="w-[100px]" />
-										<div></div>
-										<a
-											href={url}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="text-xs font font-semibold text-primaryColor pt-2">
-											Download File {urlIndex + 1}
-										</a>
-									</div>
-								))}
-						</div>
-					</div>
-					<div>
-						<h1 className="text-lg font-bold text-primaryColor">Quizzes</h1>
-						<div className="text-primaryColor">
-							<hr className="border border-primaryColor" />
-						</div>
-						<div className="pt-2">
-							<p className="text-xs text-primaryColor">Quizzes created by the user</p>
-						</div>
-						<div className="py-5 flex items-center gap-5"></div>
-					</div>
-					<div>
-						<h1 className="text-lg font-bold text-primaryColor">
-							Links and other resources
-						</h1>
-						<div className="text-primaryColor">
-							<hr className="border border-primaryColor" />
-						</div>
-						<div className="pt-2">
-							<p className="text-xs text-primaryColor">
-								Links and other resources to study on
-							</p>
-						</div>
-						<div className="pt-5 flex flex-wrap gap-2"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</>
-);
+		</>
+	);
 };

@@ -149,7 +149,6 @@ export const findCourse = async (req, res) => {
 // delete course module
 export const DeleteCourse = async (req, res) => {
 	const { id } = req.params;
-	console.log("Course ID: ", id);
 	try {
 		const CourseData = await dbConnection.query(
 			"delete from courses where course_id = $1",
@@ -163,5 +162,15 @@ export const DeleteCourse = async (req, res) => {
 		return res.status(200).json({ message: "Course deleted successfully" });
 	} catch (err) {
 		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+// save functionality
+
+export const SaveCourse = async (req, res) => {
+	const { id } = req.params;
+	try {
+	} catch (err) {
+		return res.status(500).json({ messagae: "Internal server error" });
 	}
 };

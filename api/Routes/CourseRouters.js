@@ -3,6 +3,7 @@ import {
 	CreateCourse,
 	DeleteCourse,
 	RetrieveCourse,
+	SaveCourse,
 	UserCourses,
 	getCourseInfo,
 } from "../Controllers/CourseModule.js";
@@ -31,6 +32,7 @@ router.post(
 router.get("/retrieve-course", RetrieveCourse);
 router.post("/user-courses", UserCourses);
 router.get("/get-course-info/:id", getCourseInfo);
+router.get("/save/:id", SaveCourse);
 router.delete("/delete-course/:id", DeleteCourse);
 
 export { router as CourseRouter };

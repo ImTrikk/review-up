@@ -3,26 +3,21 @@ import path from "path";
 import { firebaseStorage } from "../Database/firebase.js";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 
-
 const storage = multer.memoryStorage();
 export const upload = multer({
 	storage: storage,
 	limits: { fileSize: 50 * 1024 * 1024 },
 });
 
-
 export const firebaseUpload = async (req, res, next) => {
 	try {
 		const batchID = req.batchID;
 		const files = req.files;
 
-		console.log("files: ", files);
-
 		// Get a reference to the Firebase Storage bucket
 		const storage = getStorage(); // Pass the Firebase app
 		for (let i = 0; i < files.length; i++) {
 			const file = files[i];
-			console.log("File: ", file);
 			const filename = batchID;
 			if (!file.buffer || file.size === 0) {
 				// Skip this file and log an error
@@ -31,8 +26,6 @@ export const firebaseUpload = async (req, res, next) => {
 			}
 
 			const contentType = file.mimetype;
-
-			console.log("Content Type: ", contentType);
 			const ext = path.extname(contentType).toLowerCase();
 
 			// Create a reference to the file in Firebase Storage
