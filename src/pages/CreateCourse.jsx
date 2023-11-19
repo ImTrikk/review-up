@@ -380,6 +380,14 @@ export const CreateCourse = () => {
 										</form>
 										<div className="w-[600px] h-auto bg-white shadow rounded">
 											<DragDropFile onFileChange={(files) => onFileChange(files)} />
+											{fileListError ? (
+												<div className="pt-1 ml-5 text-xs text-red-600 flex items-center gap-1">
+													<BiSolidErrorCircle />
+													<p>This field is required</p>
+												</div>
+											) : (
+												""
+											)}
 										</div>
 									</div>
 									<div className=" flex items-center justify-end mt-10">
