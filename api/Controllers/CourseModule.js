@@ -95,8 +95,6 @@ export const getCourseInfo = async (req, res) => {
 
 		const fileId = courseInfoFound.file_id;
 
-		console.log("FileID: ", fileId);
-
 		const uploadRef = ref(firebaseStorage, "uploads");
 
 		const result = await list(uploadRef);

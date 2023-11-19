@@ -17,6 +17,7 @@ export const Login = () => {
 	const userData = { email: email, password: password };
 
 	const handleLoginRequest = async (event) => {
+		loadingBar.current.continuousStart(60);
 		event.preventDefault();
 		try {
 			let response = await fetch(buildUrl("/auth/send-otp-login"), {
@@ -30,7 +31,6 @@ export const Login = () => {
 				}),
 			});
 			if (response.ok) {
-				loadingBar.current.continuousStart(60);
 				setTimeout(() => {
 					loadingBar.current.complete();
 					setTimeout(() => {
