@@ -89,11 +89,11 @@ export const CreateCourse = () => {
 			}, 5000);
 		}
 		if (
-			!course_code == "" &&
-			!course_title == "" &&
-			!course_program == "" &&
-			!description == "" &&
-			!headerUrl == "" &&
+			!course_code == "" ||
+			!course_title == "" ||
+			!course_program == "" ||
+			!description == "" ||
+			!headerUrl == "" ||
 			!fileList.length === 0
 		) {
 			const formData = new FormData();
