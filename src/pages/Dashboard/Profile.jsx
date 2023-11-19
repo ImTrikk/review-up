@@ -24,12 +24,17 @@ export const Profile = () => {
 		<>
 			<div className="">
 				<SideBar />
-				<div className="bg-primaryColor w-full h-[140px]">
-					<div className="ml-[220px] h-full grid items-end">
+				<div className="bg-primaryColor w-full h-[140px] relative">
+					<img
+						src="/static/images/header.png"
+						alt=""
+						className="absolute w-full h-[140px]"
+					/>
+					<div className="ml-[220px] h-full grid items-end absolute z-10">
 						<div className="pb-10">
-							<h1 className="text-white text-3xl font-bold">My Profile</h1>
+							<h1 className="text-white text-3xl font-bold">Profile</h1>
 							<p className="text-white text-sm">
-								Keep track on the save reviewers to keep learning and improving
+								Update your account profile
 							</p>
 						</div>
 					</div>

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { buildUrl } from "../../utils/buildUrl.js";
-import { ToastContainer, toast } from "react-toastify";
 import {
 	PiWarningCircleFill,
 	PiEyeBold,
@@ -10,6 +9,7 @@ import {
 } from "react-icons/pi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import LoadingBar from "react-top-loading-bar";
 import { Tooltip } from "react-tooltip";
 

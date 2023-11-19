@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { SideBar } from "../components/Navbar/DashboardComponents/SideBar";
 import { BsArrowUpRightCircleFill } from "react-icons/bs";
 import { buildUrl } from "../utils/buildUrl";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { EditCourseModal } from "../components/Modal/EditCourseModal";
-
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 //import icons
 
 import pdf from "/static/icons/PDF.png";
@@ -66,6 +67,22 @@ export const MyCourseModule = () => {
 		console.log("Saving edited data:", editedData);
 	};
 
+	const navigator = useNavigate();
+
+	const handleDelete = async () => {
+		await fetch(buildUrl(`/course/delete-course/${id}`), {
+			method: "DELETE",
+		}).then((res) => {
+			return res.json().then((data) => {
+				console.log(data);
+				toast.success(data.message);
+				setTimeout(() => {
+					navigator("/my-courses");
+				}, 5000);
+			});
+		});
+	};
+
 	useEffect(() => {
 		getCourseInfo();
 	}, []);
@@ -74,6 +91,7 @@ export const MyCourseModule = () => {
 		<>
 			<div className="">
 				<SideBar />
+				<ToastContainer autoClose={2000} />
 				{isEditOpen ? (
 					<EditCourseModal
 						onClose={closeEditModal}
@@ -83,9 +101,14 @@ export const MyCourseModule = () => {
 				) : (
 					""
 				)}
-				<div className="bg-primaryColor w-full h-[140px] flex justify-between	">
-					<div className="ml-[240px] h-full grid items-end">
-						<div className="pb-10">
+				<div className="bg-primaryColor w-full h-[140px] relative">
+					<img
+						src="/static/images/header.png"
+						alt=""
+						className="absolute w-full h-[140px]"
+					/>
+					<div className="w-full h-full flex justify-between items-center absolute z-10">
+						<div className="ml-[220px]">
 							<h1 className="text-white text-3xl font-bold">
 								My Course - {courseInfo.courseInfoFound?.course_code}
 							</h1>
@@ -93,17 +116,22 @@ export const MyCourseModule = () => {
 								{courseInfo.courseInfoFound?.description}
 							</p>
 						</div>
-					</div>
-					<div className="mt-auto mr-20 pb-5">
-						<button
-							onClick={openEditModal}
-							className="border border-white h-10 rounded px-5 text-white text-xs">
-							Edit
-						</button>
+						<div className="mt-auto mr-12	 pb-5 flex gap-2">
+							<button
+								onClick={openEditModal}
+								className="border border-white h-10 rounded px-5 text-white text-xs">
+								Edit
+							</button>
+							<button
+								onClick={handleDelete}
+								className="bg-red-500 h-10 rounded px-5 text-white text-xs">
+								Delete Course
+							</button>
+						</div>
 					</div>
 				</div>
-				<div className="ml-[220px]">
-					<div className="p-5">
+				<div className="ml-[200px]">
+					<div className="p-8">
 						<div>
 							<h1 className="text-lg font-bold text-primaryColor">Reviewers</h1>
 							<div className="text-primaryColor">

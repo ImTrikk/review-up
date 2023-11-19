@@ -37,7 +37,7 @@ export const SideBar = () => {
 
 	return (
 		<>
-			<div className="fixed bg-white h-screen w-[200px] shadow-lg">
+			<div className="fixed bg-white h-screen w-[200px] shadow-lg z-40">
 				<ToastContainer />
 				<div className="absolute right-0 left-0 flex items-center justify-center"></div>
 				<div className="relative h-screen">

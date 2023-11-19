@@ -17,7 +17,7 @@ export const EditCourseModal = ({ onClose, onSave, initialData }) => {
 	return (
 		<>
 			<div
-				className={`fixed top-0 left-0 w-full h-screen flex items-center justify-center `}>
+				className={`fixed z-40 top-0 left-0 w-full h-screen flex items-center justify-center `}>
 				<div
 					className="fixed top-0 left-0 w-full h-full backdrop-filter backdrop-blur-sm"
 					style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}></div>

@@ -1,6 +1,7 @@
 import express from "express";
 import {
 	CreateCourse,
+	DeleteCourse,
 	RetrieveCourse,
 	UserCourses,
 	getCourseInfo,
@@ -30,5 +31,6 @@ router.post(
 router.get("/retrieve-course", RetrieveCourse);
 router.post("/user-courses", UserCourses);
 router.get("/get-course-info/:id", getCourseInfo);
-	
+router.delete("/delete-course/:id", DeleteCourse);
+
 export { router as CourseRouter };

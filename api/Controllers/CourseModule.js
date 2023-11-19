@@ -70,7 +70,7 @@ export const getCourseInfo = async (req, res) => {
 		);
 		const courseInfoFound = courseInfo.rows[0];
 
-		if (!courseInfo) {
+		if (!courseInfoFound) {
 			return res.status(400).json({ message: "Course info doest not exist" });
 		}
 
@@ -147,4 +147,21 @@ export const findCourse = async (req, res) => {
 };
 
 // delete course module
-export const DeleteCourse = async () => {}
+export const DeleteCourse = async (req, res) => {
+	const { id } = req.params;
+	console.log("Course ID: ", id);
+	try {
+		const CourseData = await dbConnection.query(
+			"delete from courses where course_id = $1",
+			[id],
+		);
+		// Check if the course was found and deleted
+		if (CourseData.rowCount === 0) {
+			return res.status(404).json({ message: "Course not found" });
+		}
+
+		return res.status(200).json({ message: "Course deleted successfully" });
+	} catch (err) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
