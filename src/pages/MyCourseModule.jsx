@@ -74,11 +74,15 @@ export const MyCourseModule = () => {
 			method: "DELETE",
 		}).then((res) => {
 			return res.json().then((data) => {
-				console.log(data);
-				toast.success(data.message);
-				setTimeout(() => {
-					navigator("/my-courses");
-				}, 5000);
+				if (res.ok) {
+					console.log(data);
+					setTimeout(() => {
+						toast.success(data.message);
+						navigator("/my-courses");
+					}, 5000);
+				} else {
+					toast.error(data.message);
+				}
 			});
 		});
 	};

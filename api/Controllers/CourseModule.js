@@ -1,5 +1,5 @@
 import { dbConnection } from "../Database/database.js";
-import { list, getDownloadURL, ref } from "firebase/storage";
+import { list, getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { firebaseStorage } from "../Database/firebase.js";
 
 export const CreateCourse = async (req, res) => {
@@ -146,10 +146,38 @@ export const findCourse = async (req, res) => {
 	}
 };
 
-// delete course module
 export const DeleteCourse = async (req, res) => {
 	const { id } = req.params;
+	console.log(id);
 	try {
+		const CourseInfo = await dbConnection.query(
+			"select file_id from courses where course_id = $1",
+			[id],
+		);
+
+		const fileID = CourseInfo.rows[0]?.file_id;
+		console.log("fileID: ", fileID);
+
+		if (fileID) {
+			const storageRef = ref(firebaseStorage, "uploads/");
+			const result = await list(storageRef);
+
+			// Use for... loop to handle asynchronous operations
+			for (const itemRef of result.items) {
+				// Check if the file name includes the fileID
+				if (itemRef.name.includes(fileID)) {
+					try {
+						// Delete the file
+						await deleteObject(itemRef);
+						console.log(`File deleted successfully: ${itemRef.name}`);
+					} catch (error) {
+						console.error("Error deleting file:", error);
+						return res.status(404).json({ message: "Could not delete files" });
+					}
+				}
+			}
+		}
+
 		const CourseData = await dbConnection.query(
 			"delete from courses where course_id = $1",
 			[id],
@@ -161,6 +189,7 @@ export const DeleteCourse = async (req, res) => {
 
 		return res.status(200).json({ message: "Course deleted successfully" });
 	} catch (err) {
+		console.log(err);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };

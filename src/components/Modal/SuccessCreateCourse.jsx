@@ -12,7 +12,7 @@ export const SuccessCreateCourse = () => {
 
 	return (
 		<>
-			<div className="bg-white shadow w-[700px] h-[500px] rounded p-5 absolute">
+			<div className="bg-white shadow w-[700px] h-[500px] rounded p-5 z-50 absolute">
 				<div className="flex items-center justify-center">
 					<div className="pt-5">
 						<div>
