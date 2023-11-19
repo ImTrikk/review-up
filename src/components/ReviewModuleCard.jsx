@@ -8,20 +8,19 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 
 	const getCourseInfo = async () => {
 		try {
-			const res = await fetch(buildUrl(`/course/retrieve-course`), {
+			const response = await fetch(buildUrl(`/course/retrieve-course`), {
 				method: "GET",
 			});
 
-			const data = await res.json();
+			const { coursesWithCreator, message } = await response.json();
 
-			if (res.ok) {
-				setCourseInfo(data.allCourses.rows);
-			} else if (res.status === 400) {
+			if (response.ok) {
+				setCourseInfo(coursesWithCreator);
+			} else if (response.status === 400) {
 				onIsEmptyChange(
 					data && data.allCourses && data.allCourses.rows.length === 0,
 				);
 			} else {
-				console.log(error);
 				toast.error("Internal server error");
 			}
 		} catch (error) {
@@ -59,7 +58,7 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 									{course?.course_title}
 								</p>
 								<p className="text-xs text-gray-600">
-									By: {course?.first_name} {course?.last_name}
+									By: {course?.creatorName.first_name} {course?.creatorName.last_name}
 								</p>
 								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>

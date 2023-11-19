@@ -10,38 +10,30 @@ export const MyCourseCard = ({ handleIsEmpty }) => {
 	const user_id = localStorage.getItem("user_id");
 
 	const getCourseInfo = async () => {
-		await fetch(buildUrl(`/course/user-courses`), {
-			method: "post",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				user_id,
-			}),
-		}).then((res) => {
-			return res.json().then((data) => {
-				if (res.ok) {
-					setCourseInfo(data.userCourses.rows);
-				} else if (res.status === 400) {
-					handleIsEmpty(
-						data && data.userCourses && data.userCourses.rows.length === 0,
-					);
-				} else {
-					console.log(data);
-				}
+		try {
+			const response = await fetch(buildUrl(`/course/user-courses`), {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					user_id,
+				}),
 			});
-			// if (res.ok) {
-			// 	return res.json().then((data) => {
-			//
-			// 	});
-			// } else if (data.userCourses.rows.length === 0) {
-			//
-			// } else {
-			// 	return res.json().then((data) => {
-			// 		console.log(data);
-			// 	});
-			// }
-		});
+
+			const { coursesWithCreator, message } = await response.json();
+
+			if (response.ok) {
+				setCourseInfo(coursesWithCreator);
+			} else if (response.status === 400) {
+				handleIsEmpty(userCourses && userCourses.rows.length === 0);
+			} else {
+				// toast.error(message);
+				console.error("Error:", message);
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	useEffect(() => {
@@ -58,7 +50,10 @@ export const MyCourseCard = ({ handleIsEmpty }) => {
 						<div className="p-3">
 							<div className="rounded h-[140px]">
 								<img
-									src={course?.header_url}
+									src={
+										course?.header_url ||
+										"https://previews.123rf.com/images/artinspiring/artinspiring1805/artinspiring180500713/102430945-review-concept-illustration.jpg"
+									}
 									alt=""
 									className="rounded w-full h-[140px] overflow-clip"
 								/>
@@ -71,7 +66,7 @@ export const MyCourseCard = ({ handleIsEmpty }) => {
 									{course?.course_title}
 								</p>
 								<p className="text-xs text-gray-600">
-									By: {course?.first_name} {course?.last_name}
+									By: {course?.creatorName.first_name} {course?.creatorName.last_name}
 								</p>
 								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>
@@ -87,7 +82,6 @@ export const MyCourseCard = ({ handleIsEmpty }) => {
 						</div>
 					</div>
 				))}
-				
 			</div>
 		</>
 	);

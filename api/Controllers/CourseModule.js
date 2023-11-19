@@ -49,9 +49,33 @@ export const RetrieveCourse = async (req, res) => {
 			});
 		}
 
-		return res.status(200).json({ allCourses, message: "Courses found!" });
+		const coursesWithCreator = await Promise.all(
+			allCourses.rows.map(async (course) => {
+				const userId = course.user_id;
+
+				const courseCreator = await dbConnection.query(
+					"select first_name, last_name from users where user_id = $1",
+					[userId],
+				);
+
+				const creatorName = courseCreator.rows[0];
+
+				return {
+					...course,
+					creatorName: creatorName,
+				};
+			}),
+		);
+
+		return res.status(200).json({
+			coursesWithCreator,
+			message: "Found Courses",
+		});
+
+		// return res.status(200).json({ allCourses, message: "Courses found!" });
 	} catch (err) {
 		console.log(err);
+		return res.status(500).json({ message: "Internal Server Error" });
 	}
 };
 
@@ -70,6 +94,8 @@ export const getCourseInfo = async (req, res) => {
 		}
 
 		const fileId = courseInfoFound.file_id;
+
+		console.log("FileID: ", fileId);
 
 		const uploadRef = ref(firebaseStorage, "uploads");
 
@@ -107,14 +133,28 @@ export const UserCourses = async (req, res) => {
 			[user_id],
 		);
 
+		const userData = await dbConnection.query(
+			"select first_name, last_name from users where user_id = $1",
+			[user_id],
+		);
+		const creatorName = userData.rows[0];
+
 		if (userCourses.rows.length === 0) {
-			return res.status(400).json({ userCourses, messagae: "No create course!" });
+			return res.status(400).json({ message: "No create course!" });
 		}
 
-		return res.status(200).json({ userCourses, messagae: "User courses" });
+		const coursesWithCreator = userCourses.rows.map((course) => ({
+			...course,
+			creatorName: creatorName,
+		}));
+
+		return res.status(200).json({
+			coursesWithCreator,
+			message: "User courses",
+		});
 	} catch (err) {
 		console.log(err);
-		return res.status(500).json({ messagae: "Internal Server Error" });
+		return res.status(500).json({ message: "Internal Server Error" });
 	}
 };
 
