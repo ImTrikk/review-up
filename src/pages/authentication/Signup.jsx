@@ -501,7 +501,7 @@ export const Signup = () => {
 													}`}
 												/>
 												<div
-													class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 cursor-pointer"
+													className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 cursor-pointer"
 													onClick={() => setShowCPassword(!showCPassword)}>
 													{showCPassword ? <PiEyeBold /> : <PiEyeClosedBold />}
 												</div>

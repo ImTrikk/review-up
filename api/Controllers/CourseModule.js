@@ -9,17 +9,15 @@ export const CreateCourse = async (req, res) => {
 		course_title,
 		course_program,
 		description,
-		first_name,
-		last_name,
-		email,
 		user_id,
 		header_url,
 	} = req.body;
 
 	try {
+		//!
 		const newCourseQuery = `
-				INSERT INTO courses (course_code, course_title, course_program, description, first_name, last_name, email, user_id, file_id, header_url)
-				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+				INSERT INTO courses (course_code, course_title, course_program, description, user_id, file_id, header_url)
+				VALUES ($1, $2, $3, $4, $5, $6, $7)
 				RETURNING course_id;
 			`;
 		const courseResult = await dbConnection.query(newCourseQuery, [
@@ -27,9 +25,6 @@ export const CreateCourse = async (req, res) => {
 			course_title,
 			course_program,
 			description,
-			first_name,
-			last_name,
-			email,
 			user_id,
 			file_id,
 			header_url,
