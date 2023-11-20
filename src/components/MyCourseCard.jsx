@@ -74,8 +74,8 @@ export const MyCourseCard = ({ handleIsEmpty }) => {
 								<Link
 									key={course?.course_id}
 									to={`/my-course-module/${course?.course_id}`}>
-									<button className="bg-primaryColor text-xs 	text-white rounded h-8 px-2 ">
-										ReviewUP
+									<button className="bg-primaryColor text-xs 	text-white rounded h-8 px-4 ">
+										view
 									</button>
 								</Link>
 							</div>
