@@ -16,7 +16,6 @@ import png from "/static/icons/PNG.png";
 
 export const MyCourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
-	const [reviewers, setReviewers] = useState([]);
 	const [isEditOpen, setIsEditOpen] = useState(false);
 
 	const { id } = useParams();
@@ -25,13 +24,12 @@ export const MyCourseModule = () => {
 		try {
 			const response = await fetch(buildUrl(`/course/get-course-info/${id}`), {
 				method: "GET",
-			}).then((res) => {
-				return res.json().then((data) => {
-					if (res.ok) {
-						setCourseInfo(data);
-					}
-				});
 			});
+			const data = await response.json();
+			if (response.ok) {
+				console.log(data);
+				setCourseInfo(data);
+			}
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}

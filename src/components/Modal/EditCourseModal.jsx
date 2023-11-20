@@ -14,6 +14,16 @@ export const EditCourseModal = ({ onClose, onSave, initialData }) => {
 		setFileList(files);
 	};
 
+	const [formData, setFormData] = useState({
+		// Initialize with the existing data
+		course_code: initialData.course_code || "",
+		course_title: initialData.course_title || "",
+		course_program: initialData.course_program || "",
+		description: initialData.description || "",
+		header_url: initialData.header_url || "",
+		// Add more fields as needed
+	});
+
 	return (
 		<>
 			<div
@@ -34,19 +44,48 @@ export const EditCourseModal = ({ onClose, onSave, initialData }) => {
 							<div className="w-full space-y-4 p-5 flex flex-col">
 								<input
 									type="text"
-									className="border border-primaryColor w-full h-10 rounded px-4 outline-none	"
+									value={formData.course_code}
+									onChange={(e) =>
+										setFormData({ ...formData, course_code: e.target.value })
+									}
+									placeholder="Course Code"
+									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
 								/>
 								<input
 									type="text"
-									className="border border-primaryColor w-full h-10 rounded px-4 outline-none	"
+									value={formData.course_title}
+									onChange={(e) =>
+										setFormData({ ...formData, course_title: e.target.value })
+									}
+									placeholder="Course Title"
+									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
 								/>
 								<input
 									type="text"
-									className="border border-primaryColor w-full h-10 rounded px-4 outline-none	"
+									value={formData.course_program}
+									onChange={(e) =>
+										setFormData({ ...formData, course_program: e.target.value })
+									}
+									placeholder="Course Program"
+									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
 								/>
 								<input
 									type="text"
-									className="border border-primaryColor w-full h-10 rounded px-4 outline-none	"
+									value={formData.description}
+									onChange={(e) =>
+										setFormData({ ...formData, description: e.target.value })
+									}
+									placeholder="Description"
+									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
+								/>
+								<input
+									type="text"
+									value={formData.header_url}
+									onChange={(e) =>
+										setFormData({ ...formData, header_url: e.target.value })
+									}
+									placeholder="Header URL: use copy image address"
+									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
 								/>
 							</div>
 							<NotesDragDrop onFileChange={(files) => onFileChange(files)} />

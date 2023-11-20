@@ -289,13 +289,19 @@ export const CreateCourse = () => {
 																<option className="text-xs text-primaryColor">
 																	Select course program
 																</option>
-																<option value="it" className="text-xs text-primaryColor">
+																<option
+																	value="Information Technology"
+																	className="text-xs text-primaryColor">
 																	Information Technology
 																</option>
-																<option value="cs" className="text-xs text-primaryColor">
+																<option
+																	value="Computer Science"
+																	className="text-xs text-primaryColor">
 																	Computer Science
 																</option>
-																<option value="is" className="text-xs text-primaryColor">
+																<option
+																	value="Information System"
+																	className="text-xs text-primaryColor">
 																	Information System
 																</option>
 															</select>
