@@ -115,10 +115,11 @@ export const DragDropFile = (props) => {
 					Post reviewer with the file extensions [.pdf , doxc, doc, .pptx, .png,
 					.jpeg]
 				</p>
+				<p className="text-xs font-light text-primaryColor">Post only files less than 4.5 mb for the total payload size upload</p>
 			</div>
 			{fileList.length > 0 ? (
 				<div className="px-5 pb-5">
-					<p className="font-semibold text-sm text-gray-600">Ready to upload</p>
+					<p className="font-semibold text-xs text-gray-600 pt-2">Ready to upload</p>
 					{fileList.map((item, index) => (
 						<div key={index} className="pt-2 flex">
 							<img

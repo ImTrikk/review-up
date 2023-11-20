@@ -20,7 +20,7 @@ export const SavedCourses = () => {
 						alt=""
 						className="absolute w-full h-[140px]"
 					/>
-					<div className="ml-[220px] h-full grid items-end absolute z-10">
+					<div className="ml-[240px] h-full grid items-end absolute z-10">
 						<div className="pb-10">
 							<h1 className="text-white text-3xl font-bold">Saved</h1>
 							<p className="text-white text-sm">
@@ -29,7 +29,7 @@ export const SavedCourses = () => {
 						</div>
 					</div>
 				</div>
-				<div className="ml-[200px]">
+				<div className="ml-[210px]">
 					<div className="p-8">
 						{/* <h1 className="text-lg font-bold text-primaryColor">Saved courses</h1>
 						<div className="py-3">

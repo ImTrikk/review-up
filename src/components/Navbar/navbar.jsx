@@ -45,7 +45,7 @@ export const Navbar = () => {
 		<>
 			<div className="fixed w-full z-50">
 				<div className="bg-gradient-to-br from-primaryColor to-violet-300 p-2 inset-40">
-					<div className="flex items-center justify-between lg:max-w-7xl mx-36 2xl:mx-auto">
+					<div className="flex items-center justify-between lg:max-w-7xl mx-5 sm:mx-20 2xl:mx-auto">
 						<div className="w-[30px]">
 							<Link to="/">
 								<img
@@ -81,7 +81,7 @@ export const Navbar = () => {
 									<a href="#services">
 										<li className="text-sm">Services</li>
 									</a>
-									<a href="#contact">
+									<a href="#footer">
 										<li className="text-sm">Contact</li>
 									</a>
 								</ul>
@@ -113,7 +113,7 @@ export const Navbar = () => {
 									<a href="#services">
 										<li className="text-sm">Services</li>
 									</a>
-									<a href="#contact">
+									<a href="#footer">
 										<li className="text-sm">Contact</li>
 									</a>
 								</ul>

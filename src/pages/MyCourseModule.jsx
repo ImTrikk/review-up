@@ -37,9 +37,22 @@ export const MyCourseModule = () => {
 		}
 	};
 
+	const getFileNameFromUrl = (url) => {
+		const decodedUrl = decodeURIComponent(url);
+		const matches = decodedUrl.match(/\/([^\/?#]+)[^\/]*$/);
+
+		if (matches && matches.length > 1) {
+			const fileNameWithId = matches[1];
+			const fileNameWithoutId = fileNameWithId.replace(/^[^_]+_/, "");
+			return fileNameWithoutId;
+		}
+
+		return null;
+	};
+
 	const fileIconType = (url) => {
 		// Extract the filename from the URL
-		const filename = url.split("/").pop().split("?")[0];
+		const filename = getFileNameFromUrl(url);
 		const extension = filename.split(".").pop();
 
 		// You can add more file types and corresponding icons as needed
@@ -137,15 +150,6 @@ export const MyCourseModule = () => {
 				<div className="ml-[200px]">
 					<div className="p-8">
 						<div>
-							<h1 className="text-lg font-bold text-primaryColor">Reviewers</h1>
-							<div className="text-primaryColor">
-								<hr className="border border-primaryColor" />
-							</div>
-							<div className="pt-2">
-								<p className="text-xs text-primaryColor">
-									Reviewers posted by the creator
-								</p>
-							</div>
 							<div className="py-5 flex flex-wrap items-center gap-5">
 								{courseInfo.fileDownloadURLs &&
 									courseInfo.fileDownloadURLs.map((url, urlIndex) => (
@@ -160,7 +164,8 @@ export const MyCourseModule = () => {
 												target="_blank"
 												rel="noopener noreferrer"
 												className="text-xs font font-semibold text-primaryColor pt-2">
-												Download File {urlIndex + 1}
+												{getFileNameFromUrl(url)}
+												{/* {urlIndex + 1} */}
 											</a>
 										</div>
 									))}

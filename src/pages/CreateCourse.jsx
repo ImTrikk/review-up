@@ -5,7 +5,6 @@ import { useState } from "react";
 import { buildUrl } from "../utils/buildUrl";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LoadingBar from "react-top-loading-bar";
 import { FileUploader } from "react-drag-drop-files";
 import { DragDropFile } from "../components/DragDropFile";
 import { NotesDragDrop } from "../components/NotesDragDrop";
@@ -15,6 +14,8 @@ import { SessionNoticeModal } from "../components/Modal/SessionNoticeModal";
 import { SuccessCreateCourse } from "../components/Modal/SuccessCreateCourse";
 import { useNavigate } from "react-router-dom";
 import { BiSolidErrorCircle } from "react-icons/bi";
+import LoadingBar from "react-top-loading-bar";
+import { useRef } from "react";
 
 export const CreateCourse = () => {
 	const [course_code, setCourseCode] = useState("");
@@ -43,6 +44,8 @@ export const CreateCourse = () => {
 	const [headerError, setHeaderError] = useState(false);
 	const [fileListError, setFileListError] = useState(false);
 
+	const loadingBar = useRef(null);
+
 	const onFileChange = (files) => {
 		setFileList(files);
 	};
@@ -51,6 +54,8 @@ export const CreateCourse = () => {
 
 	const handleCreateCourse = async (e) => {
 		e.preventDefault();
+
+		loadingBar.current.continuousStart(50);
 
 		if (course_code == "") {
 			setCodeError(true);
@@ -111,6 +116,17 @@ export const CreateCourse = () => {
 				formData.append("file", file);
 			});
 
+			// Check file size
+			const maxSize = 4.5 * 1024 * 1024; // 4.5 MB in bytes
+			const totalSize = fileList.reduce((acc, file) => acc + file.size, 0);
+
+			if (totalSize > maxSize) {
+				toast.error("File size exceeds the limit (4.5 MB)", {
+					autoClose: 3000,
+				});
+				return;
+			}
+
 			try {
 				let response = await fetch(buildUrl("/course/create-course"), {
 					method: "POST",
@@ -120,21 +136,26 @@ export const CreateCourse = () => {
 				if (response.ok) {
 					console.log(data);
 					setSuccessModal(true);
+					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
-						setSuccessModal(false);
-						navigator("/dashboard");
-					}, 6000);
+						loadingBar.current.complete();
+						setTimeout(() => {
+							navigator("/my-courses");
+						}, 1200);
+					}, 1000);
 					toast.success("Course created!", {
 						autoClose: 3000,
 					});
 				} else {
 					console.log(data);
+					loadingBar.current.complete();
 					toast.error("There was a problem creating course", {
 						autoClose: 3000,
 					});
 				}
 			} catch (err) {
 				console.log(err);
+				loadingBar.current.complete();
 				toast.error("There was a problem making course ", {
 					autoClose: 3000,
 				});
@@ -150,6 +171,7 @@ export const CreateCourse = () => {
 		<>
 			<div className="relative">
 				<ToastContainer autoClose={3000} />
+				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<div
 					className={`fixed inset-0 flex items-center justify-center ${
 						successModal ? "z-10" : "hidden"

@@ -34,22 +34,35 @@ export const SavedCourseModule = () => {
 		}
 	};
 
-	const fileIconType = (url) => {
-		// Extract the filename from the URL
-		const filename = url.split("/").pop().split("?")[0];
-		const extension = filename.split(".").pop();
+		const getFileNameFromUrl = (url) => {
+			const decodedUrl = decodeURIComponent(url);
+			const matches = decodedUrl.match(/\/([^\/?#]+)[^\/]*$/);
 
-		// You can add more file types and corresponding icons as needed
-		const iconMappings = {
-			pdf: pdf,
-			doc: doc,
-			pptx: pptx,
-			jpg: jpg,
-			png: png,
+			if (matches && matches.length > 1) {
+				const fileNameWithId = matches[1];
+				const fileNameWithoutId = fileNameWithId.replace(/^[^_]+_/, "");
+				return fileNameWithoutId;
+			}
+
+			return null;
 		};
-		return iconMappings[extension];
-	};
 
+		const fileIconType = (url) => {
+			// Extract the filename from the URL
+			const filename = getFileNameFromUrl(url);
+			const extension = filename.split(".").pop();
+
+			// You can add more file types and corresponding icons as needed
+			const iconMappings = {
+				pdf: pdf,
+				doc: doc,
+				pptx: pptx,
+				jpg: jpg,
+				png: png,
+			};
+
+			return iconMappings[extension];
+		};
 
 	useEffect(() => {
 		getCourseInfo();
@@ -69,7 +82,7 @@ export const SavedCourseModule = () => {
 					<div className="w-full h-full flex justify-between items-center absolute z-10">
 						<div className="ml-[220px]">
 							<h1 className="text-white text-3xl font-bold">
-							{courseInfo.courseInfoFound?.course_code}
+								{courseInfo.courseInfoFound?.course_code}
 							</h1>
 							<p className="text-white text-sm">
 								{courseInfo.courseInfoFound?.description}
@@ -103,7 +116,8 @@ export const SavedCourseModule = () => {
 												target="_blank"
 												rel="noopener noreferrer"
 												className="text-xs font font-semibold text-primaryColor pt-2">
-												Download File {urlIndex + 1}
+												{getFileNameFromUrl(url)}
+												{/* {urlIndex + 1} */}
 											</a>
 										</div>
 									))}

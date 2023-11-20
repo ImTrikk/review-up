@@ -30,16 +30,14 @@ export const Profile = () => {
 						alt=""
 						className="absolute w-full h-[140px]"
 					/>
-					<div className="ml-[220px] h-full grid items-end absolute z-10">
+					<div className="ml-[240px] h-full grid items-end absolute z-10">
 						<div className="pb-10">
 							<h1 className="text-white text-3xl font-bold">Profile</h1>
-							<p className="text-white text-sm">
-								Update your account profile
-							</p>
+							<p className="text-white text-sm">Update your account profile</p>
 						</div>
 					</div>
 				</div>
-				<div className="ml-[220px]">
+				<div className="ml-[240px]">
 					<div
 						className="max-w-[900px] h-[525px] bg-white rounded-[10px] shadow border
                          border-black border-opacity-10 mt-10 ml-2 pt-6 ">

@@ -44,6 +44,15 @@ export const SavedCourseCard = ({ onIsEmptyChange }) => {
 		}
 	};
 
+	const onClickRemove = (index) => {
+		// Update the heartFullArray for the clicked course
+		setHeartFullArray((prev) => {
+			const newArray = [...prev];
+			newArray[index] = !newArray[index];
+			return newArray;
+		});
+	};
+
 	useEffect(() => {
 		getCourseInfo();
 	}, []);
@@ -78,6 +87,12 @@ export const SavedCourseCard = ({ onIsEmptyChange }) => {
 								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>
 							<div className="flex items-center gap-2 justify-end mt-2">
+								<button
+									key={course?.course_id}
+									onClick={() => onClickRemove(index)}
+									className="text-red-500">
+									{heartFullArray[index] ? <FaHeart size={24} /> : <CiHeart size={24} />}
+								</button>
 								<Link
 									key={course?.course_id}
 									to={`/saved-course-module/${course?.course_id}`}>
