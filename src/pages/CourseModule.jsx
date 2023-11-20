@@ -108,7 +108,7 @@ export const CourseModule = () => {
 									))}
 							</div>
 						</div>
-						<div>
+						{/* <div>
 							<h1 className="text-lg font-bold text-primaryColor">Quizzes</h1>
 							<div className="text-primaryColor">
 								<hr className="border border-primaryColor" />
@@ -131,7 +131,7 @@ export const CourseModule = () => {
 								</p>
 							</div>
 							<div className="pt-5 flex flex-wrap gap-2"></div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

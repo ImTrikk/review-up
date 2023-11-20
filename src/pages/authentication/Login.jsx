@@ -17,40 +17,54 @@ export const Login = () => {
 	const userData = { email: email, password: password };
 
 	const handleLoginRequest = async (event) => {
-		loadingBar.current.continuousStart(60);
-		event.preventDefault();
-		try {
-			let response = await fetch(buildUrl("/auth/send-otp-login"), {
-				method: "POST",
-				headers: {
-					"Content-type": "application/json",
-				},
-				body: JSON.stringify({
-					email,
-					password,
-				}),
-			});
-			if (response.ok) {
-				setTimeout(() => {
-					loadingBar.current.complete();
+		if (email !== "" || password !== "") {
+			loadingBar.current.continuousStart(60);
+			event.preventDefault();
+
+			try {
+				let response = await fetch(buildUrl("/auth/send-otp-login"), {
+					method: "POST",
+					headers: {
+						"Content-type": "application/json",
+					},
+					body: JSON.stringify({
+						email,
+						password,
+					}),
+				});
+
+				if (response.ok) {
 					setTimeout(() => {
-						navigator("/verify", { state: { userData, endpoint } });
-					}, 1200);
-				}, 1000);
-			} else {
-				if (response.status === 400) {
-					const data = await response.json();
-					if (data.message === "User does not exist") {
-						toast.error("User does not exist");
-					}
-					if (data.message === "Wrong password") {
-						toast.error("Wrong password");
+						loadingBar.current.complete();
+						setTimeout(() => {
+							navigator("/verify", { state: { userData, endpoint } });
+						}, 1200);
+					}, 1000);
+				} else {
+					if (response.status === 400) {
+						const data = await response.json();
+						if (
+							data.message === "User does not exist" ||
+							data.message === "Wrong password"
+						) {
+							toast.error(data.message);
+						}
 					}
 				}
+			} catch (err) {
+				toast.error("Error fetching data");
+				console.log(err);
+			} finally {
+				// Reset loading bar to zero after either success or error
+				loadingBar.current.complete();
 			}
-		} catch (err) {
-			toast.error("Internal Server Error, please retry in another time	");
-			console.log(err);
+		} else {
+			if (password === "") {
+				toast.error("Password is required");
+			}
+			if (email === "") {
+				toast.error("Email is required");
+			}
 		}
 	};
 

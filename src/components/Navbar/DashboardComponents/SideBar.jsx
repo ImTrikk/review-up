@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { BsSave2 } from "react-icons/bs";
 import { BsJournalBookmarkFill } from "react-icons/bs";
@@ -11,23 +11,30 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { buildUrl } from "../../../utils/buildUrl";
 import { BiHomeAlt2 } from "react-icons/bi";
+import LoadingBar from "react-top-loading-bar";
 
 export const SideBar = () => {
 	const navigate = useNavigate();
+	const loadingBar = useRef(null);
 
 	const handleLogout = async () => {
-		toast.info("Logging out...");
-
+		loadingBar.current.continuousStart(60);
 		setTimeout(async () => {
 			await fetch(buildUrl("/auth/logout"), {
 				method: "DELETE",
 			}).then((res) => {
 				if (res.ok) {
+					setTimeout(() => {
+						loadingBar.current.complete();
+						setTimeout(() => {
+							navigator("/verify", { state: { userData, endpoint } });
+						}, 1200);
+					}, 1000);
 					toast.success("Success logout!");
 					localStorage.clear();
 					setTimeout(() => {
 						navigate("/");
-					}, 5000);
+					}, 2000);
 				} else {
 					toast.error("Internal server error");
 				}
@@ -39,6 +46,7 @@ export const SideBar = () => {
 		<>
 			<div className="fixed bg-white h-screen w-[200px] shadow-lg z-20">
 				<ToastContainer />
+				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<div className="absolute right-0 left-0 flex items-center justify-center"></div>
 				<div className="relative h-screen">
 					<div className="flex items-center gap-2 p-10">

@@ -53,6 +53,7 @@ export const CodeVerification = () => {
 
 	// send data to server side
 	const handleVerifyCode = async () => {
+		loadingBar.current.continuousStart(50);
 		try {
 			// this should go to the TwoFactorAtuh endpoint
 			await fetch(buildUrl(`/auth${reqEndpoint}`), {
@@ -93,7 +94,6 @@ export const CodeVerification = () => {
 								progress: undefined,
 								theme: "light",
 							});
-							loadingBar.current.continuousStart(50);
 							setTimeout(() => {
 								loadingBar.current.complete();
 								setTimeout(() => {
@@ -149,7 +149,7 @@ export const CodeVerification = () => {
 		}
 	};
 
-		useEffect(() => {
+	useEffect(() => {
 		const timer = setInterval(() => {
 			setCountdown((prevCountdown) => {
 				if (prevCountdown === 0) {

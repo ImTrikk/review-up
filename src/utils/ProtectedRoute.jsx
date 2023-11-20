@@ -48,7 +48,7 @@ export const ProtectedRoutes = () => {
 			<div className="flex items-center justify-center w-full h-screen">
 				<ToastContainer />
 				<div>
-					<img src="/static/images/loading.jpg" alt="" className="w-[600px]"/>
+					<img src="/static/images/loading.jpg" alt="" className="w-[600px]" />
 				</div>
 			</div>
 		);
