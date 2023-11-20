@@ -188,7 +188,6 @@ export const DeleteCourse = async (req, res) => {
 		);
 
 		const fileID = CourseInfo.rows[0]?.file_id;
-		console.log("fileID: ", fileID);
 
 		if (fileID) {
 			const storageRef = ref(firebaseStorage, "uploads/");

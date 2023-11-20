@@ -89,12 +89,12 @@ export const CreateCourse = () => {
 			}, 5000);
 		}
 		if (
-			!course_code == "" ||
-			!course_title == "" ||
-			!course_program == "" ||
-			!description == "" ||
-			!headerUrl == "" ||
-			!fileList.length === 0
+			course_code !== "" &&
+			course_title !== "" &&
+			course_program !== "" &&
+			description !== "" &&
+			headerUrl !== "" &&
+			fileList.length !== 0
 		) {
 			const formData = new FormData();
 			formData.append("course_code", course_code);
@@ -124,22 +124,32 @@ export const CreateCourse = () => {
 						setSuccessModal(false);
 						navigator("/dashboard");
 					}, 6000);
-					toast.success("Course created!");
+					toast.success("Course created!", {
+						autoClose: 3000,
+					});
 				} else {
 					console.log(data);
-					toast.error("There was a problem creating course");
+					toast.error("There was a problem creating course", {
+						autoClose: 3000,
+					});
 				}
 			} catch (err) {
 				console.log(err);
-				toast.error("There was a problem making course ");
+				toast.error("There was a problem making course ", {
+					autoClose: 3000,
+				});
 			}
+		} else {
+			toast.error("Fields are required!", {
+				autoClose: 3000,
+			});
 		}
 	};
 
 	return (
 		<>
 			<div className="relative">
-				<ToastContainer />
+				<ToastContainer autoClose={3000} />
 				<div
 					className={`fixed inset-0 flex items-center justify-center ${
 						successModal ? "z-10" : "hidden"
