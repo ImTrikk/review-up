@@ -26,6 +26,7 @@ const Dashboard = () => {
 					/>
 					<div className="ml-[240px] h-full grid items-end absolute z-10">
 						<div className="pb-10">
+							<p className="text-xs text-white">Hello, {first_name}</p>
 							<h1 className="text-white text-3xl font-bold">Dashboard</h1>
 							<p className="text-white text-sm">
 								Keep track on the save reviewers to keep learning and improving
