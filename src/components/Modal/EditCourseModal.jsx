@@ -53,11 +53,16 @@ export const EditCourseModal = ({ onClose, onSave, initialData }) => {
 						</div>
 						<QuizModal />
 					</form>
-					<div className="flex justify-end">
+					<div className="flex justify-end gap-2">
+						<button
+							onClick={onClose}
+							className="mt-4 border border-red-500 text-red-500 rounded px-4 py-2 text-xs">
+							cancel
+						</button>
 						<button
 							onClick={handleSubmitUpdate}
 							className="mt-4 bg-blue-500 text-white text-xs px-4 py-2 rounded">
-							Update
+							update
 						</button>
 					</div>
 				</div>
