@@ -10,7 +10,7 @@ export const Heropage = () => {
 	};
 	return (
 		<div id="home">
-			<div className="md:mx-10 mx-20 lg:mx-20 xl:mx-36 2xl:mx-auto flex justify-center">
+			<div className="md:mx-10 mx-20 lg:max-w-7xl xl:mx-36 2xl:mx-auto flex justify-center">
 				<div className="flex flex-col-reverse md:flex-row items-center md:items-center md:h-screen">
 					<div className="w-full md:w-[362px] lg:w-1/2 pt-0 md:pt-[192px] lg:pt-0">
 						<h1 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl  font-extrabold">
