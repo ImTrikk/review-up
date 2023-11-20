@@ -283,3 +283,20 @@ export const RetrieveSavedCourse = async (req, res) => {
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
+
+export const RemoveSavedCourse = async (req, res) => {
+	const { course_id, user_id } = req.params;
+	try {
+		const removeSave = await dbConnection.query(
+			"delete from saved_courses where course_id = $1 and user_id = $2",
+			[course_id, user_id],
+		);
+		if (removeSave.rowCount > 0) {
+			return res.status(200).json({ message: "Course removed successfully" });
+		} else {
+			return res.status(404).json({ message: "Course not found" });
+		}
+	} catch (err) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};

@@ -2,15 +2,13 @@ import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 import { Link, useParams } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
-import { CiHeart } from "react-icons/ci";
-import { FaHeart } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa6";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const SavedCourseCard = ({ onIsEmptyChange }) => {
 	const [savedCourseInfo, setCourseInfo] = useState([]);
-	const [heartFullArray, setHeartFullArray] = useState([]);
 
 	const user_id = localStorage.getItem("user_id");
 
@@ -44,13 +42,34 @@ export const SavedCourseCard = ({ onIsEmptyChange }) => {
 		}
 	};
 
-	const onClickRemove = (index) => {
-		// Update the heartFullArray for the clicked course
-		setHeartFullArray((prev) => {
-			const newArray = [...prev];
-			newArray[index] = !newArray[index];
-			return newArray;
-		});
+	const onClickRemove = async (course_id, index) => {
+		try {
+			let response = await fetch(
+				buildUrl(`/course/remove-saved/${course_id}/${user_id}`),
+				{
+					method: "DELETE",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				},
+			);
+			const data = await response.json();
+			if (response.ok) {
+				// Course successfully removed, you may want to update your UI accordingly
+				console.log("Course removed successfully");
+				toast.success("Course removed successfully", {
+					autoClose: 3000
+				});
+				setTimeout(() => {
+					window.location.reload();
+				}, 3000);
+			} else {
+				console.log(data.message);
+				console.log("Failed to remove course");
+			}
+		} catch (err) {
+			console.error("Error:", err);
+		}
 	};
 
 	useEffect(() => {
@@ -88,10 +107,10 @@ export const SavedCourseCard = ({ onIsEmptyChange }) => {
 							</div>
 							<div className="flex items-center gap-2 justify-end mt-2">
 								<button
-									key={course?.course_id}
-									onClick={() => onClickRemove(index)}
+									key={index}
+									onClick={() => onClickRemove(course.course_id, index)}
 									className="text-red-500">
-									{heartFullArray[index] ? <FaHeart size={24} /> : <CiHeart size={24} />}
+									<FaTrash />
 								</button>
 								<Link
 									key={course?.course_id}
