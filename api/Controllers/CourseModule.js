@@ -201,7 +201,6 @@ export const DeleteCourse = async (req, res) => {
 					try {
 						// Delete the file
 						await deleteObject(itemRef);
-						console.log(`File deleted successfully: ${itemRef.name}`);
 					} catch (error) {
 						console.error("Error deleting file:", error);
 						return res.status(404).json({ message: "Could not delete files" });
@@ -227,11 +226,63 @@ export const DeleteCourse = async (req, res) => {
 };
 
 // save functionality
-
 export const SaveCourse = async (req, res) => {
-	const { id } = req.params;
+	const { id, user_id } = req.body;
 	try {
+		const checkCourseID = await dbConnection.query(
+			"select * from saved_courses where course_id = $1",
+			[id],
+		);
+
+		if (checkCourseID.rows.length > 0) {
+			return res.status(400).json({ message: "Already saved course" });
+		}
+
+		const save = await dbConnection.query(
+			"insert into saved_courses (user_id, course_id) values ($1, $2)",
+			[user_id, id],
+		);
+
+		return res.status(201).json({ message: "Course saved!" });
 	} catch (err) {
-		return res.status(500).json({ messagae: "Internal server error" });
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+export const RetrieveSavedCourse = async (req, res) => {
+	const { user_id } = req.body;
+
+	try {
+		const saveCourseData = await dbConnection.query(
+			"SELECT * FROM saved_courses WHERE user_id = $1",
+			[user_id],
+		);
+
+		const courseIDs = saveCourseData.rows.map((row) => row.course_id);
+		console.log("Course IDs: ", courseIDs);
+
+		const courseData = await dbConnection.query(
+			"SELECT * FROM courses WHERE course_id = ANY($1::int[])",
+			[courseIDs],
+		);
+
+		const userIDs = courseData.rows.map((row) => row.user_id);
+		const userData = await dbConnection.query(
+			"SELECT user_id, first_name, last_name FROM users WHERE user_id = ANY($1::int[])",
+			[userIDs],
+		);
+
+		const coursesWithUsernames = courseData.rows.map((course) => {
+			const user = userData.rows.find((user) => user.user_id === course.user_id);
+			return {
+				...course,
+				authorName: user ? user.first_name + " " + user.last_name : null,
+			};
+		});
+
+		return res.status(200).json({ coursesWithUsernames });
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ message: "Internal server error" });
 	}
 };

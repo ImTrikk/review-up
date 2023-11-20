@@ -3,6 +3,7 @@ import {
 	CreateCourse,
 	DeleteCourse,
 	RetrieveCourse,
+	RetrieveSavedCourse,
 	SaveCourse,
 	UserCourses,
 	getCourseInfo,
@@ -32,7 +33,8 @@ router.post(
 router.get("/retrieve-course", RetrieveCourse);
 router.post("/user-courses", UserCourses);
 router.get("/get-course-info/:id", getCourseInfo);
-router.get("/save/:id", SaveCourse);
+router.post("/save", SaveCourse);
+router.post("/retrieve-save", RetrieveSavedCourse);
 router.delete("/delete-course/:id", DeleteCourse);
 
 export { router as CourseRouter };

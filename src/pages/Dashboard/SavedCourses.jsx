@@ -1,7 +1,15 @@
 import { CreateButton } from "../../components/CreateButton";
 import { SideBar } from "../../components/Navbar/DashboardComponents/SideBar";
+import { SavedCourseCard } from "../../components/SavedCourseCard";
+import { useState } from "react";
 
 export const SavedCourses = () => {
+	const [isEmpty, setIsEmpty] = useState("");
+
+	const handleIsEmpty = (value) => {
+		setIsEmpty(value);
+	};
+
 	return (
 		<>
 			<div className="">
@@ -26,6 +34,9 @@ export const SavedCourses = () => {
 						<h1 className="text-lg font-bold text-primaryColor">Saved courses</h1>
 						<div className="py-3">
 							<hr className="border-1 border-primaryColor" />
+						</div>
+						<div>
+							<SavedCourseCard handleIsEmpty={handleIsEmpty} />
 						</div>
 					</div>
 				</div>

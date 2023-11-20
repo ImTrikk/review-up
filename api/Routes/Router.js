@@ -35,6 +35,3 @@ router.post("/check-otp", CheckOTP);
 router.post("/reset-password", ResetPassword);
 
 export { router as UserRouter };
-
-
-

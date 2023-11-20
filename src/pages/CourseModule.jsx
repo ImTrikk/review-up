@@ -6,6 +6,9 @@ import { useParams } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 //import icons
 
 import pdf from "/static/icons/PDF.png";
@@ -16,9 +19,10 @@ import png from "/static/icons/PNG.png";
 
 export const CourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
-	const [reviewers, setReviewers] = useState([]);
+	const [heartFull, setHeartFull] = useState(false);
 
 	const { id } = useParams();
+	const user_id = localStorage.getItem("user_id");
 
 	const getCourseInfo = async () => {
 		try {
@@ -42,7 +46,6 @@ export const CourseModule = () => {
 
 		if (matches && matches.length > 1) {
 			const fileNameWithId = matches[1];
-			// Remove the initial identifier (e.g., "af2fe498-30a7-4317-a4cd-9284d53534f2_")
 			const fileNameWithoutId = fileNameWithId.replace(/^[^_]+_/, "");
 			return fileNameWithoutId;
 		}
@@ -67,9 +70,31 @@ export const CourseModule = () => {
 		return iconMappings[extension];
 	};
 
-	const [heartFull, setHeartFull] = useState(false);
+	const handleSaveCourse = async () => {
+		try {
+			let response = await fetch(buildUrl(`/course/save`), {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					id,
+					user_id,
+				}),
+			});
+			const data = await response.json();
+			if (response.ok) {
+				toast.success("Saved course");
+			} else {
+				toast.info(data.message);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	const onClickSave = () => {
+		handleSaveCourse();
 		setHeartFull(true);
 	};
 
@@ -81,6 +106,7 @@ export const CourseModule = () => {
 		<>
 			<div className="">
 				<SideBar />
+				<ToastContainer />
 				<div className="bg-primaryColor w-full h-[140px] relative">
 					<img
 						src="/static/images/header.png"

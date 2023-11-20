@@ -4,26 +4,35 @@ import { Link, useParams } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
-import { toast } from "react-toastify";
 
-export const ReviewModuleCard = ({ onIsEmptyChange }) => {
-	const [courseInfo, setCourseInfo] = useState([]);
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+export const SavedCourseCard = ({ onIsEmptyChange }) => {
+	const [savedCourseInfo, setCourseInfo] = useState([]);
 	const [heartFullArray, setHeartFullArray] = useState([]);
 
-	const { id } = useParams();
+	const user_id = localStorage.getItem("user_id");
 
 	const getCourseInfo = async () => {
 		try {
-			const response = await fetch(buildUrl(`/course/retrieve-course`), {
-				method: "GET",
+			const response = await fetch(buildUrl(`/course/retrieve-save`), {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					user_id,
+				}),
 			});
-			const { coursesWithCreator, message } = await response.json();
+
+			const { coursesWithUsernames, message } = await response.json();
+
 			if (response.ok) {
-				setCourseInfo(coursesWithCreator);
-				// Initialize the heartFullArray with false for each course
-				setHeartFullArray(Array(coursesWithCreator.length).fill(false));
+				setCourseInfo(coursesWithUsernames);
 			} else if (response.status === 400) {
-				toast.info(message)
+				console.log("In here");
+				toast.info(message);
 				onIsEmptyChange(
 					data && data.allCourses && data.allCourses.rows.length === 0,
 				);
@@ -34,15 +43,6 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 			console.error("Error fetching course information:", error);
 		}
 	};
-	
-	const onClickSave = (index) => {
-		// Update the heartFullArray for the clicked course
-		setHeartFullArray((prev) => {
-			const newArray = [...prev];
-			newArray[index] = !newArray[index];
-			return newArray;
-		});
-	};
 
 	useEffect(() => {
 		getCourseInfo();
@@ -51,7 +51,8 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 	return (
 		<>
 			<div className="flex flex-wrap gap-5">
-				{courseInfo.map((course, index) => (
+				<ToastContainer />
+				{savedCourseInfo.map((course, index) => (
 					<div
 						key={index}
 						className="border border-gray-200 w-[300px] rounded h-auto shadow-lg">
@@ -73,20 +74,12 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 								<p className="text-sm font-medium text-gray-600">
 									{course?.course_title}
 								</p>
-								<p className="text-xs text-gray-600">
-									By: {course?.creatorName.first_name} {course?.creatorName.last_name}
-								</p>
+								<p className="text-xs text-gray-600">By: {course?.authorName}</p>
 								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>
 							<div className="flex items-center gap-2 justify-end mt-2">
-								<button
-									key={course?.course_id}
-									onClick={() => onClickSave(index)}
-									className="text-red-500">
-									{heartFullArray[index] ? <FaHeart size={20} /> : <CiHeart size={24} />}
-								</button>
 								<Link
-									key={index}
+									key={course?.course_id}
 									to={`/course-module/${course?.course_id}`}>
 									<button className="bg-primaryColor text-xs text-white rounded h-7 px-2 ">
 										ReviewUP
