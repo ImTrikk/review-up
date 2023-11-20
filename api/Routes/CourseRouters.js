@@ -35,6 +35,7 @@ router.post("/user-courses", UserCourses);
 router.get("/get-course-info/:id", getCourseInfo);
 router.post("/save", SaveCourse);
 router.post("/retrieve-save", RetrieveSavedCourse);
+router.get("/saved-courses/:id", RetrieveSavedCourse);
 router.delete("/delete-course/:id", DeleteCourse);
 
 export { router as CourseRouter };

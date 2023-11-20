@@ -4,13 +4,15 @@ import { Link, useParams } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 	const [courseInfo, setCourseInfo] = useState([]);
 	const [heartFullArray, setHeartFullArray] = useState([]);
 
 	const { id } = useParams();
+	const user_id = localStorage.getItem("user_id");
 
 	const getCourseInfo = async () => {
 		try {
@@ -23,7 +25,7 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 				// Initialize the heartFullArray with false for each course
 				setHeartFullArray(Array(coursesWithCreator.length).fill(false));
 			} else if (response.status === 400) {
-				toast.info(message)
+				toast.info(message);
 				onIsEmptyChange(
 					data && data.allCourses && data.allCourses.rows.length === 0,
 				);
@@ -34,15 +36,7 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 			console.error("Error fetching course information:", error);
 		}
 	};
-	
-	const onClickSave = (index) => {
-		// Update the heartFullArray for the clicked course
-		setHeartFullArray((prev) => {
-			const newArray = [...prev];
-			newArray[index] = !newArray[index];
-			return newArray;
-		});
-	};
+
 
 	useEffect(() => {
 		getCourseInfo();
@@ -50,6 +44,8 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 
 	return (
 		<>
+			<ToastContainer />
+
 			<div className="flex flex-wrap gap-5">
 				{courseInfo.map((course, index) => (
 					<div
@@ -79,15 +75,13 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>
 							<div className="flex items-center gap-2 justify-end mt-2">
-								<button
+								{/* <button
 									key={course?.course_id}
-									onClick={() => onClickSave(index)}
+									onClick={() => onClickSave(course.course_id, index)}
 									className="text-red-500">
 									{heartFullArray[index] ? <FaHeart size={20} /> : <CiHeart size={24} />}
-								</button>
-								<Link
-									key={index}
-									to={`/course-module/${course?.course_id}`}>
+								</button> */}
+								<Link key={index} to={`/course-module/${course?.course_id}`}>
 									<button className="bg-primaryColor text-xs text-white rounded h-7 px-2 ">
 										ReviewUP
 									</button>

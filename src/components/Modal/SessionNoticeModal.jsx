@@ -12,13 +12,17 @@ export const SessionNoticeModal = ({ isOpen, onClose }) => {
 				method: "DELETE",
 			});
 			if (res.ok) {
-				setTimeout(() => {
-					localStorage.clear();
-					nav("/login");
-				}, [10000]);
+				localStorage.clear();
 			}
 		}, 10000);
 	}, []);
+
+	const handleClose = () => {
+		setTimeout(() => {
+			nav("/login");
+			onClose();
+		}, 3000);
+	};
 
 	return (
 		<div
@@ -28,7 +32,6 @@ export const SessionNoticeModal = ({ isOpen, onClose }) => {
 			<div
 				className="fixed top-0 left-0 w-full h-full backdrop-filter backdrop-blur-sm"
 				style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}></div>
-
 			<div className="border border-gray-300 bg-white w-96 rounded p-5 relative">
 				<h1 className="text-lg font-bold text-primaryColor mb-4">
 					Session Timeout
@@ -42,7 +45,7 @@ export const SessionNoticeModal = ({ isOpen, onClose }) => {
 				</p>
 				<div className="flex justify-end">
 					<button
-						onClick={onClose}
+						onClick={handleClose}
 						className="mt-4 bg-blue-500 text-white text-xs px-4 py-2 rounded">
 						Okay
 					</button>

@@ -15,6 +15,7 @@ import { SavedCourses } from "./pages/Dashboard/SavedCourses";
 import { PasswordReset } from "./pages/authentication/PasswordReset";
 import GlobalLayout from "./components/GlobalLayout";
 import { MyCourseModule } from "./pages/MyCourseModule";
+import { SavedCourseModule } from "./pages/SavedCourseModule";
 
 function App() {
 	return (
@@ -88,6 +89,14 @@ function App() {
 							element={
 								<GlobalLayout>
 									<MyCourseModule />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/saved-course-module/:id"
+							element={
+								<GlobalLayout>
+									<SavedCourseModule />
 								</GlobalLayout>
 							}
 						/>

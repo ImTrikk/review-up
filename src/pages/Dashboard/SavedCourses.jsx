@@ -35,8 +35,14 @@ export const SavedCourses = () => {
 						<div className="py-3">
 							<hr className="border-1 border-primaryColor" />
 						</div>
-						<div>
-							<SavedCourseCard handleIsEmpty={handleIsEmpty} />
+						<div className="pt-5">
+							{isEmpty ? (
+								<div className="flex items-center justify-center">
+									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
+								</div>
+							) : (
+								<SavedCourseCard handleIsEmpty={handleIsEmpty} />
+							)}
 						</div>
 					</div>
 				</div>

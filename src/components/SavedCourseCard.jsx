@@ -50,8 +50,8 @@ export const SavedCourseCard = ({ onIsEmptyChange }) => {
 
 	return (
 		<>
+			<ToastContainer />
 			<div className="flex flex-wrap gap-5">
-				<ToastContainer />
 				{savedCourseInfo.map((course, index) => (
 					<div
 						key={index}
@@ -80,7 +80,7 @@ export const SavedCourseCard = ({ onIsEmptyChange }) => {
 							<div className="flex items-center gap-2 justify-end mt-2">
 								<Link
 									key={course?.course_id}
-									to={`/course-module/${course?.course_id}`}>
+									to={`/saved-course-module/${course?.course_id}`}>
 									<button className="bg-primaryColor text-xs text-white rounded h-7 px-2 ">
 										ReviewUP
 									</button>

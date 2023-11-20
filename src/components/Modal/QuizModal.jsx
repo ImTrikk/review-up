@@ -9,14 +9,13 @@ export const QuizModal = () => {
 	const [isTrue, setIstrue] = useState();
 	const [questions, setQuestions] = useState([]);
 
-	const addQuestion =(event) => {
+	const addQuestion = (event) => {
 		event.preventDefault();
-		// Use the spread operator to create a new array with the existing questions and the new question
 		setQuestions([...questions, { quiz_id: questions.length + 1 }]);
 	};
-	const removeQuestion =(event) => {
+	const removeQuestion = (event) => {
 		event.preventDefault();
-		// Use the spread operator to create a new array with the existing questions and the new question
+
 		setQuestions([...questions, { quiz_id: questions.length - 1 }]);
 	};
 
@@ -61,15 +60,15 @@ export const QuizModal = () => {
 							{questions.map((quiz, index) => (
 								<div key={index}>
 									<div className="bg-primaryColor text-white shadow text-xs p-3 py-5 rounded mt-4">
-										<div className="flex items-center gap-2">
-											<div className="flex gap-2">
+										<div className="flex flex-col items-center gap-2 h-auto">
+											<div className="flex gap-2 w-full">
 												<p>{index + 1}.</p>
 												<p>Enter Question: </p>
 											</div>
-											<input
+											<textarea
 												type="text"
 												placeholder=""
-												className="outline-none text-gray-500 bg-none text-xs"
+												className="w-full outline-none text-gray-500 bg-none text-xs h-auto rounded py-5 px-2"
 											/>
 										</div>
 									</div>
@@ -78,28 +77,28 @@ export const QuizModal = () => {
 											<input
 												type="text"
 												placeholder="add question here"
-												className="outline-none text-xs"
+												className="outline-none text-xs w-full"
 											/>
 										</div>
 										<div className="bg-white text-xs shadow p-3 rounded">
 											<input
 												type="text"
 												placeholder="add question here"
-												className="outline-none text-xs"
+												className="outline-none text-xs w-full"
 											/>
 										</div>
 										<div className="bg-white text-xs shadow p-3 rounded">
 											<input
 												type="text"
 												placeholder="add question here"
-												className="outline-none text-xs"
+												className="outline-none text-xs w-full"
 											/>
 										</div>
 										<div className="bg-white text-xs shadow p-3 rounded">
 											<input
 												type="text"
 												placeholder="add question here"
-												className="outline-none text-xs"
+												className="outline-none text-xs w-full"
 											/>
 										</div>
 									</div>

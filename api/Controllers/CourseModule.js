@@ -259,8 +259,6 @@ export const RetrieveSavedCourse = async (req, res) => {
 		);
 
 		const courseIDs = saveCourseData.rows.map((row) => row.course_id);
-		console.log("Course IDs: ", courseIDs);
-
 		const courseData = await dbConnection.query(
 			"SELECT * FROM courses WHERE course_id = ANY($1::int[])",
 			[courseIDs],

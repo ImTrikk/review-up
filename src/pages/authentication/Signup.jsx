@@ -217,10 +217,10 @@ export const Signup = () => {
 				<img
 					src="static\images\Blob2.png"
 					alt=""
-					className="w-[532px] h-auto mt-10 absolute z-0 -rotate-12 opacity-70"
+					className="w-full md:w-[502px] h-auto mt-10 absolute z-0 -rotate-12 opacity-70"
 				/>
-				<div className="flex items-center justify-center lg:max-w-7xl mx-20 2xl:mx-auto relative z-10">
-					<div className="w-[50%]">
+				<div className="flex items-center justify-center mx-5  lg:max-w-7xl 2xl:mx-auto relative z-10">
+					<div className="w-full md:w-[50%]">
 						<div className="px-10 p-7">
 							<div className="bg-white rounded h-full p-4 shadow-2xl">
 								<h1 className="text-3xl font-black text-primaryColor pb-4">
@@ -540,7 +540,7 @@ export const Signup = () => {
 				<img
 					src="static\images\Blob1.png"
 					alt=""
-					className="w-[502px] h-auto absolute z-0 rotate-90 opacity-60 bottom-0 right-0"
+					className="w-full md:w-[502px] h-auto absolute z-0 rotate-90 opacity-60 bottom-0 right-0"
 				/>
 			</div>
 		</>

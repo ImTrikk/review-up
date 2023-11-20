@@ -49,10 +49,12 @@ export const SideBar = () => {
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<div className="absolute right-0 left-0 flex items-center justify-center"></div>
 				<div className="relative h-screen">
+						<Link to="/">
 					<div className="flex items-center gap-2 p-10">
-						<img src="/static/images/mainlogo.png" alt="" className="w-[20px]" />
-						<div className="font-black text-primaryColor text-lg">ReviewUP</div>
+							<img src="/static/images/mainlogo.png" alt="" className="w-[20px]" />
+							<div className="font-black text-primaryColor text-lg">ReviewUP</div>
 					</div>
+						</Link>
 					<div className="mt-2 h-auto">
 						<div className="px-10 pb-2">
 							<p className="text-xs text-gray-400">Menu</p>
