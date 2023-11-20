@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 
 export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 	const [courseInfo, setCourseInfo] = useState([]);
+	const [heartFullArray, setHeartFullArray] = useState([]);
+
+	const { id } = useParams();
 
 	const getCourseInfo = async () => {
 		try {
@@ -16,6 +21,8 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 
 			if (response.ok) {
 				setCourseInfo(coursesWithCreator);
+				// Initialize the heartFullArray with false for each course
+				setHeartFullArray(Array(coursesWithCreator.length).fill(false));
 			} else if (response.status === 400) {
 				onIsEmptyChange(
 					data && data.allCourses && data.allCourses.rows.length === 0,
@@ -26,6 +33,15 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 		} catch (error) {
 			console.error("Error fetching course information:", error);
 		}
+	};
+	
+	const onClickSave = (index) => {
+		// Update the heartFullArray for the clicked course
+		setHeartFullArray((prev) => {
+			const newArray = [...prev];
+			newArray[index] = !newArray[index];
+			return newArray;
+		});
 	};
 
 	useEffect(() => {
@@ -62,7 +78,13 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 								</p>
 								<p className="text-xs text-gray-600">{course?.description}</p>
 							</div>
-							<div className="flex items-center justify-end mt-2">
+							<div className="flex items-center gap-2 justify-end mt-2">
+								<button
+									key={course?.course_id}
+									onClick={() => onClickSave(index)}
+									className="text-red-500">
+									{heartFullArray[index] ? <FaHeart size={20} /> : <CiHeart size={24} />}
+								</button>
 								<Link
 									key={course?.course_id}
 									to={`/course-module/${course?.course_id}`}>

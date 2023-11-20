@@ -54,16 +54,10 @@ export const Login = () => {
 			} catch (err) {
 				toast.error("Error fetching data");
 				console.log(err);
-			} finally {
-				// Reset loading bar to zero after either success or error
-				loadingBar.current.complete();
 			}
 		} else {
-			if (password === "") {
-				toast.error("Password is required");
-			}
-			if (email === "") {
-				toast.error("Email is required");
+			if (password == "" && email == "") {
+				toast.error("Fields are required");
 			}
 		}
 	};

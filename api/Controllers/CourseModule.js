@@ -111,7 +111,6 @@ export const getCourseInfo = async (req, res) => {
 				}
 			}
 		}
-
 		return res
 			.status(200)
 			.json({ courseInfoFound, fileDownloadURLs, message: "Found info" });
