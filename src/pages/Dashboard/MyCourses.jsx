@@ -23,7 +23,7 @@ export const MyCourses = () => {
 						alt=""
 						className="absolute w-full h-[140px]"
 					/>
-					<div className="ml-[220px] h-full grid items-end absolute z-10">
+					<div className="ml-[240px] h-full grid items-end absolute z-10">
 						<div className="pb-10">
 							<h1 className="text-white text-3xl font-bold">MyCourse</h1>
 							<p className="text-white text-sm">
@@ -32,12 +32,12 @@ export const MyCourses = () => {
 						</div>
 					</div>
 				</div>
-				<div className="ml-[200px]">
+				<div className="ml-[210px]">
 					<div className="p-8">
-						<h1 className="text-lg font-bold text-primaryColor">My Courses</h1>
+						{/* <h1 className="text-lg font-bold text-primaryColor">My Courses</h1>
 						<div className="py-3">
 							<hr className="border-1 border-primaryColor" />
-						</div>
+						</div> */}
 						<div className="pt-5">
 							{isEmpty ? (
 								<div className="flex items-center justify-center">

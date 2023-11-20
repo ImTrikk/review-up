@@ -31,10 +31,10 @@ export const SavedCourses = () => {
 				</div>
 				<div className="ml-[200px]">
 					<div className="p-8">
-						<h1 className="text-lg font-bold text-primaryColor">Saved courses</h1>
+						{/* <h1 className="text-lg font-bold text-primaryColor">Saved courses</h1>
 						<div className="py-3">
 							<hr className="border-1 border-primaryColor" />
-						</div>
+						</div> */}
 						<div className="pt-5">
 							{isEmpty ? (
 								<div className="flex items-center justify-center">

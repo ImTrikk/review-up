@@ -23,7 +23,7 @@ export const Courses = () => {
 						alt=""
 						className="absolute w-full h-[140px]"
 					/>
-					<div className="ml-[220px] h-full grid items-end absolute z-10">
+					<div className="ml-[240px] h-full grid items-end absolute z-10">
 						<div className="pb-10">
 							<h1 className="text-white text-3xl font-bold">Courses</h1>
 							<p className="text-white text-sm">
@@ -32,15 +32,15 @@ export const Courses = () => {
 						</div>
 					</div>
 				</div>
-				<div className="ml-[200px]">
+				<div className="ml-[210px]">
 					<div className="p-8">
-						<h1 className="font-bold text-xl text-primaryColor">
+						{/* <h1 className="font-bold text-xl text-primaryColor">
 							Courses with reviewers
 						</h1>
 						<div className="pt-5">
 							<hr className="border-1 border-primaryColor" />
-						</div>
-						<div className="pt-2">
+						</div> */}
+						<div className="pt-5">
 							{isEmpty ? (
 								<div className="flex items-center justify-center">
 									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
