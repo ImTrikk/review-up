@@ -44,7 +44,7 @@ export const SideBar = () => {
 
 	return (
 		<>
-			<div className="fixed bg-white h-screen w-[200px] shadow-lg z-20">
+			<div className="fixed bg-white h-screen w-[200px] shadow-lg z-10">
 				<ToastContainer />
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<div className="absolute right-0 left-0 flex items-center justify-center"></div>

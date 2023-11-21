@@ -114,7 +114,7 @@ export const MyCourseModule = () => {
 
 	return (
 		<>
-			<div className="">
+			<div className="bg-[#f2f2f2]">
 				<SideBar />
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<ToastContainer autoClose={2000} />

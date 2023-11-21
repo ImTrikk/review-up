@@ -14,7 +14,7 @@ export const MyCourses = () => {
 
 	return (
 		<>
-			<div className="">
+			<div className="bg-[#f2f2f2] h-screen">
 				<SideBar />
 				<div className="bg-primaryColor w-full h-[140px] relative">
 					<img

@@ -60,7 +60,7 @@ export const RetrieveCourse = async (req, res) => {
 
 				const creatorName = courseCreator.rows[0];
 
-				return {
+				return {	
 					...course,
 					creatorName: creatorName,
 				};
@@ -297,5 +297,15 @@ export const RemoveSavedCourse = async (req, res) => {
 		}
 	} catch (err) {
 		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+// update course information
+
+export const UpdateCourse = async(req, res) => {
+	try {
+		
+	} catch (err) { 
+		return res.status(500).json({message: "Internal server error"})
 	}
 };

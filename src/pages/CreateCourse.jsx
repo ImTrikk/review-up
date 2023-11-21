@@ -169,7 +169,8 @@ export const CreateCourse = () => {
 
 	return (
 		<>
-			<div className="relative">
+			<div className="relative">	
+				<SideBar />
 				<ToastContainer autoClose={3000} />
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<div
@@ -178,7 +179,7 @@ export const CreateCourse = () => {
 					}`}>
 					{successModal ? (
 						<>
-							<div className="fixed inset-0 bg-black opacity-50 z-50"></div>{" "}
+							<div className="fixed inset-0 bg-black opacity-50 z-50"></div>
 							{/* Dark background */}
 							<SuccessCreateCourse />
 						</>
@@ -186,7 +187,6 @@ export const CreateCourse = () => {
 						""
 					)}
 				</div>
-				<SideBar />
 				<div className="bg-primaryColor w-full h-[140px] relative">
 					<img
 						src="/static/images/header.png"

@@ -46,7 +46,7 @@ export const MyCourseCard = ({ onIsEmptyChange }) => {
 				{courseInfo.map((course, index) => (
 					<div
 						key={index}
-						className="border border-gray-200 w-[300px] rounded h-auto shadow-lg">
+						className="border bg-white border-gray-200 w-[300px] rounded h-auto shadow-lg">
 						<div className="p-3">
 							<div className="rounded h-[140px]">
 								<img

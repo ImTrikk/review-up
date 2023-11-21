@@ -16,7 +16,7 @@ const Dashboard = () => {
 
 	return (
 		<>
-			<div className="absol">
+			<div className="bg-[#f2f2f2] h-screen">
 				<SideBar />
 				<div className="bg-primaryColor w-full h-[140px] relative">
 					<img
@@ -36,16 +36,8 @@ const Dashboard = () => {
 				</div>
 				<div className="ml-[210px]">
 					<div className="p-8">
-						{/* <div className="flex items-start justify-between">
-							<h1 className="font-bold text-xl text-primaryColor">
-								Welcome back, <span className="font-bold">{first_name + "!"}</span>
-							</h1>
-						</div> */}
-						{/* <div className="pt-2">
-							<hr className="border-1 border-primaryColor" />
-						</div> */}
 						<div className="pt-5">
-							{isEmpty ? (	
+							{isEmpty ? (
 								<div className="flex items-center justify-center">
 									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
 								</div>

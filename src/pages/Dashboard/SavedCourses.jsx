@@ -12,7 +12,7 @@ export const SavedCourses = () => {
 
 	return (
 		<>
-			<div className="">
+			<div className="bg-[#f2f2f2] h-auto">
 				<SideBar />
 				<div className="bg-primaryColor w-full h-[140px] relative">
 					<img
@@ -31,7 +31,7 @@ export const SavedCourses = () => {
 				</div>
 				<div className="ml-[210px]">
 					<div className="p-8">
-							<div className="pt-5">
+						<div className="pt-5">
 							{isEmpty ? (
 								<div className="flex items-center justify-center">
 									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />

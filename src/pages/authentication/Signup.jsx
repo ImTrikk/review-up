@@ -224,7 +224,7 @@ export const Signup = () => {
 						<div className="px-10 p-7">
 							<div className="bg-white rounded h-full p-4 shadow-2xl">
 								<h1 className="text-3xl font-black text-primaryColor pb-4">
-									Create Account <hr />
+									CREATE ACCOUNT <hr />
 								</h1>
 								<form>
 									<div className="space-y-1">
