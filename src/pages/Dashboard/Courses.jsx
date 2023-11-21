@@ -7,10 +7,10 @@ import { useEffect } from "react";
 import { buildUrl } from "../../utils/buildUrl";
 
 export const Courses = () => {
-	const [isEmpty, setIsEmpty] = useState("");
+	const [isEmpty, setIsEmpty] = useState(null);
 
 	const handleIsEmptyChange = (value) => {
-		setIsEmpty(value);
+		setIsEmpty(value.length === 0);
 	};
 
 	return (
@@ -27,7 +27,8 @@ export const Courses = () => {
 						<div className="pb-10">
 							<h1 className="text-white text-3xl font-bold">Courses</h1>
 							<p className="text-white text-sm">
-								All available courses posted online by different users from different programs
+								All available courses posted online by different users from different
+								programs
 							</p>
 						</div>
 					</div>

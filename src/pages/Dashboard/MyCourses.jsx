@@ -6,11 +6,10 @@ import { ReviewModuleCard } from "../../components/ReviewModuleCard";
 
 export const MyCourses = () => {
 	const user_id = localStorage.getItem("user_id");
-
-	const [isEmpty, setIsEmpty] = useState("");
+	const [isEmpty, setIsEmpty] = useState(null);
 
 	const handleIsEmpty = (value) => {
-		setIsEmpty(value);
+		setIsEmpty(value.length === 0);
 	};
 
 	return (
@@ -34,17 +33,13 @@ export const MyCourses = () => {
 				</div>
 				<div className="ml-[210px]">
 					<div className="p-8">
-						{/* <h1 className="text-lg font-bold text-primaryColor">My Courses</h1>
-						<div className="py-3">
-							<hr className="border-1 border-primaryColor" />
-						</div> */}
 						<div className="pt-5">
 							{isEmpty ? (
 								<div className="flex items-center justify-center">
 									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
 								</div>
 							) : (
-								<MyCourseCard handleIsEmpty={handleIsEmpty} />
+								<MyCourseCard onIsEmptyChange={handleIsEmpty} />
 							)}
 						</div>
 					</div>

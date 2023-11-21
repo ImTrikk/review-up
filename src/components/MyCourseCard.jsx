@@ -5,7 +5,7 @@ import { buildUrl } from "../utils/buildUrl";
 import { toast } from "react-toastify";
 import { EditCourseModal } from "./Modal/EditCourseModal";
 
-export const MyCourseCard = ({ handleIsEmpty }) => {
+export const MyCourseCard = ({ onIsEmptyChange }) => {
 	const [courseInfo, setCourseInfo] = useState([]);
 	const user_id = localStorage.getItem("user_id");
 
@@ -22,11 +22,11 @@ export const MyCourseCard = ({ handleIsEmpty }) => {
 			});
 
 			const { coursesWithCreator, message } = await response.json();
+			onIsEmptyChange(coursesWithCreator);
 
 			if (response.ok) {
 				setCourseInfo(coursesWithCreator);
 			} else if (response.status === 400) {
-				handleIsEmpty(userCourses && userCourses.rows.length === 0);
 			} else {
 				// toast.error(message);
 				console.error("Error:", message);

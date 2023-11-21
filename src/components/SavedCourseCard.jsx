@@ -23,17 +23,13 @@ export const SavedCourseCard = ({ onIsEmptyChange }) => {
 					user_id,
 				}),
 			});
-
 			const { coursesWithUsernames, message } = await response.json();
-
+			onIsEmptyChange(coursesWithUsernames);
 			if (response.ok) {
 				setCourseInfo(coursesWithUsernames);
 			} else if (response.status === 400) {
 				console.log("In here");
 				toast.info(message);
-				onIsEmptyChange(
-					data && data.allCourses && data.allCourses.rows.length === 0,
-				);
 			} else {
 				toast.error("Internal server error");
 			}
@@ -58,7 +54,7 @@ export const SavedCourseCard = ({ onIsEmptyChange }) => {
 				// Course successfully removed, you may want to update your UI accordingly
 				console.log("Course removed successfully");
 				toast.success("Course removed successfully", {
-					autoClose: 3000
+					autoClose: 3000,
 				});
 				setTimeout(() => {
 					window.location.reload();

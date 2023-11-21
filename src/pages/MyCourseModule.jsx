@@ -14,6 +14,9 @@ import pptx from "/static/icons/PPT.png";
 import jpg from "/static/icons/JPG.png";
 import png from "/static/icons/PNG.png";
 
+import LoadingBar from "react-top-loading-bar";
+import { useRef } from "react";
+
 export const MyCourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
 	const [isEditOpen, setIsEditOpen] = useState(false);
@@ -80,18 +83,25 @@ export const MyCourseModule = () => {
 
 	const navigator = useNavigate();
 
+	const loadingBar = useRef(null);
+
 	const handleDelete = async () => {
+		loadingBar.current.continuousStart(50);
 		await fetch(buildUrl(`/course/delete-course/${id}`), {
 			method: "DELETE",
 		}).then((res) => {
 			return res.json().then((data) => {
 				if (res.ok) {
 					console.log(data);
+					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
-						toast.success(data.message);
-						navigator("/my-courses");
-					}, 5000);
+						loadingBar.current.complete();
+						setTimeout(() => {
+							navigator("/my-courses");
+						}, 1200);
+					}, 1000);	
 				} else {
+					loadingBar.current.complete();
 					toast.error(data.message);
 				}
 			});
@@ -106,6 +116,7 @@ export const MyCourseModule = () => {
 		<>
 			<div className="">
 				<SideBar />
+				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<ToastContainer autoClose={2000} />
 				{isEditOpen ? (
 					<EditCourseModal

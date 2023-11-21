@@ -20,15 +20,11 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 				method: "GET",
 			});
 			const { coursesWithCreator, message } = await response.json();
+			onIsEmptyChange(coursesWithCreator);
 			if (response.ok) {
 				setCourseInfo(coursesWithCreator);
-				// Initialize the heartFullArray with false for each course
-				setHeartFullArray(Array(coursesWithCreator.length).fill(false));
 			} else if (response.status === 400) {
 				toast.info(message);
-				onIsEmptyChange(
-					data && data.allCourses && data.allCourses.rows.length === 0,
-				);
 			} else {
 				toast.error("Internal server error");
 			}
@@ -36,7 +32,6 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 			console.error("Error fetching course information:", error);
 		}
 	};
-
 
 	useEffect(() => {
 		getCourseInfo();

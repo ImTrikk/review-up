@@ -204,12 +204,6 @@ export const CreateCourse = () => {
 				</div>
 				<div className="ml-[210px]">
 					<div className="p-8">
-						{/* <div className="flex items-start justify-between">
-							<h1 className="font-bold text-xl text-primaryColor">Create</h1>
-						</div>
-						<div className="pt-2">
-							<hr className="border-1 border-primaryColor" />
-						</div> */}
 						<div className="mt-5">
 							<div className="border border-primaryColor rounded relative h-auto">
 								<div className="p-5">

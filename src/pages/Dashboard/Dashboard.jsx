@@ -11,7 +11,7 @@ const Dashboard = () => {
 	const [isEmpty, setIsEmpty] = useState("");
 
 	const handleIsEmptyChange = (value) => {
-		setIsEmpty(value);
+		setIsEmpty(value.length == 0);
 	};
 
 	return (

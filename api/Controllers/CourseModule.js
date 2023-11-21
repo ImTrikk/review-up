@@ -180,7 +180,6 @@ export const findCourse = async (req, res) => {
 
 export const DeleteCourse = async (req, res) => {
 	const { id } = req.params;
-	console.log(id);
 	try {
 		const CourseInfo = await dbConnection.query(
 			"select file_id from courses where course_id = $1",

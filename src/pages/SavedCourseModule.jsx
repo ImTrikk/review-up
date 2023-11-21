@@ -80,7 +80,7 @@ export const SavedCourseModule = () => {
 						className="absolute w-full h-[140px]"
 					/>
 					<div className="w-full h-full flex justify-between items-center absolute z-10">
-						<div className="ml-[220px]">
+						<div className="ml-[240px]">
 							<h1 className="text-white text-3xl font-bold">
 								{courseInfo.courseInfoFound?.course_code}
 							</h1>
@@ -90,7 +90,7 @@ export const SavedCourseModule = () => {
 						</div>
 					</div>
 				</div>
-				<div className="ml-[200px]">
+				<div className="ml-[210px]">
 					<div className="p-8">
 						<div>
 							<h1 className="text-lg font-bold text-primaryColor">Reviewers</h1>

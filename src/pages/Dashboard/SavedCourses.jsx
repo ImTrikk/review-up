@@ -4,10 +4,10 @@ import { SavedCourseCard } from "../../components/SavedCourseCard";
 import { useState } from "react";
 
 export const SavedCourses = () => {
-	const [isEmpty, setIsEmpty] = useState("");
+	const [isEmpty, setIsEmpty] = useState(null);
 
 	const handleIsEmpty = (value) => {
-		setIsEmpty(value);
+		setIsEmpty(value.length === 0);
 	};
 
 	return (
@@ -31,17 +31,13 @@ export const SavedCourses = () => {
 				</div>
 				<div className="ml-[210px]">
 					<div className="p-8">
-						{/* <h1 className="text-lg font-bold text-primaryColor">Saved courses</h1>
-						<div className="py-3">
-							<hr className="border-1 border-primaryColor" />
-						</div> */}
-						<div className="pt-5">
+							<div className="pt-5">
 							{isEmpty ? (
 								<div className="flex items-center justify-center">
 									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
 								</div>
 							) : (
-								<SavedCourseCard handleIsEmpty={handleIsEmpty} />
+								<SavedCourseCard onIsEmptyChange={handleIsEmpty} />
 							)}
 						</div>
 					</div>
