@@ -65,7 +65,7 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 										{course?.course_title}
 									</p>
 									<p className="text-xs text-gray-600">
-										By: {course?.creatorName.first_name} {course?.creatorName.last_name}
+										By: {course?.creatorName?.first_name} {course?.creatorName?.last_name}
 									</p>
 									<p className="text-xs text-gray-600">{course?.description}</p>
 								</div>

@@ -18,15 +18,15 @@ export const SessionNoticeModal = ({ isOpen, onClose }) => {
 	}, []);
 
 	const handleClose = () => {
+		onClose();
 		setTimeout(() => {
 			nav("/login");
-			onClose();
 		}, 3000);
 	};
 
 	return (
 		<div
-			className={`fixed top-0 left-0 w-full h-full flex items-center justify-center ${
+			className={`fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ${
 				isOpen ? "" : "hidden"
 			}`}>
 			<div

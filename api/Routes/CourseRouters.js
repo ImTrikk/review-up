@@ -25,7 +25,7 @@ router.post(
 		req.batchID = batchID;
 		next();
 	},
-	upload.array("file"),
+	upload.any("file"),
 	firebaseUpload,
 	CreateCourse,
 );

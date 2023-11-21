@@ -11,7 +11,35 @@ export const CreateCourse = async (req, res) => {
 		description,
 		user_id,
 		header_url,
+		quiz_name,
 	} = req.body;
+
+	const questions = req.body.question;
+
+	console.log("Quiz name: ", quiz_name);
+
+	// Mapping over questions
+	const mappedQuestions = questions.map((question) => {
+		// Check if choices is an array before mapping
+		if (Array.isArray(question.choices)) {
+			// Mapping over choices for each question
+			const mappedChoices = question.choices.map((choice, index) => {
+				// Perform any operations on each choice if needed
+				return `Choice ${index + 1}: ${choice}`;
+			});
+
+			// Return the modified question object with mapped choices
+			return {
+				...question,
+				choices: mappedChoices,
+			};
+		} else {
+			// Return the original question if choices is not an array
+			return question;
+		}
+	});
+
+	console.log(mappedQuestions);
 
 	try {
 		//!
@@ -60,7 +88,7 @@ export const RetrieveCourse = async (req, res) => {
 
 				const creatorName = courseCreator.rows[0];
 
-				return {	
+				return {
 					...course,
 					creatorName: creatorName,
 				};
@@ -302,10 +330,9 @@ export const RemoveSavedCourse = async (req, res) => {
 
 // update course information
 
-export const UpdateCourse = async(req, res) => {
+export const UpdateCourse = async (req, res) => {
 	try {
-		
-	} catch (err) { 
-		return res.status(500).json({message: "Internal server error"})
+	} catch (err) {
+		return res.status(500).json({ message: "Internal server error" });
 	}
 };

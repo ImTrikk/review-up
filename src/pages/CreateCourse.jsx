@@ -24,6 +24,10 @@ export const CreateCourse = () => {
 	const [description, setDescription] = useState("");
 	const [headerUrl, setHeaderUrl] = useState("");
 
+	// for quiz
+	const [questionList, setQuestions] = useState([]);
+	const [quizName, setQuizName] = useState("");
+
 	let first_name = localStorage.getItem("first_name");
 	let last_name = localStorage.getItem("last_name");
 	let email = localStorage.getItem("email");
@@ -36,7 +40,6 @@ export const CreateCourse = () => {
 	const [isEmpty, setIsEmpty] = useState(false);
 
 	// error handlers
-	const [fieldRequired, setFieldRequired] = useState(true);
 	const [codeError, setCodeError] = useState(false);
 	const [titleError, setTitleError] = useState(false);
 	const [programError, setProgramError] = useState(false);
@@ -111,6 +114,21 @@ export const CreateCourse = () => {
 			formData.append("last_name", last_name);
 			formData.append("email", email);
 			formData.append("header_url", headerUrl);
+			console.log(fileList);
+			console.log(questionList);
+			questionList.forEach((question, index) => {
+				formData.append(`question[${index}][quiz_id]`, question.id);
+				formData.append(`question[${index}][question]`, question.question);
+				formData.append(`question[${index}][choices]`, question.choices.join(","));
+				formData.append(
+					`question[${index}][correctAnswer]`,
+					question.correctAnswer,
+				);
+				// Add other properties as needed
+			});
+
+			formData.append("quiz_name", quizName);
+
 			// Append each selected file to the FormData
 			fileList.forEach((file) => {
 				formData.append("file", file);
@@ -133,6 +151,7 @@ export const CreateCourse = () => {
 					body: formData,
 				});
 				const data = await response.json();
+				console.log(data);
 				if (response.ok) {
 					console.log(data);
 					setSuccessModal(true);
@@ -167,9 +186,17 @@ export const CreateCourse = () => {
 		}
 	};
 
+	const handleQuestionChange = (value) => {
+		setQuestions(value);
+	};
+
+	const handleQuizNameChange = (value) => {
+		setQuizName(value);
+	};
+
 	return (
 		<>
-			<div className="relative">	
+			<div className="relative">
 				<SideBar />
 				<ToastContainer autoClose={3000} />
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
@@ -380,7 +407,14 @@ export const CreateCourse = () => {
 															</button>
 														)}
 													</div>
-													{quizModal ? <QuizModal /> : ""}
+													{quizModal ? (
+														<QuizModal
+															onChangeQuestions={handleQuestionChange}
+															onChangeQuizName={handleQuizNameChange}
+														/>
+													) : (
+														""
+													)}
 												</div>
 												<div className="pt-5">
 													<hr className="border-1 border-primaryColor" />

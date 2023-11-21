@@ -29,6 +29,7 @@ app.use(
 app.use("/api/auth", UserRouter);
 app.use("/api/course", CourseRouter);
 
+// database connection
 dbConnection
 	.connect()
 	.then(() => {
