@@ -48,6 +48,7 @@ export const CreateCourse = async (req, res) => {
 				VALUES ($1, $2, $3, $4, $5, $6, $7)
 				RETURNING course_id;
 			`;
+
 		const courseResult = await dbConnection.query(newCourseQuery, [
 			course_code,
 			course_title,
@@ -57,6 +58,9 @@ export const CreateCourse = async (req, res) => {
 			file_id,
 			header_url,
 		]);
+
+		const course_id = courseResult.rows[0].course_id;
+		console.log(course_id);
 
 		return res.status(201).json({ message: "Success creating course!" });
 	} catch (err) {

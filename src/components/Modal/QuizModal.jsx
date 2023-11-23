@@ -15,16 +15,29 @@ export const QuizModal = ({ onChangeQuestions, onChangeQuizName }) => {
 		},
 	]);
 
+	// const addQuestion = (e) => {
+	// 	e.preventDefault();
+	// 	setQuestions((prevQuestions) => [
+	// 		...prevQuestions,
+	// 		{
+	// 			id: prevQuestions.length + 1,
+	// 			question: "",
+	// 			choices: ["", "", "", ""],
+	// 			correctAnswer: null,
+	// 		},
+	// 	]);
+	// };
+
 	const addQuestion = (e) => {
 		e.preventDefault();
 		setQuestions((prevQuestions) => [
 			...prevQuestions,
-			{
-				id: prevQuestions.length + 1,
-				question: "",
-				choices: ["", "", "", ""],
-				correctAnswer: null,
-			},
+			Object.create(Object.prototype, {
+				id: { value: prevQuestions.length + 1, enumerable: true },
+				question: { value: "", enumerable: true },
+				choices: { value: ["", "", "", ""], enumerable: true },
+				correctAnswer: { value: null, enumerable: true },
+			}),
 		]);
 	};
 
