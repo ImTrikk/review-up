@@ -13,7 +13,7 @@
  color: black;
 }
 ::-webkit-scrollbar-track {
- background-color: white;
+ background-color: white; 
 }
 ::-webkit-scrollbar-thumb {
  color: white;

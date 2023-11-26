@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export const Services = () => {
 	return (
 		<>
-			<div id="services" className="relative z-20">
+			<div id="services" className="relative z-20 pb-10">
 				<div className="lg:max-w-7xl mx-5 md:mx-10 lg:mx-28 2xl:mx-auto pt-10 sm:pt-0">
 					<div className="flex flex-col-reverse md:flex-row h-auto items-center">
 						<img

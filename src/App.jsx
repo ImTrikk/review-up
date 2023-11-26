@@ -16,6 +16,7 @@ import { PasswordReset } from "./pages/authentication/PasswordReset";
 import GlobalLayout from "./components/GlobalLayout";
 import { MyCourseModule } from "./pages/MyCourseModule";
 import { SavedCourseModule } from "./pages/SavedCourseModule";
+import { QuizPage } from "./pages/QuizPage";
 
 function App() {
 	return (
@@ -97,6 +98,14 @@ function App() {
 							element={
 								<GlobalLayout>
 									<SavedCourseModule />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/quiz"
+							element={
+								<GlobalLayout>
+									<QuizPage />
 								</GlobalLayout>
 							}
 						/>

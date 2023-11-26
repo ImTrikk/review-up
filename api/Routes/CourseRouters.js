@@ -29,8 +29,6 @@ router.post(
 	firebaseUpload,
 	CreateCourse,
 );
-
-// retrieving courses
 router.get("/retrieve-course", RetrieveCourse);
 router.post("/user-courses", UserCourses);
 router.get("/get-course-info/:id", getCourseInfo);

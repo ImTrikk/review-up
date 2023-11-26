@@ -53,7 +53,6 @@ export const CodeVerification = () => {
 
 	// send data to server side
 	const handleVerifyCode = async () => {
-		loadingBar.current.continuousStart(50);
 		try {
 			// this should go to the TwoFactorAtuh endpoint
 			await fetch(buildUrl(`/auth${reqEndpoint}`), {
@@ -94,6 +93,7 @@ export const CodeVerification = () => {
 								progress: undefined,
 								theme: "light",
 							});
+							loadingBar.current.continuousStart(50);
 							setTimeout(() => {
 								loadingBar.current.complete();
 								setTimeout(() => {
@@ -188,88 +188,97 @@ export const CodeVerification = () => {
 
 	return (
 		<>
-			<div className="bg-primaryColor h-screen">
+			<div className="bg-gradient-to-tr from-primaryColor to-violet-500 h-screen">
 				<ToastContainer />
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
-				<div className="flex lg:max-w-7xl mx-20 2xl:mx-auto">
-					<div className="flex items-center justify-center w-full h-screen">
-						<div className="flex gap-10 justify-between">
-							<div className="w-[400px]">
-								<h1 className="font-black text-4xl text-white">Almost there</h1>
-								<p className="text-white text-sm font-light pt-5">
-									One time password is sent to your email account, Please look through
-									your Gmail account and enter the provided code
-								</p>
-								<Link to="/login">
-									<p className="text-white text-sm underline font-light pt-5">
-										Choose a different account
-									</p>
-								</Link>
-							</div>
-							<div className="w-auto bg-white h-auto rounded p-10">
-								<div>
-									<p className="text-sm font-semibold text-primaryColor">
-										Email verification code
-									</p>
-									<p className="text-xs pt-2">
-										Input the code received from your email account
-									</p>
-								</div>
-								<div className="flex items-center justify-center pt-10">
-									<div>
-										<div className="flex gap-2">
-											{verificationCode.map((value, index) => (
-												<input
-													key={index}
-													type="text"
-													className="h-14 w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
-													value={value}
-													onChange={(e) => handleInputChange(index, e.target.value)}
-													ref={inputRefs[index]}
-													inputMode="numeric"
-												/>
-											))}
-										</div>
-										<div className="mt-5">
-											{attemp === 0 ? (
-												<p className="text-xs">Retry in: {retryCountdown}</p>
-											) : (
-												<p className="text-xs text-red-400">Attemps left: {attemp}</p>
-											)}
-										</div>
-									</div>
-								</div>
-								{attemp === 0 ? (
-									""
-								) : (
-									<div className="flex justify-between items-center mt-5">
-										{countdown === 0 ? (
-											<button
-												onClick={handleResendOtp}
-												className="text-xs text-primaryColor"
-												disabled={countdown > 0 || attemp === 0}>
-												Resend code
-											</button>
-										) : (
-											<button
-												className="text-xs text-primaryColor"
-												disabled={countdown > 0 || attemp === 0}>
-												Resend in {countdown}
-											</button>
-										)}
+				<img
+					src="static\images\Blob2.png"
+					alt=""
+					className="fixed top-0 left-0 w-3/4 sm:w-2/3 md:w-2/4 lg:w-2/5 -rotate-12 opacity-60 blur-sm"
+				/>
 
-										<button
-											onClick={handleVerifyCode}
-											disabled={attemp === 0}
-											className="bg-primaryColor text-white px-2 h-8 rounded text-xs">
-											Send
-										</button>
-									</div>
+				<div className="flex items-center justify-center w-full h-screen relative z-10">
+					<div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8 lg:gap-10">
+						<div className="text-center lg:text-start w-[295px] sm:w-[360px] md:w-[390px] lg:w-[400px]">
+							<h1 className="font-black text-3xl md:text-4xl text-white">
+								Almost there
+							</h1>
+							<p className="text-white text-sm lg:text-base font-light pt-5">
+								One time password is sent to your email account, Please look through
+								your Gmail account and enter the provided code
+							</p>
+							<Link to="/login">
+								<p className="text-white text-sm md:text-base underline font-light pt-5">
+									Choose a different account
+								</p>
+							</Link>
+						</div>
+						<div className="w-[315px] sm:w-[365px] md:w-[405px] lg:w-[455px] bg-white h-[220px] md:h-[270px] lg:h-[300px] rounded p-4 md:p-6 lg:p-8">
+							<div>
+								<p className="text:lg md:text-xl font-semibold text-primaryColor">
+									Email verification code
+								</p>
+								<p className="text-xs pt-0 md:pt-2">
+									Input the code received from your email account
+								</p>
+							</div>
+							<div className="flex items-center justify-center pt-2 md:pt-8 lg:pt-10">
+								<div className="flex gap-2">
+									{verificationCode.map((value, index) => (
+										<input
+											key={index}
+											type="text"
+											className="h-10 w-10 md:h-12 md:w-12 lg:h-14 lg:w-14 rounded bg-white text-lg text-center outline-primaryColor border border-primaryColor"
+											value={value}
+											onChange={(e) => handleInputChange(index, e.target.value)}
+											ref={inputRefs[index]}
+											inputMode="numeric"
+										/>
+									))}
+								</div>
+							</div>
+							<div className="mt-5">
+								{attemp === 0 ? (
+									<p className="text-xs">Retry in: {retryCountdown}</p>
+								) : (
+									<p className="text-xs text-red-400">Attemps left: {attemp}</p>
 								)}
 							</div>
+							{attemp === 0 ? (
+								""
+							) : (
+								<div className="flex justify-between items-center mt-3 md:mt-4 lg:mt-5">
+									{countdown === 0 ? (
+										<button
+											onClick={handleResendOtp}
+											className="text-xs text-primaryColor"
+											disabled={countdown > 0 || attemp === 0}>
+											Resend code
+										</button>
+									) : (
+										<button
+											className="text-xs text-primaryColor"
+											disabled={countdown > 0 || attemp === 0}>
+											Resend in {countdown}
+										</button>
+									)}
+
+									<button
+										onClick={handleVerifyCode}
+										disabled={attemp === 0}
+										className="bg-primaryColor text-white px-2 w-16 h-8 rounded text-xs">
+										Send
+									</button>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
+				<img
+					src="static\images\Blob1.png"
+					alt=""
+					className="fixed bottom-0 right-0 w-3/4 sm:w-2/3 md:w-2/4 lg:w-2/5 rotate-90 opacity-50 blur-sm"
+				/>
 			</div>
 		</>
 	);

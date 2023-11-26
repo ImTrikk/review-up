@@ -110,12 +110,15 @@ export const DragDropFile = (props) => {
 					</label>
 				</div>
 			</form>
-			<div className="px-5">
-				<p className="text-xs font-light text-primaryColor">
+			<div className="px-5 mb-5">
+				<p className="text-xs font-light text-gray-400">
 					Post reviewer with the file extensions [.pdf , doxc, doc, .pptx, .png,
 					.jpeg]
 				</p>
-				<p className="text-xs font-light text-primaryColor">Post only files less than 4.5 mb for the total payload size upload</p>
+				<p className="text-xs font-light text-gray-400 mt-2">
+					Post only files <span className="text-red-500">less than 4.5 mb</span> for the total payload size
+					upload
+				</p>
 			</div>
 			{fileList.length > 0 ? (
 				<div className="px-5 pb-5">

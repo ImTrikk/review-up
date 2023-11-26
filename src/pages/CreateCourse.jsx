@@ -117,14 +117,13 @@ export const CreateCourse = () => {
 			console.log(fileList);
 			console.log(questionList);
 			questionList.forEach((question, index) => {
-				formData.append(`question[${index}][quiz_id]`, question.id);
+				formData.append(`question[${index}][question_id]`, question.id);
 				formData.append(`question[${index}][question]`, question.question);
 				formData.append(`question[${index}][choices]`, question.choices.join(","));
 				formData.append(
 					`question[${index}][correctAnswer]`,
 					question.correctAnswer,
 				);
-				// Add other properties as needed
 			});
 
 			formData.append("quiz_name", quizName);
@@ -449,7 +448,7 @@ export const CreateCourse = () => {
 												</div>
 											</div>
 										</form>
-										<div className="w-[600px] h-auto bg-white shadow rounded">
+										<div className="w-[600px] h-fit bg-white shadow rounded">
 											<DragDropFile onFileChange={(files) => onFileChange(files)} />
 											{fileListError ? (
 												<div className="pt-1 ml-5 text-xs text-red-600 flex items-center gap-1">
