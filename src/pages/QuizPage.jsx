@@ -51,7 +51,7 @@ export const QuizPage = () => {
 
 	return (
 		<>
-			<div className="mx-32 my-10">
+			<div className="mx-72 my-10">
 				<div>
 					<div className="flex">
 						<Link>
@@ -65,13 +65,18 @@ export const QuizPage = () => {
 						<p>By: </p>
 					</div>
 					{quiz.map((question, index) => (
-						<div key={index} className="">
-							<div>Question No. {index + 1}</div>
-							<h1>Question: {question?.question}</h1>
+						<div key={index} className="pt-5 border border-gray-200 my-5 p-5 rounded">
+							<div className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white text-sm p-2 rounded">
+								<h1>
+									Question No. {index + 1} {question?.question}
+								</h1>
+							</div>
 							<div>
 								{question.choices.map((choice, choiceIndex) => (
-									<div key={choiceIndex} className="">
-										Choice: {choice}
+									<div
+										key={choiceIndex}
+										className="bg-white border border-gray-100 p-2 px-4 my-2 h-8 rounded flex items-center">
+										<p className="text-xs"> Choice: {choice}</p>
 									</div>
 								))}
 							</div>
