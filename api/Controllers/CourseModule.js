@@ -15,31 +15,24 @@ export const CreateCourse = async (req, res) => {
 	} = req.body;
 	const questions = req.body.question;
 
-	console.log("User id: ", user_id);
-	console.log("Quiz name: ", quiz_name);
-
 	// Mapping over questions
 	const mappedQuestions = questions.map((question) => {
-		// Check if question is not null or undefined and is an object
 		if (question && typeof question === "object") {
-			// Check if choices is a string and convert it to an array
 			const choicesArray =
 				typeof question.choices === "string"
 					? question.choices.split(",")
 					: question.choices;
 
-			// Ensure that correctAnswer is a string and convert it to a number
 			const correctAnswerNumber =
 				typeof question.correctAnswer === "string"
 					? parseInt(question.correctAnswer, 10)
 					: question.correctAnswer;
 
-			// Return the modified question object
 			return {
-				id: question.question_id || 0, // Use a default value if question_id is undefined or null
-				quiz_name: question.question || "", // Use a default value if question is undefined or null
-				choices: Array.isArray(choicesArray) ? choicesArray : ["", "", "", ""], // Use a default value if choicesArray is not an array
-				correctAnswer: isNaN(correctAnswerNumber) ? 0 : correctAnswerNumber, // Use a default value if correctAnswerNumber is not a number
+				id: question.question_id || 0,
+				question: question.question || "",
+				choices: Array.isArray(choicesArray) ? choicesArray : ["", "", "", ""],
+				correctAnswer: isNaN(correctAnswerNumber) ? 0 : correctAnswerNumber,
 			};
 		} else {
 			return null;
@@ -51,40 +44,54 @@ export const CreateCourse = async (req, res) => {
 		(question) => question !== null,
 	);
 
-	console.log("Mapped quiz module: ", mapp);
-
 	try {
-		// const newCourseQuery = `
-		// 		INSERT INTO courses (course_code, course_title, course_program, description, user_id, file_id, header_url)
-		// 		VALUES ($1, $2, $3, $4, $5, $6, $7)
-		// 		RETURNING course_id;
-		// 	`;
-		// const courseResult = await dbConnection.query(newCourseQuery, [
-		// 	course_code,
-		// 	course_title,
-		// 	course_program,
-		// 	description,
-		// 	user_id,
-		// 	file_id,
-		// 	header_url,
-		// ]);
-		// const course_id = courseResult.rows[0].course_id;
-		// console.log(course_id);
-		// // todo create quiz
-		// mappedQuestions.forEach(async (q) => {
-		// 	const query = {
-		// 		text:
-		// 			"INSERT INTO questions(course_id, quiz_id, question, choices, correct_answer) VALUES($1, $2, $3, $4) RETURNING *",
-		// 		values: [course_id, q.quiz_id, q.question, q.choices, q.correctAnswer],
-		// 	};
-		// 	try {
-		// 		const quizQueryResult = await dbConnection.query(query);
-		// 		console.log(`Question ${quizQueryResult.rows[0].id} saved successfully.`);
-		// 	} catch (err) {
-		// 		console.log(err);
-		// 	}
-		// });
-		// return res.status(201).json({ message: "Success creating course!" });
+		const newCourseQuery = `
+            INSERT INTO courses (course_code, course_title, course_program, description, user_id, file_id, header_url)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING course_id;
+        `;
+		const courseResult = await dbConnection.query(newCourseQuery, [
+			course_code,
+			course_title,
+			course_program,
+			description,
+			user_id,
+			file_id,
+			header_url,
+		]);
+		const course_id = courseResult.rows[0].course_id;
+
+		// insert values in quizzes table
+		const quizTableQuery = await dbConnection.query(
+			"INSERT INTO quizzes(quiz_name, user_id, course_id) VALUES($1, $2, $3) RETURNING quiz_id;",
+			[quiz_name, user_id, course_id],
+		);
+
+		const quiz_id = quizTableQuery.rows[0].quiz_id;
+
+		// This is for making the quiz
+		for (const q of filteredQuestions) {
+			const query = {
+				text:
+					"INSERT INTO questions (quiz_id, question, choices) VALUES($1, $2, $3) RETURNING quest_id",
+				values: [quiz_id, q.question, q.choices],
+			};
+			try {
+				const quizQueryResult = await dbConnection.query(query);
+				const quest_id = quizQueryResult.rows[0].quest_id;
+
+				const answerTableQuery = await dbConnection.query(
+					"INSERT INTO answers (quest_id, hashed_answer) VALUES($1, $2)",
+					[quest_id, q.correctAnswer],
+				);
+			} catch (err) {
+				console.log(err);
+			}
+		}
+
+		// query for adding the answers
+
+		return res.status(201).json({ message: "Success creating course!" });
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: "Internal server error" });
@@ -265,7 +272,7 @@ export const DeleteCourse = async (req, res) => {
 			"delete from courses where course_id = $1",
 			[id],
 		);
-		o;
+
 		// Check if the course was fund and deleted
 		if (CourseData.rowCount === 0) {
 			return res.status(404).json({ message: "Course not found" });

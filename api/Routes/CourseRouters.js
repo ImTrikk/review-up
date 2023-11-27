@@ -14,6 +14,7 @@ import {
 	upload,
 	firebaseUpload,
 } from "../MIddleware/FileUploaderMiddleware.js";
+import { GetQuiz, QuizInfo } from "../Controllers/QuizController.js";
 
 const router = express.Router();
 
@@ -37,5 +38,8 @@ router.post("/retrieve-save", RetrieveSavedCourse);
 router.get("/saved-courses/:id", RetrieveSavedCourse);
 router.delete("/remove-saved/:course_id/:user_id", RemoveSavedCourse);
 router.delete("/delete-course/:id", DeleteCourse);
+
+router.get("/quiz/:id", GetQuiz);
+router.get("/get-quiz-questions/:id", QuizInfo);
 
 export { router as CourseRouter };

@@ -1,9 +1,53 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { buildUrl } from "../utils/buildUrl";
 
 export const QuizPage = () => {
+	const [quiz, setQuiz] = useState([]);
+	const [choices, setChoices] = useState([]);
+	const [isResultOpen, setResultOpen] = useState(false);
 
-	const [isResultOpen, setResultOpen] = useState(false)
+	const { id } = useParams();
+
+	const getQuiz = async () => {
+		try {
+			let response = await fetch(buildUrl(`/quiz-info/${id}`), {
+				method: "GET",
+			});
+			if (response.ok) {
+				const data = await response.json();
+				setQuiz(data.questionsResults);
+			} else {
+				console.log("Internal server error");
+			}
+		} catch (err) {
+			console.log(first);
+		}
+	};
+
+	const handleQuestions = async () => {
+		try {
+			let response = await fetch(buildUrl(`/course/get-quiz-questions/${id}`), {
+				method: "GET",
+			});
+			if (!response.ok) {
+				console.log("Internal server error");
+			} else {
+				const data = await response.json();
+				setQuiz(data.questionsResults);
+				console.log(data);
+				setChoices(data.questionsResults);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const handleCheckAnswer = async () => {};
+
+	useEffect(() => {
+		handleQuestions();
+	}, []);
 
 	return (
 		<>
@@ -20,6 +64,19 @@ export const QuizPage = () => {
 						<h1>Quiz: </h1>
 						<p>By: </p>
 					</div>
+					{quiz.map((question, index) => (
+						<div key={index} className="">
+							<div>Question No. {index + 1}</div>
+							<h1>Question: {question?.question}</h1>
+							<div>
+								{question.choices.map((choice, choiceIndex) => (
+									<div key={choiceIndex} className="">
+										Choice: {choice}
+									</div>
+								))}
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 		</>

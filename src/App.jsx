@@ -17,103 +17,103 @@ import GlobalLayout from "./components/GlobalLayout";
 import { MyCourseModule } from "./pages/MyCourseModule";
 import { SavedCourseModule } from "./pages/SavedCourseModule";
 import { QuizPage } from "./pages/QuizPage";
-//Comments
+
 function App() {
-  return (
-    <>
-      <Routers>
-        <Routes>
-          <Route path="/" element={<Mainpage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-pass" element={<PasswordReset />} />
-          <Route path="/verify" element={<CodeVerification />} />
-          <Route element={<ProtectedRoutes />}>
-            <Route
-              path="/dashboard"
-              element={
-                <GlobalLayout>
-                  <Dashboard />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="/courses"
-              element={
-                <GlobalLayout>
-                  <Courses />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="my-courses"
-              element={
-                <GlobalLayout>
-                  <MyCourses />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <GlobalLayout>
-                  <Profile />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="/saved"
-              element={
-                <GlobalLayout>
-                  <SavedCourses />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="/create-course"
-              element={
-                <GlobalLayout>
-                  <CreateCourse />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="/course-module/:id"
-              element={
-                <GlobalLayout>
-                  <CourseModule />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="/my-course-module/:id"
-              element={
-                <GlobalLayout>
-                  <MyCourseModule />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="/saved-course-module/:id"
-              element={
-                <GlobalLayout>
-                  <SavedCourseModule />
-                </GlobalLayout>
-              }
-            />
-            <Route
-              path="/quiz"
-              element={
-                <GlobalLayout>
-                  <QuizPage />
-                </GlobalLayout>
-              }
-            />
-          </Route>
-        </Routes>
-      </Routers>
-    </>
-  );
+	return (
+		<>
+			<Routers>
+				<Routes>
+					<Route path="/" element={<Mainpage />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/signup" element={<Signup />} />
+					<Route path="/forgot-pass" element={<PasswordReset />} />
+					<Route path="/verify" element={<CodeVerification />} />
+					<Route element={<ProtectedRoutes />}>
+						<Route
+							path="/dashboard"
+							element={
+								<GlobalLayout>
+									<Dashboard />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/courses"
+							element={
+								<GlobalLayout>
+									<Courses />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="my-courses"
+							element={
+								<GlobalLayout>
+									<MyCourses />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/profile"
+							element={
+								<GlobalLayout>
+									<Profile />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/saved"
+							element={
+								<GlobalLayout>
+									<SavedCourses />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/create-course"
+							element={
+								<GlobalLayout>
+									<CreateCourse />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/course-module/:id"
+							element={
+								<GlobalLayout>
+									<CourseModule />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/my-course-module/:id"
+							element={
+								<GlobalLayout>
+									<MyCourseModule />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/saved-course-module/:id"
+							element={
+								<GlobalLayout>
+									<SavedCourseModule />
+								</GlobalLayout>
+							}
+						/>
+						<Route
+							path="/quiz/:id"
+							element={
+								<GlobalLayout>
+									<QuizPage />
+								</GlobalLayout>
+							}
+						/>
+					</Route>
+				</Routes>
+			</Routers>
+		</>
+	);
 }
 
 export default App;

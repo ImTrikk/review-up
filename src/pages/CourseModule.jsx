@@ -5,6 +5,7 @@ import { buildUrl } from "../utils/buildUrl";
 import { useParams } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,6 +20,7 @@ import png from "/static/icons/PNG.png";
 
 export const CourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
+	const [quiz, setQuiz] = useState([]);
 	const [heartFull, setHeartFull] = useState(false);
 
 	const { id } = useParams();
@@ -28,15 +30,32 @@ export const CourseModule = () => {
 		try {
 			const response = await fetch(buildUrl(`/course/get-course-info/${id}`), {
 				method: "GET",
-			}).then((res) => {
-				return res.json().then((data) => {
-					if (res.ok) {
-						setCourseInfo(data);
-					}
-				});
 			});
+
+			if (response.ok) {
+				const data = await response.json();
+				setCourseInfo(data);
+			}
 		} catch (error) {
 			console.error("Error fetching data:", error);
+		}
+	};
+
+	const getQuiz = async () => {
+		try {
+			const response = await fetch(buildUrl(`/course/quiz/${id}`), {
+				method: "GET",
+			});
+
+			const data = await response.json();
+			console.log(data.retrievedQuizInfo);
+			if (response.ok) {
+				setQuiz([data.retrievedQuizInfo]);
+			} else {
+				console.log("Something went wrong connecting with the server");
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
@@ -99,6 +118,7 @@ export const CourseModule = () => {
 	};
 
 	useEffect(() => {
+		getQuiz();
 		getCourseInfo();
 	}, []);
 
@@ -165,7 +185,7 @@ export const CourseModule = () => {
 									))}
 							</div>
 						</div>
-						{/* <div>
+						<div className="pt-10">
 							<h1 className="text-lg font-bold text-primaryColor">Quizzes</h1>
 							<div className="text-primaryColor">
 								<hr className="border border-primaryColor" />
@@ -173,9 +193,19 @@ export const CourseModule = () => {
 							<div className="pt-2">
 								<p className="text-xs text-primaryColor">Quizzes created by the user</p>
 							</div>
-							<div className="py-5 flex items-center gap-5"></div>
+							<div className="py-5 flex items-center gap-5">
+								{quiz.map((quiz, index) => (
+									<div key={index}>
+										<Link to={`/quiz/${quiz.quiz_id}`}>
+											<div className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white text-xs p-2 rounded">
+												<h1>Quiz name: {quiz.quiz_name}</h1>
+											</div>
+										</Link>
+									</div>
+								))}
+							</div>
 						</div>
-						<div>
+						{/* <div>
 							<h1 className="text-lg font-bold text-primaryColor">
 								Links and other resources
 							</h1>
