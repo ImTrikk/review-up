@@ -25,7 +25,7 @@ router.post(
 		const batchID = uuidv4();
 		req.batchID = batchID;
 		next();
-	},
+	},	
 	upload.any("file"),
 	firebaseUpload,
 	CreateCourse,
