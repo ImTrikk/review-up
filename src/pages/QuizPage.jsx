@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
 import { QuizProgressmodal } from "../components/Modal/QuizProgressmodal";
+import { QuizResultModal } from "../components/Modal/QuizResultModal";
 
 export const QuizPage = () => {
 	const [quiz, setQuiz] = useState([]);
@@ -71,6 +72,7 @@ export const QuizPage = () => {
 					) : (
 						""
 					)}
+					{/* <QuizResultModal/> */}
 					<div>
 						<div className="flex">
 							<div
