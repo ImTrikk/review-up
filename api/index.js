@@ -10,20 +10,20 @@ const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(
-	cors({
-		origin: "*",
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		credentials: true,
-	}),
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
 );
 
 // sets Content Security Policy
 app.use(
-	helmet.contentSecurityPolicy({
-		directives: {
-			scriptSrc: ["'self'", " https://review-up.vercel.app"],
-		},
-	}),
+  helmet.contentSecurityPolicy({
+    directives: {
+      scriptSrc: ["'self'", " https://review-up.vercel.app"],
+    },
+  })
 );
 
 app.use("/api/auth", UserRouter);
@@ -31,13 +31,13 @@ app.use("/api/course", CourseRouter);
 
 // database connection
 dbConnection
-	.connect()
-	.then(() => {
-		console.log("Postgre connection success");
-	})
-	.catch((err) => {
-		console.log("Error connecting with vercel postgre DB");
-		console.log(err);
-	});
+  .connect()
+  .then(() => {
+    console.log("Postgre connection success");
+  })
+  .catch((err) => {
+    console.log("Error connecting with vercel postgre DB");
+    console.log(err);
+  });
 
 app.listen(4242, () => console.log("Server running on localhost 4242"));

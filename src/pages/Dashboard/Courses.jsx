@@ -5,55 +5,50 @@ import { CreateButton } from "../../components/CreateButton";
 import { ReviewModuleCard } from "../../components/ReviewModuleCard";
 import { useEffect } from "react";
 import { buildUrl } from "../../utils/buildUrl";
+import Header from "../../components/header/Header";
 
 export const Courses = () => {
-	const [isEmpty, setIsEmpty] = useState(null);
+  const [isEmpty, setIsEmpty] = useState(null);
 
-	const handleIsEmptyChange = (value) => {
-		setIsEmpty(value.length === 0);
-	};
+  const handleIsEmptyChange = (value) => {
+    setIsEmpty(value.length === 0);
+  };
 
-	return (
-		<>
-			<div className="bg-[#f2f2f2] h-screen">
-				<SideBar />
-				<div className="bg-primaryColor w-full h-[140px] relative">
-					<img
-						src="/static/images/header.png"
-						alt=""
-						className="absolute w-full h-[140px]"
-					/>
-					<div className="ml-[240px] h-full grid items-end absolute z-10">
-						<div className="pb-10">
-							<h1 className="text-white text-3xl font-bold">Courses</h1>
-							<p className="text-white text-sm">
-								All available courses posted online by different users from different
-								programs
-							</p>
-						</div>
-					</div>
-				</div>
-				<div className="ml-[210px]">
-					<div className="p-8">
-						{/* <h1 className="font-bold text-xl text-primaryColor">
+  return (
+    <>
+      <div className="bg-[#f2f2f2] h-fit">
+        <SideBar />
+
+        <Header
+          title={"Courses"}
+          description="All available courses posted online by different users from different
+								programs"
+        />
+        <div className="ml-[100px] lg:ml-[210px]">
+          <div className="p-8">
+            {/* <h1 className="font-bold text-xl text-primaryColor">
 							Courses with reviewers
 						</h1>
 						<div className="pt-5">
 							<hr className="border-1 border-primaryColor" />
 						</div> */}
-						<div className="pt-5">
-							{isEmpty ? (
-								<div className="flex items-center justify-center">
-									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
-								</div>
-							) : (
-								<ReviewModuleCard onIsEmptyChange={handleIsEmptyChange} />
-							)}
-						</div>
-					</div>
-				</div>
-				<CreateButton />
-			</div>
-		</>
-	);
+            <div className="pt-5">
+              {isEmpty ? (
+                <div className="flex items-center justify-center">
+                  <img
+                    src="/static/images/empty.jpg"
+                    alt=""
+                    className="w-[700px]"
+                  />
+                </div>
+              ) : (
+                <ReviewModuleCard onIsEmptyChange={handleIsEmptyChange} />
+              )}
+            </div>
+          </div>
+        </div>
+        <CreateButton />
+      </div>
+    </>
+  );
 };
