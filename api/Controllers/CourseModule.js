@@ -342,35 +342,38 @@ export const DeleteCourse = async (req, res) => {
 			[id],
 		);
 
-		//todo modify the code here for deletion of the quizzes data
+		// Check if quizzesData is not empty
+		if (quizzesData && quizzesData.length !== 0) {
+			//todo modify the code here for deletion of the quizzes data
 
-		const quiz_id = quizzesData.rows[0].quiz_id;
+			const quiz_id = quizzesData.rows[0].quiz_id;
 
-		console.log("Quiz_id: ", quiz_id);
+			console.log("Quiz_id: ", quiz_id);
 
-		const getQuestId = await dbConnection.query(
-			"select quest_id from questions where quiz_id = $1",
-			[quiz_id],
-		);
+			const getQuestId = await dbConnection.query(
+				"select quest_id from questions where quiz_id = $1",
+				[quiz_id],
+			);
 
-		const quest_id = getQuestId.rows[0].quest_id;
+			const quest_id = getQuestId.rows[0].quest_id;
 
-		console.log("Quest ID: ", quest_id);
+			console.log("Quest ID: ", quest_id);
 
-		const deleteAnswers = await dbConnection.query(
-			"delete from answers where quest_id = $1",
-			[quest_id],
-		);
+			const deleteAnswers = await dbConnection.query(
+				"delete from answers where quest_id = $1",
+				[quest_id],
+			);
 
-		const deleteQueryQuestions = dbConnection.query(
-			"delete from questions where quiz_id = $1",
-			[quiz_id],
-		);
+			const deleteQueryQuestions = dbConnection.query(
+				"delete from questions where quiz_id = $1",
+				[quiz_id],
+			);
 
-		const deleteQuizzes = await dbConnection.query(
-			"delete from quizzes where course_id = $1",
-			[id],
-		);
+			const deleteQuizzes = await dbConnection.query(
+				"delete from quizzes where course_id = $1",
+				[id],
+			);
+		}
 
 		const fileID = CourseInfo.rows[0]?.file_id;
 
