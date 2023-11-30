@@ -117,7 +117,6 @@ export const PasswordReset = () => {
 		} else if (!/[!@#$%^&*]/.test(newPassword)) {
 		} else if (cPassword !== newPassword) {
 			showToast("Password must have symbols (!@#$%^&*)", "error");
-
 			showToast("Password does not match", "error");
 		}
 		try {
@@ -130,7 +129,7 @@ export const PasswordReset = () => {
 					email,
 					newPassword,
 				}),
-			}).then((res) => {
+			}).then(async (res) => {
 				return res.json().then((data) => {
 					if (res.ok) {
 						toast.success(data.message);

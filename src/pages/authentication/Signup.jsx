@@ -134,7 +134,7 @@ export const Signup = () => {
 
 	const handleSignupRequest = async (event) => {
 		event.preventDefault();
-
+		loadingBar.current.continuousStart(60);
 		setFnameError(false);
 		setLnameError(false);
 		setEmailError(false);
@@ -193,7 +193,6 @@ export const Signup = () => {
 					}),
 				});
 				if (response.ok) {
-					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
 						loadingBar.current.complete();
 						setTimeout(() => {
@@ -201,9 +200,11 @@ export const Signup = () => {
 						}, 1200);
 					}, 1000);
 				} else {
+					loadingBar.current.complete();
 					showToast("Email already in use", "error");
 				}
 			} catch (err) {
+				loadingBar.current.complete();
 				console.log(err);
 			}
 		}
