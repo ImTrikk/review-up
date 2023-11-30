@@ -5,6 +5,7 @@ import { buildUrl } from "../utils/buildUrl";
 import { useParams } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,163 +19,173 @@ import jpg from "/static/icons/JPG.png";
 import png from "/static/icons/PNG.png";
 
 export const CourseModule = () => {
-  const [courseInfo, setCourseInfo] = useState([]);
-  const [heartFull, setHeartFull] = useState(false);
+	const [courseInfo, setCourseInfo] = useState([]);
+	const [quiz, setQuiz] = useState([]);
+	const [heartFull, setHeartFull] = useState(false);
 
-  const { id } = useParams();
-  const user_id = localStorage.getItem("user_id");
+	const { id } = useParams();
+	const user_id = localStorage.getItem("user_id");
 
-  const getCourseInfo = async () => {
-    try {
-      const response = await fetch(buildUrl(`/course/get-course-info/${id}`), {
-        method: "GET",
-      }).then((res) => {
-        return res.json().then((data) => {
-          if (res.ok) {
-            setCourseInfo(data);
-          }
-        });
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+	const getCourseInfo = async () => {
+		try {
+			const response = await fetch(buildUrl(`/course/get-course-info/${id}`), {
+				method: "GET",
+			});
 
-  const getFileNameFromUrl = (url) => {
-    const decodedUrl = decodeURIComponent(url);
-    const matches = decodedUrl.match(/\/([^\/?#]+)[^\/]*$/);
+			if (response.ok) {
+				const data = await response.json();
+				setCourseInfo(data);
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
 
-    if (matches && matches.length > 1) {
-      const fileNameWithId = matches[1];
-      const fileNameWithoutId = fileNameWithId.replace(/^[^_]+_/, "");
-      return fileNameWithoutId;
-    }
+	const getQuiz = async () => {
+		try {
+			const response = await fetch(buildUrl(`/course/quiz/${id}`), {
+				method: "GET",
+			});
 
-    return null;
-  };
+			const data = await response.json();
+			console.log(data.retrievedQuizInfo);
+			if (response.ok) {
+				setQuiz([data.retrievedQuizInfo]);
+			} else {
+				console.log("Something went wrong connecting with the server");
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
-  const fileIconType = (url) => {
-    // Extract the filename from the URL
-    const filename = getFileNameFromUrl(url);
-    const extension = filename.split(".").pop();
+	const getFileNameFromUrl = (url) => {
+		const decodedUrl = decodeURIComponent(url);
+		const matches = decodedUrl.match(/\/([^\/?#]+)[^\/]*$/);
 
-    // You can add more file types and corresponding icons as needed
-    const iconMappings = {
-      pdf: pdf,
-      doc: doc,
-      pptx: pptx,
-      jpg: jpg,
-      png: png,
-    };
+		if (matches && matches.length > 1) {
+			const fileNameWithId = matches[1];
+			const fileNameWithoutId = fileNameWithId.replace(/^[^_]+_/, "");
+			return fileNameWithoutId;
+		}
 
-    return iconMappings[extension];
-  };
+		return null;
+	};
 
-  const handleSaveCourse = async () => {
-    try {
-      let response = await fetch(buildUrl(`/course/save`), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          user_id,
-        }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        toast.success("Saved course");
-      } else {
-        toast.info(data.message);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+	const fileIconType = (url) => {
+		// Extract the filename from the URL
+		const filename = getFileNameFromUrl(url);
+		const extension = filename.split(".").pop();
 
-  const onClickSave = () => {
-    handleSaveCourse();
-    setHeartFull(true);
-  };
+		// You can add more file types and corresponding icons as needed
+		const iconMappings = {
+			pdf: pdf,
+			doc: doc,
+			pptx: pptx,
+			jpg: jpg,
+			png: png,
+		};
 
-  useEffect(() => {
-    getCourseInfo();
-  }, []);
+		return iconMappings[extension];
+	};
 
-  return (
-    <>
-      <div className="">
-        <SideBar />
-        <ToastContainer />
-        <div className="bg-primaryColor w-full h-[140px] relative">
-          <img
-            src="/static/images/header.png"
-            alt=""
-            className="absolute w-full h-[140px]"
-          />
-          <div className="w-full h-full flex justify-between items-center absolute z-10">
-            <div className="ml-[220px]">
-              <h1 className="text-white text-3xl font-bold">
-                My Course - {courseInfo.courseInfoFound?.course_code}
-              </h1>
-              <p className="text-white text-sm">
-                {courseInfo.courseInfoFound?.description}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="ml-[220px] mr-10">
-          <div className="p-5">
-            <div>
-              <div className="flex items-center justify-between py-2">
-                <h1 className="text-lg font-bold text-primaryColor">
-                  Reviewers
-                </h1>
-                <button
-                  onClick={onClickSave}
-                  className="flex items-center gap-2 text-sm border text-red-500 border-red-500 px-4 h-8 rounded"
-                >
-                  save
-                  {heartFull ? <FaHeart /> : <CiHeart size={20} />}
-                </button>
-              </div>
-              <div className="text-primaryColor">
-                <hr className="border border-primaryColor" />
-              </div>
-              <div className="pt-2">
-                <p className="text-xs text-primaryColor">
-                  Reviewers posted by the creator
-                </p>
-              </div>
-              <div className="pt-10 flex flex-wrap items-center gap-5">
-                {courseInfo.fileDownloadURLs &&
-                  courseInfo.fileDownloadURLs.map((url, urlIndex) => (
-                    <div
-                      key={urlIndex}
-                      className="h-56 w-56 shadow flex flex-col items-center justify-center"
-                    >
-                      {/* Display or use the downloadURL as needed */}
-                      <img
-                        src={fileIconType(url)}
-                        alt=""
-                        className="w-[100px]"
-                      />
-                      <div></div>
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font font-semibold text-primaryColor pt-2"
-                      >
-                        {getFileNameFromUrl(url)}
-                        {/* {urlIndex + 1} */}
-                      </a>
-                    </div>
-                  ))}
-              </div>
-            </div>
-            {/* <div>
+	const handleSaveCourse = async () => {
+		try {
+			let response = await fetch(buildUrl(`/course/save`), {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					id,
+					user_id,
+				}),
+			});
+			const data = await response.json();
+			if (response.ok) {
+				toast.success("Saved course");
+			} else {
+				toast.info(data.message);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const onClickSave = () => {
+		handleSaveCourse();
+		setHeartFull(true);
+	};
+
+	useEffect(() => {
+		getQuiz();
+		getCourseInfo();
+	}, []);
+
+	return (
+		<>
+			<div className="">
+				<SideBar />
+				<ToastContainer />
+				<div className="bg-primaryColor w-full h-[140px] relative">
+					<img
+						src="/static/images/header.png"
+						alt=""
+						className="absolute w-full h-[140px]"
+					/>
+					<div className="w-full h-full flex justify-between items-center absolute z-10">
+						<div className="ml-[220px]">
+							<h1 className="text-white text-3xl font-bold">
+								My Course - {courseInfo.courseInfoFound?.course_code}
+							</h1>
+							<p className="text-white text-sm">
+								{courseInfo.courseInfoFound?.description}
+							</p>
+						</div>
+					</div>
+				</div>
+				<div className="ml-[220px] mr-10">
+					<div className="p-5">
+						<div>
+							<div className="flex items-center justify-between py-2">
+								<h1 className="text-lg font-bold text-primaryColor">Reviewers</h1>
+								<button
+									onClick={onClickSave}
+									className="flex items-center gap-2 text-sm border text-red-500 border-red-500 px-4 h-8 rounded">
+									save
+									{heartFull ? <FaHeart /> : <CiHeart size={20} />}
+								</button>
+							</div>
+							<div className="text-primaryColor">
+								<hr className="border border-primaryColor" />
+							</div>
+							<div className="pt-2">
+								<p className="text-xs text-primaryColor">
+									Reviewers posted by the creator
+								</p>
+							</div>
+							<div className="pt-10 flex flex-wrap items-center gap-5">
+								{courseInfo.fileDownloadURLs &&
+									courseInfo.fileDownloadURLs.map((url, urlIndex) => (
+										<div
+											key={urlIndex}
+											className="h-56 w-56 shadow flex flex-col items-center justify-center">
+											{/* Display or use the downloadURL as needed */}
+											<img src={fileIconType(url)} alt="" className="w-[100px]" />
+											<div></div>
+											<a
+												href={url}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="text-xs font font-semibold text-primaryColor pt-2">
+												{getFileNameFromUrl(url)}
+												{/* {urlIndex + 1} */}
+											</a>
+										</div>
+									))}
+							</div>
+						</div>
+						<div className="pt-10">
 							<h1 className="text-lg font-bold text-primaryColor">Quizzes</h1>
 							<div className="text-primaryColor">
 								<hr className="border border-primaryColor" />
@@ -182,9 +193,19 @@ export const CourseModule = () => {
 							<div className="pt-2">
 								<p className="text-xs text-primaryColor">Quizzes created by the user</p>
 							</div>
-							<div className="py-5 flex items-center gap-5"></div>
+							<div className="py-5 flex items-center gap-5">
+								{quiz.map((quiz, index) => (
+									<div key={index}>
+										<Link to={`/quiz/${quiz.quiz_id}`}>
+											<div className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white text-xs p-2 rounded">
+												<h1>Quiz name: {quiz.quiz_name}</h1>
+											</div>
+										</Link>
+									</div>
+								))}
+							</div>
 						</div>
-						<div>
+						{/* <div>
 							<h1 className="text-lg font-bold text-primaryColor">
 								Links and other resources
 							</h1>
@@ -198,9 +219,9 @@ export const CourseModule = () => {
 							</div>
 							<div className="pt-5 flex flex-wrap gap-2"></div>
 						</div> */}
-          </div>
-        </div>
-      </div>
-    </>
-  );
+					</div>
+				</div>
+			</div>
+		</>
+	);
 };

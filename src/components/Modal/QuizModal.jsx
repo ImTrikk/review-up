@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 
 export const QuizModal = ({ onChangeQuestions, onChangeQuizName }) => {
-
 	const [quizName, setQuizName] = useState("");
 	const [questions, setQuestions] = useState([
 		{
 			id: 1,
-			quiz_name: "",
+			question: "",
 			choices: ["", "", "", ""],
 			correctAnswer: 0,
 		},
