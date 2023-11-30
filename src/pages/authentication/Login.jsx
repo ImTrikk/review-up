@@ -30,15 +30,19 @@ export const Login = () => {
 
 	const handleLoginRequest = async (event) => {
 		event.preventDefault();
+		loadingBar.current.continuousStart(60);
 
 		if (email === "") {
+			loadingBar.current.complete();
 			setEmailError(true);
 			toast.error("Email required");
 		} else {
+			loadingBar.current.complete();
 			setEmailError(false);
 		}
 
 		if (password === "") {
+			loadingBar.current.complete();
 			setPassError(true);
 			toast.error("Password required");
 		} else {
@@ -46,9 +50,12 @@ export const Login = () => {
 		}
 
 		if (email !== "" && !emailRegex.test(email)) {
+			loadingBar.current.complete();
 			setCarsuError(true);
 			toast.error("Must use CARSU account");
-		} else {
+		}
+		if (email !== "" || password !== "") {
+			loadingBar.current.continuousStart(60);
 			try {
 				let response = await fetch(buildUrl("/auth/send-otp-login"), {
 					method: "POST",
@@ -61,7 +68,6 @@ export const Login = () => {
 					}),
 				});
 				if (response.ok) {
-					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
 						loadingBar.current.complete();
 						setTimeout(() => {
@@ -69,6 +75,7 @@ export const Login = () => {
 						}, 1200);
 					}, 1000);
 				} else {
+					loadingBar.current.complete();
 					if (response.status === 400) {
 						const data = await response.json();
 						if (data.message === "User does not exist") {

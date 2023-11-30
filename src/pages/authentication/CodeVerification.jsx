@@ -53,6 +53,7 @@ export const CodeVerification = () => {
 
 	// send data to server side
 	const handleVerifyCode = async () => {
+		loadingBar.current.continuousStart(60);
 		try {
 			// this should go to the TwoFactorAtuh endpoint
 			await fetch(buildUrl(`/auth${reqEndpoint}`), {
@@ -68,7 +69,6 @@ export const CodeVerification = () => {
 				if (res.status === 200 || res.status === 201) {
 					if (reqEndpoint === "/signup") {
 						toast.success("Account created, redirecting to login page...");
-						loadingBar.current.continuousStart(60);
 						setTimeout(() => {
 							loadingBar.current.complete();
 							setTimeout(() => {
@@ -76,6 +76,8 @@ export const CodeVerification = () => {
 							}, 1200);
 						}, 1000);
 					} else {
+						loadingBar.current.complete();
+
 						return res.json().then((data) => {
 							localStorage.setItem("user_id", data.foundUser.user_id);
 							localStorage.setItem("token", data.jwtToken);
@@ -103,6 +105,7 @@ export const CodeVerification = () => {
 						});
 					}
 				} else {
+					loadingBar.current.complete();
 					setAttempt(attemp - 1);
 					toast.error("Entered wrong OTP code!");
 				}
@@ -137,7 +140,7 @@ export const CodeVerification = () => {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({ email, password, requestBody }),
-			}).then((res) => {
+			}).then(async (res) => {
 				return res.json().then((data) => {
 					if (res.ok) {
 						toast.info("Code has been sent to your email account!");
