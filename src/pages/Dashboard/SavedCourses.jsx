@@ -5,39 +5,35 @@ import { useState } from "react";
 import Header from "../../components/header/Header";
 
 export const SavedCourses = () => {
-  const [isEmpty, setIsEmpty] = useState(null);
+	const [isEmpty, setIsEmpty] = useState(null);
 
-  const handleIsEmpty = (value) => {
-    setIsEmpty(value.length === 0);
-  };
+	const handleIsEmpty = (value) => {
+		setIsEmpty(value.length === 0);
+	};
 
-  return (
-    <>
-      <div className="bg-[#f2f2f2] h-fit">
-        <SideBar />
-        <Header
-          title={"Saved"}
-          description="Courses saved from different users online"
-        />
-        <div className="ml-[100px] lg:ml-[210px]">
-          <div className="p-8">
-            <div className="pt-5">
-              {isEmpty ? (
-                <div className="flex items-center justify-center">
-                  <img
-                    src="/static/images/empty.jpg"
-                    alt=""
-                    className="w-[700px]"
-                  />
-                </div>
-              ) : (
-                <SavedCourseCard onIsEmptyChange={handleIsEmpty} />
-              )}
-            </div>
-          </div>
-        </div>
-        <CreateButton />
-      </div>
-    </>
-  );
+	return (
+		<>
+			<div className="">
+				<SideBar />
+				<Header
+					title={"Saved"}
+					description="Courses saved from different users online"
+				/>
+				<div className="ml-[100px] lg:ml-[210px]">
+					<div className="p-8">
+						<div className="pt-5">
+							{isEmpty ? (
+								<div className="flex items-center justify-center">
+									<img src="/static/images/empty.jpg" alt="" className="w-[700px]" />
+								</div>
+							) : (
+								<SavedCourseCard onIsEmptyChange={handleIsEmpty} />
+							)}
+						</div>
+					</div>
+				</div>
+				<CreateButton />
+			</div>
+		</>
+	);
 };

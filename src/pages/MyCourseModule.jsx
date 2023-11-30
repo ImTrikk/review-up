@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { EditCourseModal } from "../components/Modal/EditCourseModal";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 //import icons
 
 import pdf from "/static/icons/PDF.png";
@@ -20,6 +21,7 @@ import { useRef } from "react";
 export const MyCourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
 	const [isEditOpen, setIsEditOpen] = useState(false);
+	const [quiz, setQuiz] = useState([]);
 
 	const { id } = useParams();
 
@@ -99,7 +101,7 @@ export const MyCourseModule = () => {
 						setTimeout(() => {
 							navigator("/my-courses");
 						}, 1200);
-					}, 1000);	
+					}, 1000);
 				} else {
 					loadingBar.current.complete();
 					toast.error(data.message);
@@ -108,13 +110,32 @@ export const MyCourseModule = () => {
 		});
 	};
 
+	const getQuiz = async () => {
+		try {
+			const response = await fetch(buildUrl(`/course/quiz/${id}`), {
+				method: "GET",
+			});
+
+			const data = await response.json();
+			console.log(data.retrievedQuizInfo);
+			if (response.ok) {
+				setQuiz([data.retrievedQuizInfo]);
+			} else {
+				console.log("Something went wrong connecting with the server");
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	useEffect(() => {
+		getQuiz();
 		getCourseInfo();
 	}, []);
 
 	return (
 		<>
-			<div className="bg-[#f2f2f2]">
+			<div className="">
 				<SideBar />
 				<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 				<ToastContainer autoClose={2000} />
@@ -178,6 +199,26 @@ export const MyCourseModule = () => {
 											</a>
 										</div>
 									))}
+							</div>
+						</div>
+						<div className="pt-10">
+							<h1 className="text-lg font-bold text-primaryColor">Quizzes</h1>
+							<div className="text-primaryColor">
+								<hr className="border border-primaryColor" />
+							</div>
+							<div className="pt-2">
+								<p className="text-xs text-primaryColor">Quizzes created by the user</p>
+							</div>
+							<div className="py-5 flex items-center gap-5">
+								{quiz.map((quiz, index) => (
+									<div key={index}>
+										<Link to={`/quiz/${quiz.quiz_id}`}>
+											<div className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white text-xs p-2 rounded">
+												<h1>Quiz name: {quiz.quiz_name}</h1>
+											</div>
+										</Link>
+									</div>
+								))}
 							</div>
 						</div>
 						{/* <div>

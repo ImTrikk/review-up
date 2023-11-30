@@ -15,7 +15,7 @@ export const MyCourses = () => {
 
 	return (
 		<>
-			<div className="bg-[#f2f2f2] h-screen">
+			<div className="">
 				<SideBar />
 				<Header
 					title={"MyCourse"}

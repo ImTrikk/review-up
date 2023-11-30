@@ -343,26 +343,44 @@ export const DeleteCourse = async (req, res) => {
 		);
 
 		// Check if quizzesData is not empty
-		if (quizzesData && quizzesData.length !== 0) {
+		if (quizzesData && quizzesData.rows.length > 0) {
 			//todo modify the code here for deletion of the quizzes data
+
+			console.log("For testting")
 
 			const quiz_id = quizzesData.rows[0].quiz_id;
 
 			console.log("Quiz_id: ", quiz_id);
 
-			const getQuestId = await dbConnection.query(
-				"select quest_id from questions where quiz_id = $1",
+			const getQuestIds = await dbConnection.query(
+				"SELECT quest_id FROM questions WHERE quiz_id = $1",
 				[quiz_id],
 			);
 
-			const quest_id = getQuestId.rows[0].quest_id;
+			// Check if any rows are returned
+			if (getQuestIds.rows.length > 0) {
+				for (const row of getQuestIds.rows) {
+					const quest_id = row.quest_id;
 
-			console.log("Quest ID: ", quest_id);
+					console.log("Deleting answers for Quest ID:", quest_id);
 
-			const deleteAnswers = await dbConnection.query(
-				"delete from answers where quest_id = $1",
-				[quest_id],
-			);
+					const deleteAnswers = await dbConnection.query(
+						"DELETE FROM answers WHERE quest_id = $1",
+						[quest_id],
+					);
+
+					// Check if deletion was successful, handle errors if necessary
+					if (deleteAnswers.rowCount > 0) {
+						console.log(
+							`Deleted ${deleteAnswers.rowCount} answers for Quest ID ${quest_id}`,
+						);
+					} else {
+						console.log(`No answers found for Quest ID ${quest_id}`);
+					}
+				}
+			} else {
+				console.log("No questions found for the given quiz_id");
+			}
 
 			const deleteQueryQuestions = dbConnection.query(
 				"delete from questions where quiz_id = $1",
