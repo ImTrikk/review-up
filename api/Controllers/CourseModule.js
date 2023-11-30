@@ -2,6 +2,8 @@ import { dbConnection } from "../Database/database.js";
 import { list, getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { firebaseStorage } from "../Database/firebase.js";
 
+//todo if the questions data is empty then it will not proceed to create quiz module.
+
 export const CreateCourse = async (req, res) => {
 	const file_id = req.batchID;
 	const {
@@ -14,35 +16,6 @@ export const CreateCourse = async (req, res) => {
 		quiz_name,
 	} = req.body;
 	const questions = req.body.question;
-
-	// Mapping over questions
-	const mappedQuestions = questions.map((question) => {
-		if (question && typeof question === "object") {
-			const choicesArray =
-				typeof question.choices === "string"
-					? question.choices.split(",")
-					: question.choices;
-
-			const correctAnswerNumber =
-				typeof question.correctAnswer === "string"
-					? parseInt(question.correctAnswer, 10)
-					: question.correctAnswer;
-
-			return {
-				id: question.question_id || 0,
-				question: question.question || "",
-				choices: Array.isArray(choicesArray) ? choicesArray : ["", "", "", ""],
-				correctAnswer: isNaN(correctAnswerNumber) ? 0 : correctAnswerNumber,
-			};
-		} else {
-			return null;
-		}
-	});
-
-	// Filter out any null values from the mappedQuestions array
-	const filteredQuestions = mappedQuestions.filter(
-		(question) => question !== null,
-	);
 
 	try {
 		const newCourseQuery = `
@@ -61,35 +34,66 @@ export const CreateCourse = async (req, res) => {
 		]);
 		const course_id = courseResult.rows[0].course_id;
 
-		// insert values in quizzes table
-		const quizTableQuery = await dbConnection.query(
-			"INSERT INTO quizzes(quiz_name, user_id, course_id) VALUES($1, $2, $3) RETURNING quiz_id;",
-			[quiz_name, user_id, course_id],
-		);
+		console.log(quiz_name);
 
-		const quiz_id = quizTableQuery.rows[0].quiz_id;
+		if (quiz_name !== "") {
+			// Mapping over questions
+			const mappedQuestions = questions.map((question) => {
+				if (question && typeof question === "object") {
+					const choicesArray =
+						typeof question.choices === "string"
+							? question.choices.split(",")
+							: question.choices;
 
-		// This is for making the quiz
-		for (const q of filteredQuestions) {
-			const query = {
-				text:
-					"INSERT INTO questions (quiz_id, question, choices) VALUES($1, $2, $3) RETURNING quest_id",
-				values: [quiz_id, q.question, q.choices],
-			};
-			try {
-				const quizQueryResult = await dbConnection.query(query);
-				const quest_id = quizQueryResult.rows[0].quest_id;
+					const correctAnswerNumber =
+						typeof question.correctAnswer === "string"
+							? parseInt(question.correctAnswer, 10)
+							: question.correctAnswer;
 
-				const answerTableQuery = await dbConnection.query(
-					"INSERT INTO answers (quest_id, hashed_answer) VALUES($1, $2)",
-					[quest_id, q.correctAnswer],
-				);
-			} catch (err) {
-				console.log(err);
+					return {
+						id: question.question_id || 0,
+						question: question.question || "",
+						choices: Array.isArray(choicesArray) ? choicesArray : ["", "", "", ""],
+						correctAnswer: isNaN(correctAnswerNumber) ? 0 : correctAnswerNumber,
+					};
+				} else {
+					return null;
+				}
+			});
+
+			// Filter out any null values from the mappedQuestions array
+			const filteredQuestions = mappedQuestions.filter(
+				(question) => question !== null,
+			);
+
+			// insert values in quizzes table
+			const quizTableQuery = await dbConnection.query(
+				"INSERT INTO quizzes(quiz_name, user_id, course_id) VALUES($1, $2, $3) RETURNING quiz_id;",
+				[quiz_name, user_id, course_id],
+			);
+
+			const quiz_id = quizTableQuery.rows[0].quiz_id;
+
+			// This is for making the quiz
+			for (const q of filteredQuestions) {
+				const query = {
+					text:
+						"INSERT INTO questions (quiz_id, question, choices) VALUES($1, $2, $3) RETURNING quest_id",
+					values: [quiz_id, q.question, q.choices],
+				};
+				try {
+					const quizQueryResult = await dbConnection.query(query);
+					const quest_id = quizQueryResult.rows[0].quest_id;
+
+					const answerTableQuery = await dbConnection.query(
+						"INSERT INTO answers (quest_id, hashed_answer) VALUES($1, $2)",
+						[quest_id, q.correctAnswer],
+					);
+				} catch (err) {
+					console.log(err);
+				}
 			}
 		}
-
-		// query for adding the answers
 
 		return res.status(201).json({ message: "Success creating course!" });
 	} catch (err) {
@@ -239,52 +243,6 @@ export const findCourse = async (req, res) => {
 	}
 };
 
-export const DeleteCourse = async (req, res) => {
-	const { id } = req.params;
-	try {
-		const CourseInfo = await dbConnection.query(
-			"select file_id from courses where course_id = $1",
-			[id],
-		);
-
-		const fileID = CourseInfo.rows[0]?.file_id;
-
-		if (fileID) {
-			const storageRef = ref(firebaseStorage, "uploads/");
-			const result = await list(storageRef);
-
-			// Use for... loop to handle asynchronous operations
-			for (const itemRef of result.items) {
-				// Check if the file name includes the fileID
-				if (itemRef.name.includes(fileID)) {
-					try {
-						// Delete the file
-						await deleteObject(itemRef);
-					} catch (error) {
-						console.error("Error deleting file:", error);
-						return res.status(404).json({ message: "Could not delete files" });
-					}
-				}
-			}
-		}
-
-		const CourseData = await dbConnection.query(
-			"delete from courses where course_id = $1",
-			[id],
-		);
-
-		// Check if the course was fund and deleted
-		if (CourseData.rowCount === 0) {
-			return res.status(404).json({ message: "Course not found" });
-		}
-
-		return res.status(200).json({ message: "Course deleted successfully" });
-	} catch (err) {
-		console.log(err);
-		return res.status(500).json({ message: "Internal server error" });
-	}
-};
-
 // save functionality
 export const SaveCourse = async (req, res) => {
 	const { id, user_id } = req.body;
@@ -367,6 +325,87 @@ export const RemoveSavedCourse = async (req, res) => {
 export const UpdateCourse = async (req, res) => {
 	try {
 	} catch (err) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+export const DeleteCourse = async (req, res) => {
+	const { id } = req.params;
+	try {
+		const CourseInfo = await dbConnection.query(
+			"select file_id from courses where course_id = $1",
+			[id],
+		);
+
+		const quizzesData = await dbConnection.query(
+			"select * from quizzes where course_id = $1",
+			[id],
+		);
+
+		//todo modify the code here for deletion of the quizzes data
+
+		const quiz_id = quizzesData.rows[0].quiz_id;
+
+		console.log("Quiz_id: ", quiz_id);
+
+		const getQuestId = await dbConnection.query(
+			"select quest_id from questions where quiz_id = $1",
+			[quiz_id],
+		);
+
+		const quest_id = getQuestId.rows[0].quest_id;
+
+		console.log("Quest ID: ", quest_id);
+
+		const deleteAnswers = await dbConnection.query(
+			"delete from answers where quest_id = $1",
+			[quest_id],
+		);
+
+		const deleteQueryQuestions = dbConnection.query(
+			"delete from questions where quiz_id = $1",
+			[quiz_id],
+		);
+
+		const deleteQuizzes = await dbConnection.query(
+			"delete from quizzes where course_id = $1",
+			[id],
+		);
+
+		const fileID = CourseInfo.rows[0]?.file_id;
+
+		if (fileID) {
+			const storageRef = ref(firebaseStorage, "uploads/");
+			const result = await list(storageRef);
+
+			// Use for... loop to handle asynchronous operations
+			for (const itemRef of result.items) {
+				// Check if the file name includes the fileID
+				if (itemRef.name.includes(fileID)) {
+					try {
+						// Delete the file
+						await deleteObject(itemRef);
+					} catch (error) {
+						console.error("Error deleting file:", error);
+						return res.status(404).json({ message: "Could not delete files" });
+					}
+				}
+			}
+		}
+
+		const CourseData = await dbConnection.query(
+			"delete from courses where course_id = $1",
+			[id],
+		);
+
+		// Check if the course was fund and deleted
+		if (CourseData.rowCount === 0) {
+			return res.status(404).json({ message: "Course not found" });
+		}
+
+		return res.status(200).json({ message: "Course deleted successfully" });
+	} catch (err) {
+		console.log(err);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
