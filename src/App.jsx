@@ -28,6 +28,7 @@ function App() {
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/forgot-pass" element={<PasswordReset />} />
 					<Route path="/verify" element={<CodeVerification />} />
+					
 					<Route element={<ProtectedRoutes />}>
 						<Route
 							path="/dashboard"

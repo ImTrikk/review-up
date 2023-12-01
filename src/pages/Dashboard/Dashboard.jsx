@@ -12,7 +12,9 @@ const Dashboard = () => {
 	const [isEmpty, setIsEmpty] = useState("");
 
 	const handleIsEmptyChange = (value) => {
-		setIsEmpty(value.length == 0);
+		if (!value) {
+			setIsEmpty(true);
+		}
 	};
 
 	return (

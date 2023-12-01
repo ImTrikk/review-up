@@ -34,7 +34,6 @@ export const ProtectedRoutes = () => {
 					}, 3000);
 				}
 			} catch (err) {
-				console.error(err);
 				toast.error(err);
 			}
 		};
