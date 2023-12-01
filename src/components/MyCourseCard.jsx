@@ -27,8 +27,8 @@ export const MyCourseCard = ({ onIsEmptyChange }) => {
 			if (response.ok) {
 				setCourseInfo(coursesWithCreator);
 			} else if (response.status === 400) {
+				toast.info("You don't have any courses yet!");
 			} else {
-				// toast.error(message);
 				console.error("Error:", message);
 			}
 		} catch (err) {
