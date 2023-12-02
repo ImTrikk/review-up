@@ -10,7 +10,9 @@ export const MyCourses = () => {
 	const [isEmpty, setIsEmpty] = useState(null);
 
 	const handleIsEmpty = (value) => {
-		setIsEmpty(value.length === 0);
+		if (!value) {
+			setIsEmpty(true);
+		}
 	};
 
 	return (
