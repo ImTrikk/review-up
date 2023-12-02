@@ -16,7 +16,7 @@ export const QuizResultModal = ({ result }) => {
 						<img src="/static/images/congrats.jpg" alt="" className="w-[500px]" />
 					</div>
 					<div className="flex justify-end">
-						<div className="w-[400px] flex flex-col justify-end">
+						<div className="w-[400px] flex flex-col justify-end text-xs">
 							<h1 className="italic text-right">
 								“Tell me and I forget, teach me and I may remember, involve me and I
 								learn.”
@@ -24,7 +24,7 @@ export const QuizResultModal = ({ result }) => {
 							<p className="flex justify-end">– Benjamin Franklin</p>
 						</div>
 					</div>
-					<div className="flex items-center gap-4 justify-end pt-16">
+					<div className="flex items-center gap-4 justify-end pt-5">
 						<button className="border border-primaryColor text-xs h-10  px-4 rounded text-primaryColor">
 							retry
 						</button>

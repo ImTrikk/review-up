@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useAsyncError, useNavigate, useParams } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
 import { QuizProgressmodal } from "../components/Modal/QuizProgressmodal";
 import { QuizResultModal } from "../components/Modal/QuizResultModal";
@@ -8,9 +8,18 @@ export const QuizPage = () => {
 	const [quiz, setQuiz] = useState([]);
 	const [isResultOpen, setResultOpen] = useState(false);
 	const [isBack, setIsBack] = useState(false);
+	const [isQuizResultOpen, setQuizResultOpen] = useState(false);
+
+	// const [QuizData, setQuizData] = useState([]);
+
+	const [quizData, setQuizData] = useState([]);
+
+	const quiz_id = useParams();
 
 	// Maintain an array of selected choice indexes, one for each question
-	const [selectedChoiceIndexes, setSelectedChoiceIndexes] = useState([]);
+	const [selectedChoiceIndexes, setSelectedChoiceIndexes] = useState(
+		Array(quiz.length).fill(null),
+	);
 
 	const { id } = useParams();
 
@@ -23,12 +32,24 @@ export const QuizPage = () => {
 	};
 
 	const handleRadioChange = (questionIndex, choiceIndex) => {
-		// Copy the current array and update the selected index for the specific question
-		const newSelectedChoiceIndexes = [...selectedChoiceIndexes];
-		newSelectedChoiceIndexes[questionIndex] = choiceIndex;
-		setSelectedChoiceIndexes(newSelectedChoiceIndexes);
-		console.log("Selected choice: ", selectedChoiceIndexes);
+		setQuizData((prevData) => {
+			const existingQuestionIndex = prevData.findIndex(
+				(data) => data.questionIndex === questionIndex,
+			);
+
+			if (existingQuestionIndex !== -1) {
+				const newData = [...prevData];
+				newData[existingQuestionIndex].choiceIndex = choiceIndex;
+				return newData;
+			} else {
+				return [...prevData, { questionIndex, choiceIndex }];
+			}
+		});
 	};
+
+	useEffect(() => {
+		console.log("Quiz data: ", quizData);
+	}, [quizData]);
 
 	const handleQuestions = async () => {
 		try {
@@ -40,7 +61,6 @@ export const QuizPage = () => {
 			} else {
 				const data = await response.json();
 				setQuiz(data.questionsResults);
-				console.log(data);
 			}
 		} catch (err) {
 			console.log(err);
@@ -55,7 +75,29 @@ export const QuizPage = () => {
 		}
 	};
 
-	const handleCheckAnswer = async () => {};
+	const handleCheckAnswer = async (e) => {
+		e.preventDefault();
+		setQuizResultOpen(true);
+		try {
+			let response = await fetch(buildUrl("/quiz/check-quiz"), {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					quiz_id,
+					QuizData,
+				}),
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				setQuizData(data);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	useEffect(() => {
 		handleQuestions();
@@ -64,7 +106,7 @@ export const QuizPage = () => {
 	return (
 		<>
 			<div className="bg-[#fafafa]">
-				<div className="mx-72 py-10">
+				<div className="mx-10 md:mx-32 lg:mx-72 py-10">
 					{isBack ? (
 						<QuizProgressmodal
 							onProgressChange={(value) => onProgressChange(value)}
@@ -72,7 +114,7 @@ export const QuizPage = () => {
 					) : (
 						""
 					)}
-					{/* <QuizResultModal/> */}
+					{isQuizResultOpen ? <QuizResultModal /> : ""}
 					<div>
 						<div className="flex">
 							<div
@@ -90,11 +132,7 @@ export const QuizPage = () => {
 							<div
 								key={questionIndex}
 								className="pt-5 bg-white border border-gray-200 my-5 p-5 rounded">
-								<div className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white text-sm p-2 rounded">
-									<h1>
-										Question No.{questionIndex + 1}: &nbsp; {question?.question}?
-									</h1>
-								</div>
+								{/* ... */}
 								<div>
 									{question.choices.map((choice, choiceIndex) => (
 										<label
@@ -103,7 +141,11 @@ export const QuizPage = () => {
 											<input
 												type="radio"
 												name={`choices_${questionIndex}`}
-												checked={selectedChoiceIndexes[questionIndex] === choiceIndex}
+												checked={quizData.some(
+													(data) =>
+														data.questionIndex === questionIndex &&
+														data.choiceIndex === choiceIndex,
+												)}
 												onChange={() => handleRadioChange(questionIndex, choiceIndex)}
 											/>
 											<span className="text-xs"> &nbsp; {choice}</span>
@@ -114,7 +156,9 @@ export const QuizPage = () => {
 						))}
 					</div>
 					<div className="flex justify-end pt-10">
-						<button className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white flex items-center justify-center px-4 h-8 rounded cursor-pointer text-xs">
+						<button
+							onClick={handleCheckAnswer}
+							className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white flex items-center justify-center px-4 h-8 rounded cursor-pointer text-xs">
 							Submit
 						</button>
 					</div>
