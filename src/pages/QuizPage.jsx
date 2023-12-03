@@ -9,22 +9,17 @@ export const QuizPage = () => {
 	const [isResultOpen, setResultOpen] = useState(false);
 	const [isBack, setIsBack] = useState(false);
 	const [isQuizResultOpen, setQuizResultOpen] = useState(false);
-
 	// const [QuizData, setQuizData] = useState([]);
-
 	const [quizData, setQuizData] = useState([]);
-
 	const quiz_id = useParams();
+	const history = useNavigate();
 
 	// Maintain an array of selected choice indexes, one for each question
 	const [selectedChoiceIndexes, setSelectedChoiceIndexes] = useState(
 		Array(quiz.length).fill(null),
-	);
+	);	
 
 	const { id } = useParams();
-
-	const history = useNavigate();
-
 	const items = quiz.length;
 
 	const handlebackButton = () => {
@@ -86,13 +81,15 @@ export const QuizPage = () => {
 				},
 				body: JSON.stringify({
 					quiz_id,
-					QuizData,
+					quizData,
 				}),
 			});
 
 			const data = await response.json();
 			if (response.ok) {
 				setQuizData(data);
+			} else { 
+				console.log('Internal server error')
 			}
 		} catch (err) {
 			console.log(err);
