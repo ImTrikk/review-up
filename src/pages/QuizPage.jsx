@@ -9,15 +9,14 @@ export const QuizPage = () => {
 	const [isResultOpen, setResultOpen] = useState(false);
 	const [isBack, setIsBack] = useState(false);
 	const [isQuizResultOpen, setQuizResultOpen] = useState(false);
-	// const [QuizData, setQuizData] = useState([]);
+	const [quizInfo, setQuizInfo] = useState([]);
 	const [quizData, setQuizData] = useState([]);
-	const quiz_id = useParams();
 	const history = useNavigate();
 
 	// Maintain an array of selected choice indexes, one for each question
 	const [selectedChoiceIndexes, setSelectedChoiceIndexes] = useState(
 		Array(quiz.length).fill(null),
-	);	
+	);
 
 	const { id } = useParams();
 	const items = quiz.length;
@@ -45,6 +44,24 @@ export const QuizPage = () => {
 	useEffect(() => {
 		console.log("Quiz data: ", quizData);
 	}, [quizData]);
+
+	const getQuizInfo = async () => {
+		console.log("running test");
+		console.log(id);
+		try {
+			let response = await fetch(buildUrl(`/course/quiz/get-info/${id}`), {
+				method: "GET",
+			});
+			if (!response.ok) {
+				console.log("Internal server error");
+			} else {
+				const data = await response.json();
+				setQuizInfo(data.quizInfo);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	const handleQuestions = async () => {
 		try {
@@ -74,7 +91,7 @@ export const QuizPage = () => {
 		e.preventDefault();
 		setQuizResultOpen(true);
 		try {
-			let response = await fetch(buildUrl("/quiz/check-quiz"), {
+			let response = await fetch(buildUrl("/course/check-quiz"), {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -86,10 +103,11 @@ export const QuizPage = () => {
 			});
 
 			const data = await response.json();
+			console.log(data);
 			if (response.ok) {
-				setQuizData(data);
-			} else { 
-				console.log('Internal server error')
+				// setQuizData(data);
+			} else {
+				console.log("Internal server error");
 			}
 		} catch (err) {
 			console.log(err);
@@ -97,6 +115,7 @@ export const QuizPage = () => {
 	};
 
 	useEffect(() => {
+		getQuizInfo();
 		handleQuestions();
 	}, []);
 
@@ -121,9 +140,11 @@ export const QuizPage = () => {
 							</div>
 						</div>
 						<div className="mt-5 text-sm space-y-1">
-							<h1>Quiz: </h1>
+							<h1>Quiz: {quizInfo?.quiz_name}</h1>
 							<p>Items: {items}</p>
-							<p>By: </p>
+							<p>
+								By: {quizInfo?.first_name} {quizInfo?.last_name}
+							</p>
 						</div>
 						{quiz.map((question, questionIndex) => (
 							<div
