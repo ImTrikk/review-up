@@ -57,26 +57,40 @@ export const QuizData = async (req, res) => {
 		return res.status(500).json({ message: "Interal server error" });
 	}
 };
+
+
 export const CheckQuiz = async (req, res) => {
 	const { id, quizData } = req.body;
 	console.log("Quiz ID: ", id);
 	console.log("Quiz Data", quizData);
+
+	let score = 0;
+
 	try {
-		const quizDataQuery = await dbConnection.query(
-			"select quest_id from questions where quiz_id = $1",
-			[id],
-		);
-		// Log each quest_id if there are multiple rows
-		quizDataQuery.rows.forEach(async(row) => {
-			console.log("Quest ID: ", row.quest_id);
-			const hashedAnswerQuery = await dbConnection.query('select hashed_answer from answers where quest_id = $1', [row.quest_id])
-			hashedAnswerQuery.rows.forEach(async (row) => { 
-				console.log("Hashed Answer: ", row.hashed_answer)
-			})
-		});
-		return res.status(200).json({ message: "Checked user quiz" });
+		for (const quizItem of quizData) {
+			console.log("Quest ID: ", quizItem.choiceIndex);
+
+			const hashedAnswerQuery = await dbConnection.query(
+				"SELECT hashed_answer FROM answers WHERE quest_id = $1",
+				[quizItem.quest_id],
+			);
+
+			if (hashedAnswerQuery.rows.length > 0) {
+				const correctHashedAnswer = hashedAnswerQuery.rows[0].hashed_answer;
+
+				console.log("Hashed Answer: ", correctHashedAnswer);
+
+				// Compare the user's choice index with the correct hashed answer
+				if (quizItem.choiceIndex == correctHashedAnswer) {
+					score++;
+				}
+			}
+		}
+
+		console.log("User Score: ", score);
+		return res.status(200).json({ score, message: "Checked user quiz" });
 	} catch (err) {
-		console.log("There was an error in server");
-		return res.status(500).json({ message: "Interal server error" });
+		console.log("There was an error in the server");
+		return res.status(500).json({ message: "Internal server error" });
 	}
 };

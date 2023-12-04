@@ -25,6 +25,22 @@ export const QuizPage = () => {
 		setIsBack(true);
 	};
 
+	// const handleRadioChange = (questionIndex, choiceIndex) => {
+	// 	setQuizData((prevData) => {
+	// 		const existingQuestionIndex = prevData.findIndex(
+	// 			(data) => data.questionIndex === questionIndex,
+	// 		);
+
+	// 		if (existingQuestionIndex !== -1) {
+	// 			const newData = [...prevData];
+	// 			newData[existingQuestionIndex].choiceIndex = choiceIndex;
+	// 			return newData;
+	// 		} else {
+	// 			return [...prevData, { questionIndex, choiceIndex }];
+	// 		}
+	// 	});
+	// };
+
 	const handleRadioChange = (questionIndex, choiceIndex) => {
 		setQuizData((prevData) => {
 			const existingQuestionIndex = prevData.findIndex(
@@ -36,7 +52,10 @@ export const QuizPage = () => {
 				newData[existingQuestionIndex].choiceIndex = choiceIndex;
 				return newData;
 			} else {
-				return [...prevData, { questionIndex, choiceIndex }];
+				return [
+					...prevData,
+					{ questionIndex, choiceIndex, quest_id: quiz[questionIndex].quest_id },
+				];
 			}
 		});
 	};
@@ -72,6 +91,7 @@ export const QuizPage = () => {
 				console.log("Internal server error");
 			} else {
 				const data = await response.json();
+				console.log(data.questionsResults);
 				setQuiz(data.questionsResults);
 			}
 		} catch (err) {
