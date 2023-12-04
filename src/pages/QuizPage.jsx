@@ -28,22 +28,6 @@ export const QuizPage = () => {
 		setIsBack(true);
 	};
 
-	// const handleRadioChange = (questionIndex, choiceIndex) => {
-	// 	setQuizData((prevData) => {
-	// 		const existingQuestionIndex = prevData.findIndex(
-	// 			(data) => data.questionIndex === questionIndex,
-	// 		);
-
-	// 		if (existingQuestionIndex !== -1) {
-	// 			const newData = [...prevData];
-	// 			newData[existingQuestionIndex].choiceIndex = choiceIndex;
-	// 			return newData;
-	// 		} else {
-	// 			return [...prevData, { questionIndex, choiceIndex }];
-	// 		}
-	// 	});
-	// };
-
 	const handleRadioChange = (questionIndex, choiceIndex) => {
 		setQuizData((prevData) => {
 			const existingQuestionIndex = prevData.findIndex(

@@ -9,7 +9,6 @@ export const QuizResultModal = ({ quizResult, items, onResultChange }) => {
 	const maxScore = items;
 	const userPercentage = (quizResult.score / maxScore) * 100;
 	const passingPercentage = 60;
-	console.log("User Percentage: ", userPercentage);
 
 	useEffect(() => {
 		// Set the success state based on the user's percentage
@@ -40,16 +39,39 @@ export const QuizResultModal = ({ quizResult, items, onResultChange }) => {
 			<div
 				className={`fixed z-40 top-0 left-0 w-full h-screen flex items-center backdrop-filter backdrop-blur-sm justify-center `}>
 				<div className="w-[800px] shadow bg-white border border-gray-300 rounded p-10">
-					{isSuccess ? (
-						<h1 className="text-4xl font-black text-primaryColor">
-							Congratulations 🎉
-						</h1>
-					) : (
-						<h1 className="text-4xl font-black text-primaryColor">You failed...😔</h1>
-					)}
-					<p>
-						You scored {quizResult.score || 0}/{items}
-					</p>
+					<div className="flex items-center justify-between gap-5">
+						{isSuccess ? (
+							<div>
+								<h1 className="text-4xl font-black text-primaryColor">
+									Congratulations 🎉
+								</h1>
+								<p className="text-sm text-gray-600">
+									Interesting stuffs! keep up the good work and your grades will improve
+								</p>
+							</div>
+						) : (
+							<div>
+								<h1 className="text-4xl font-black text-primaryColor">
+									You failed...😔
+								</h1>
+								<p className="text-sm text-gray-600">
+									But fear not! you can always try again and retake the quiz to improve.
+									Good luck!
+								</p>
+							</div>
+						)}
+						<div
+							className={`p-5 w-[200px] px-5 border rounded flex flex-col items-center ${
+								isSuccess
+									? "border-green-500 text-green-500"
+									: "border-red-600 text-red-400"
+							}`}>
+							<p>
+								You scored {quizResult.score || 0}/{items}
+							</p>
+							<p className="text-2xl font-black">{userPercentage.toFixed(2)}%</p>
+						</div>	
+					</div>
 					<div className="flex items-center justify-center pt-2">
 						<img src={handleImageChange()} alt="" className="w-[500px]" />
 					</div>

@@ -61,14 +61,9 @@ export const QuizData = async (req, res) => {
 
 export const CheckQuiz = async (req, res) => {
 	const { id, quizData } = req.body;
-	console.log("Quiz ID: ", id);
-	console.log("Quiz Data", quizData);
-
 	let score = 0;
-
 	try {
 		for (const quizItem of quizData) {
-			console.log("Quest ID: ", quizItem.choiceIndex);
 
 			const hashedAnswerQuery = await dbConnection.query(
 				"SELECT hashed_answer FROM answers WHERE quest_id = $1",
@@ -77,17 +72,11 @@ export const CheckQuiz = async (req, res) => {
 
 			if (hashedAnswerQuery.rows.length > 0) {
 				const correctHashedAnswer = hashedAnswerQuery.rows[0].hashed_answer;
-
-				console.log("Hashed Answer: ", correctHashedAnswer);
-
-				// Compare the user's choice index with the correct hashed answer
 				if (quizItem.choiceIndex == correctHashedAnswer) {
 					score++;
 				}
 			}
 		}
-
-		console.log("User Score: ", score);
 		return res.status(200).json({ score, message: "Checked user quiz" });
 	} catch (err) {
 		console.log("There was an error in the server");

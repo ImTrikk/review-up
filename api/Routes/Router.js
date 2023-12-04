@@ -4,6 +4,7 @@ import {
 	ForgotPassword,
 	Logout,
 	ResetPassword,
+	UserLogs,
 	ValidateToken,
 	login,
 	signup,
@@ -33,5 +34,8 @@ router.post("/validate-token", ValidateToken);
 router.post("/forgot-password", ForgotPassword);
 router.post("/check-otp", CheckOTP);
 router.post("/reset-password", ResetPassword);
+
+// user logs
+router.get("/user-logs/:id", UserLogs);
 
 export { router as UserRouter };
