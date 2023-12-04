@@ -23,6 +23,12 @@ export const CreateCourse = async (req, res) => {
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING course_id;
         `;
+
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You created the course ${course_title}`, user_id],
+		);
+
 		const courseResult = await dbConnection.query(newCourseQuery, [
 			course_code,
 			course_title,
@@ -33,8 +39,6 @@ export const CreateCourse = async (req, res) => {
 			header_url,
 		]);
 		const course_id = courseResult.rows[0].course_id;
-
-		console.log(quiz_name);
 
 		if (quiz_name !== "") {
 			// Mapping over questions
@@ -252,6 +256,18 @@ export const SaveCourse = async (req, res) => {
 			[id],
 		);
 
+		const courseInfo = await dbConnection.query(
+			"select course_title from courses where course_id = $1",
+			[id],
+		);
+
+		const courseInfoResult = courseInfo.rows[0].course_title;
+
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You saved the course ${courseInfoResult}`, user_id],
+		);
+
 		if (checkCourseID.rows.length > 0) {
 			return res.status(400).json({ message: "Already saved course" });
 		}
@@ -310,6 +326,19 @@ export const RemoveSavedCourse = async (req, res) => {
 			"delete from saved_courses where course_id = $1 and user_id = $2",
 			[course_id, user_id],
 		);
+
+		const courseInfo = await dbConnection.query(
+			"select course_title from courses where course_id = $1",
+			[course_id],
+		);
+
+		const courseInfoResult = courseInfo.rows[0].course_title;
+
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You removed from saved course the course ${courseInfoResult}`, user_id],
+		);
+
 		if (removeSave.rowCount > 0) {
 			return res.status(200).json({ message: "Course removed successfully" });
 		} else {
@@ -333,7 +362,7 @@ export const DeleteCourse = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const CourseInfo = await dbConnection.query(
-			"select file_id from courses where course_id = $1",
+			"select * from courses where course_id = $1",
 			[id],
 		);
 
@@ -344,14 +373,7 @@ export const DeleteCourse = async (req, res) => {
 
 		// Check if quizzesData is not empty
 		if (quizzesData && quizzesData.rows.length > 0) {
-			//todo modify the code here for deletion of the quizzes data
-
-			console.log("For testting")
-
 			const quiz_id = quizzesData.rows[0].quiz_id;
-
-			console.log("Quiz_id: ", quiz_id);
-
 			const getQuestIds = await dbConnection.query(
 				"SELECT quest_id FROM questions WHERE quiz_id = $1",
 				[quiz_id],
@@ -361,27 +383,12 @@ export const DeleteCourse = async (req, res) => {
 			if (getQuestIds.rows.length > 0) {
 				for (const row of getQuestIds.rows) {
 					const quest_id = row.quest_id;
-
-					console.log("Deleting answers for Quest ID:", quest_id);
-
 					const deleteAnswers = await dbConnection.query(
 						"DELETE FROM answers WHERE quest_id = $1",
 						[quest_id],
 					);
-
-					// Check if deletion was successful, handle errors if necessary
-					if (deleteAnswers.rowCount > 0) {
-						console.log(
-							`Deleted ${deleteAnswers.rowCount} answers for Quest ID ${quest_id}`,
-						);
-					} else {
-						console.log(`No answers found for Quest ID ${quest_id}`);
-					}
 				}
-			} else {
-				console.log("No questions found for the given quiz_id");
 			}
-
 			const deleteQueryQuestions = dbConnection.query(
 				"delete from questions where quiz_id = $1",
 				[quiz_id],
@@ -394,6 +401,20 @@ export const DeleteCourse = async (req, res) => {
 		}
 
 		const fileID = CourseInfo.rows[0]?.file_id;
+
+		const user_id = CourseInfo.rows[0]?.user_id;
+
+		const courseInfo = await dbConnection.query(
+			"select course_title from courses where course_id = $1",
+			[id],
+		);
+
+		const courseInfoResult = courseInfo.rows[0].course_title;
+
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You deleted your course: ${courseInfoResult}`, user_id],
+		);
 
 		if (fileID) {
 			const storageRef = ref(firebaseStorage, "uploads/");
