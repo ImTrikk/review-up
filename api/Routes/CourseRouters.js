@@ -47,6 +47,6 @@ router.delete("/delete-course/:id", DeleteCourse);
 router.get("/quiz/:id", GetQuiz);
 router.get("/get-quiz-questions/:id", QuizData);
 router.get("/quiz/get-info/:id", QuizInfo);
-router.post("/check-quiz", CheckQuiz);
+router.post("/quiz/check-quiz", CheckQuiz);
 
 export { router as CourseRouter };

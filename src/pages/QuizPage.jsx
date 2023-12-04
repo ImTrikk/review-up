@@ -91,13 +91,13 @@ export const QuizPage = () => {
 		e.preventDefault();
 		setQuizResultOpen(true);
 		try {
-			let response = await fetch(buildUrl("/course/check-quiz"), {
+			let response = await fetch(buildUrl("/course/quiz/check-quiz"), {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					quiz_id,
+					id,
 					quizData,
 				}),
 			});
