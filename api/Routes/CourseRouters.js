@@ -14,7 +14,12 @@ import {
 	upload,
 	firebaseUpload,
 } from "../MIddleware/FileUploaderMiddleware.js";
-import { GetQuiz, QuizInfo } from "../Controllers/QuizController.js";
+import {
+	CheckQuiz,
+	GetQuiz,
+	QuizData,
+	QuizInfo,
+} from "../Controllers/QuizController.js";
 
 const router = express.Router();
 
@@ -25,7 +30,7 @@ router.post(
 		const batchID = uuidv4();
 		req.batchID = batchID;
 		next();
-	},	
+	},
 	upload.any("file"),
 	firebaseUpload,
 	CreateCourse,
@@ -40,6 +45,8 @@ router.delete("/remove-saved/:course_id/:user_id", RemoveSavedCourse);
 router.delete("/delete-course/:id", DeleteCourse);
 
 router.get("/quiz/:id", GetQuiz);
-router.get("/get-quiz-questions/:id", QuizInfo);
+router.get("/get-quiz-questions/:id", QuizData);
+router.get("/quiz/get-info/:id", QuizInfo);
+router.post("/quiz/check-quiz", CheckQuiz);
 
 export { router as CourseRouter };
