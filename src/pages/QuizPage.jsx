@@ -3,10 +3,13 @@ import { Link, useAsyncError, useNavigate, useParams } from "react-router-dom";
 import { buildUrl } from "../utils/buildUrl";
 import { QuizProgressmodal } from "../components/Modal/QuizProgressmodal";
 import { QuizResultModal } from "../components/Modal/QuizResultModal";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 export const QuizPage = () => {
 	const [quiz, setQuiz] = useState([]);
 	const [isResultOpen, setResultOpen] = useState(false);
+	const [quizResult, setQuizResult] = useState([]);
 	const [isBack, setIsBack] = useState(false);
 	const [isQuizResultOpen, setQuizResultOpen] = useState(false);
 	const [quizInfo, setQuizInfo] = useState([]);
@@ -89,6 +92,7 @@ export const QuizPage = () => {
 			});
 			if (!response.ok) {
 				console.log("Internal server error");
+				toast.error("Internal server error");
 			} else {
 				const data = await response.json();
 				console.log(data.questionsResults);
@@ -99,9 +103,21 @@ export const QuizPage = () => {
 		}
 	};
 
+	// for the progress modal
 	const onProgressChange = (value) => {
 		if (value === true) {
 			setIsBack(false);
+		} else {
+			history(-1);
+		}
+	};
+
+	// for the result modal
+	const onResultChange = (value) => {
+		console.log(value);
+		if (value === true) {
+			setQuizResultOpen(false);
+			window.location.reload();
 		} else {
 			history(-1);
 		}
@@ -122,10 +138,10 @@ export const QuizPage = () => {
 				}),
 			});
 
-			const data = await response.json();
-			console.log(data);
 			if (response.ok) {
-				// setQuizData(data);
+				const data = await response.json();
+				console.log(data);
+				setQuizResult(data);
 			} else {
 				console.log("Internal server error");
 			}
@@ -142,6 +158,7 @@ export const QuizPage = () => {
 	return (
 		<>
 			<div className="bg-[#fafafa]">
+				<ToastContainer autoClose={2000} />
 				<div className="mx-10 md:mx-32 lg:mx-72 py-10">
 					{isBack ? (
 						<QuizProgressmodal
@@ -150,7 +167,15 @@ export const QuizPage = () => {
 					) : (
 						""
 					)}
-					{isQuizResultOpen ? <QuizResultModal /> : ""}
+					{isQuizResultOpen ? (
+						<QuizResultModal
+							onResultChange={(value) => onResultChange(value)}
+							quizResult={quizResult}
+							items={items}
+						/>
+					) : (
+						""
+					)}
 					<div>
 						<div className="flex">
 							<div
