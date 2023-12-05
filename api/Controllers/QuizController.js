@@ -58,13 +58,11 @@ export const QuizData = async (req, res) => {
 	}
 };
 
-
 export const CheckQuiz = async (req, res) => {
-	const { id, quizData } = req.body;
+	const { id, quizData, user_id, quiz_name } = req.body;
 	let score = 0;
 	try {
 		for (const quizItem of quizData) {
-
 			const hashedAnswerQuery = await dbConnection.query(
 				"SELECT hashed_answer FROM answers WHERE quest_id = $1",
 				[quizItem.quest_id],
@@ -77,6 +75,12 @@ export const CheckQuiz = async (req, res) => {
 				}
 			}
 		}
+
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You took the quiz ${quiz_name} and scored ${score}`, user_id],
+		);
+
 		return res.status(200).json({ score, message: "Checked user quiz" });
 	} catch (err) {
 		console.log("There was an error in the server");
