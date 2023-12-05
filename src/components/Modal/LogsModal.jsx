@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { buildUrl } from "../../utils/buildUrl";
 import { useState } from "react";
 
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+
 import { IoIosCloseCircle } from "react-icons/io";
 
 export const LogsModal = ({ onCloseLogs }) => {
@@ -26,6 +29,23 @@ export const LogsModal = ({ onCloseLogs }) => {
 		}
 	};
 
+	const handleDeleteLogs = async () => {
+		try {
+			let response = await fetch(buildUrl(`/auth/delete-logs/${user_id}`), {
+				method: "DELETE",
+			});
+			if (response.ok) {
+				toast.success("Success delete logs");
+				console.log("Logs deleted successfully");
+				setTimeout(() => {
+					window.location.reload();
+				}, 3000);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	useEffect(() => {
 		getUserLogs();
 	}, []);
@@ -34,7 +54,9 @@ export const LogsModal = ({ onCloseLogs }) => {
 		<>
 			<div
 				className={`fixed z-40 top-0 left-0 w-full h-screen flex items-center backdrop-filter backdrop-blur-sm justify-center `}>
-				<div className="w-[800px] h-[500px] shadow bg-white border border-gray-300 rounded p-10">
+				<ToastContainer autoClose={2000} />
+
+				<div className="relative w-[800px] h-[500px] shadow bg-white border border-gray-300 rounded p-10">
 					<div className="flex items-center justify-between">
 						<h1 className="font-bold text-primaryColor">Your logs here</h1>
 						<IoIosCloseCircle
@@ -52,7 +74,7 @@ export const LogsModal = ({ onCloseLogs }) => {
 						record of system activities.
 					</p>
 					<div className="pt-5">
-						<div className="overflow-y-scroll h-[380px]">
+						<div className="overflow-y-scroll h-[300px]">
 							{/* {logs && logs.message && (
 							<div className="border border-gray-300 px-4 h-8 flex items-center rounded">
 								<h1 className="text-xs">{logs.message}</h1>
@@ -83,6 +105,13 @@ export const LogsModal = ({ onCloseLogs }) => {
 									<h1 className="text-xs">No logs available</h1>
 								</div>
 							)}
+							<div className="absolute bottom-5 right-10">
+								<button
+									onClick={handleDeleteLogs}
+									className="border border-red-500 text-red-500 rounded px-4 h-8 text-xs">
+									Delete all logs
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>

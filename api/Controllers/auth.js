@@ -237,8 +237,22 @@ export const UserLogs = async (req, res) => {
 			[user_id.id],
 		);
 		const logs = logsQuery.rows;
-		console.log(logs);
 		return res.status(200).json({ logs, message: "Retrieved logs" });
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+export const DeleteLogs = async (req, res) => {
+	const user_id = req.params;
+	try {
+		const deleteQuery = await dbConnection.query(
+			"delete from logs where user_id = $1",
+			[user_id.id],
+		);
+
+		return res.status(200).json({ message: "Logs deleted successfuly" });
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ message: "Internal server error" });
