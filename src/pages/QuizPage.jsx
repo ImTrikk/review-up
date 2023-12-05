@@ -107,6 +107,8 @@ export const QuizPage = () => {
 		}
 	};
 
+	const user_id = localStorage.getItem("user_id");
+
 	const handleCheckAnswer = async (e) => {
 		e.preventDefault();
 		setQuizResultOpen(true);
@@ -119,6 +121,8 @@ export const QuizPage = () => {
 				body: JSON.stringify({
 					id,
 					quizData,
+					user_id,
+					quiz_name: quizInfo?.quiz_name,
 				}),
 			});
 
