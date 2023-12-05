@@ -34,6 +34,11 @@ export const login = async (req, res) => {
 
 		const jwtToken = GenerateToken(user.rows[0].user_id);
 
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You logged in your account`, user.rows[0].user_id],
+		);
+
 		res.cookie("jwtToken", jwtToken, process.env.ACCESS_TOKEN_SECRET, {
 			secure: true,
 			httpOnly: true,
@@ -84,10 +89,17 @@ export const signup = async (req, res) => {
 };
 
 // logout functionality
-export const Logout = (req, res) => {
+export const Logout = async (req, res) => {
+	const user_id = req.params;
+	console.log(user_id);
 	try {
 		res.cookie("jwtToken", { expires: new Date(0), httpOnly: true });
 		res.clearCookie();
+
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You logged out of ReviewUP`, user_id.id],
+		);
 
 		return res.status(200).json({ message: "Logout successful" });
 	} catch (err) {

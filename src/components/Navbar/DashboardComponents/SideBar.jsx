@@ -17,10 +17,12 @@ export const SideBar = () => {
 	const navigate = useNavigate();
 	const loadingBar = useRef(null);
 
+	const user_id = localStorage.getItem("user_id");
+
 	const handleLogout = async () => {
 		loadingBar.current.continuousStart(60);
 		setTimeout(async () => {
-			await fetch(buildUrl("/auth/logout"), {
+			await fetch(buildUrl(`/auth/logout/${user_id}`), {
 				method: "DELETE",
 			}).then((res) => {
 				if (res.ok) {

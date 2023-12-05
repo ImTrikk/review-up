@@ -26,7 +26,7 @@ router.post("/send-otp", checkEligibleEmail, sendOtp);
 router.post("/send-otp-login", checkEmailValidity, sendOtp);
 router.post("/signup", TwoFactorAuth, signup);
 router.post("/login", TwoFactorAuth, login);
-router.delete("/logout", Logout);
+router.delete("/logout/:id", Logout);
 
 router.post("/validate-token", ValidateToken);
 

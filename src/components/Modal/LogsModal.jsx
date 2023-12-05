@@ -47,8 +47,9 @@ export const LogsModal = ({ onCloseLogs }) => {
 						<hr />
 					</div>
 					<p className="text-xs pt-2">
-						These are your logs, from creation, deletion, saving courses are saved
-						here .
+						These logs meticulously document every action, from the inception and
+						removal of data to the storage of courses, providing a comprehensive
+						record of system activities.
 					</p>
 					<div className="pt-5">
 						<div className="overflow-y-scroll h-[380px]">

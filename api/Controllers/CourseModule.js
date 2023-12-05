@@ -336,7 +336,7 @@ export const RemoveSavedCourse = async (req, res) => {
 
 		await dbConnection.query(
 			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
-			[`You removed from saved course the course ${courseInfoResult}`, user_id],
+			[`You removed ${courseInfoResult} from saved course`, user_id],
 		);
 
 		if (removeSave.rowCount > 0) {
