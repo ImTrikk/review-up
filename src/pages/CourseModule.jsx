@@ -17,11 +17,13 @@ import doc from "/static/icons/DOC.png";
 import pptx from "/static/icons/PPT.png";
 import jpg from "/static/icons/JPG.png";
 import png from "/static/icons/PNG.png";
+import { ReportModal } from "../components/Modal/ReportModal";
 
 export const CourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
 	const [quiz, setQuiz] = useState([]);
 	const [heartFull, setHeartFull] = useState(false);
+	const [isReportModalOpen, setReportModalOpen] = useState(false);
 
 	const { id } = useParams();
 	const user_id = localStorage.getItem("user_id");
@@ -112,6 +114,16 @@ export const CourseModule = () => {
 		}
 	};
 
+	const handleOpenReportModal = () => {
+		setReportModalOpen(true);
+	};
+
+	const onCloseReportModal = (value) => {
+		if (value) {
+			setReportModalOpen(false);
+		}
+	};
+
 	const onClickSave = () => {
 		handleSaveCourse();
 		setHeartFull(true);
@@ -136,7 +148,7 @@ export const CourseModule = () => {
 					<div className="w-full h-full flex justify-between items-center absolute z-10">
 						<div className="ml-[220px]">
 							<h1 className="text-white text-3xl font-bold">
-								My Course - {courseInfo.courseInfoFound?.course_code}
+								Course - {courseInfo.courseInfoFound?.course_code}
 							</h1>
 							<p className="text-white text-sm">
 								{courseInfo.courseInfoFound?.description}
@@ -149,12 +161,26 @@ export const CourseModule = () => {
 						<div>
 							<div className="flex items-center justify-between py-2">
 								<h1 className="text-lg font-bold text-primaryColor">Reviewers</h1>
-								<button
-									onClick={onClickSave}
-									className="flex items-center gap-2 text-sm border text-red-500 border-red-500 px-4 h-8 rounded">
-									save
-									{heartFull ? <FaHeart /> : <CiHeart size={20} />}
-								</button>
+								<div className="flex items-center gap-3">
+									<button
+										onClick={handleOpenReportModal}
+										className="text-sm border text-red-500 border-red-500 px-4 h-8 rounded">
+										Report Course
+									</button>
+									<button
+										onClick={onClickSave}
+										className="flex items-center gap-2 text-sm border text-red-500 border-red-500 px-4 h-8 rounded">
+										save
+										{heartFull ? <FaHeart /> : <CiHeart size={20} />}
+									</button>
+								</div>
+								{isReportModalOpen ? (
+									<ReportModal
+										onCloseReportModal={(value) => onCloseReportModal(value)}
+									/>
+								) : (
+									""
+								)}
 							</div>
 							<div className="text-primaryColor">
 								<hr className="border border-primaryColor" />
