@@ -103,6 +103,7 @@ export const MyCourseModule = () => {
 				if (res.ok) {
 					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
+						toast.info('Course deleted')
 						loadingBar.current.complete();
 						setTimeout(() => {
 							navigator("/my-courses");
@@ -174,7 +175,7 @@ export const MyCourseModule = () => {
 						className="absolute w-full h-[140px]"
 					/>
 					<div className="w-full h-full flex justify-between items-center absolute z-10">
-						<div className="ml-[220px]">
+						<div className="ml-[80px] lg:ml-[220px]">
 							<h1 className="text-white text-3xl font-bold">
 								My Course - {courseInfo.courseInfoFound?.course_code}
 							</h1>
@@ -196,7 +197,7 @@ export const MyCourseModule = () => {
 						</div>
 					</div>
 				</div>
-				<div className="ml-[200px]">
+				<div className="ml-[60px] lg:ml-[200px]">
 					<div className="p-8">
 						<div className="py-5 flex flex-wrap items-center gap-5">
 							{courseInfo.fileDownloadURLs &&

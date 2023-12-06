@@ -441,8 +441,7 @@ export const DeleteCourse = async (req, res) => {
 	}
 };
 
-export const
-	CourseUpdate = async (req, res) => {
+export const CourseUpdate = async (req, res) => {
 	const {
 		course_id,
 		course_code,
@@ -452,14 +451,14 @@ export const
 		user_id,
 		header_url,
 	} = req.body;
-	console.log(course_id);
+
 	try {
 		const updateCourseQuery = `
-    UPDATE courses
-    SET course_code = $2, course_title = $3, course_program = $4, description = $5, header_url = $6
-    WHERE course_id = $1
-    RETURNING course_id;
-`;
+      UPDATE courses
+      SET course_code = $2, course_title = $3, course_program = $4, description = $5, header_url = $6
+      WHERE course_id = $1
+      RETURNING course_id;
+    `;
 
 		const result = await dbConnection.query(updateCourseQuery, [
 			course_id,
@@ -470,12 +469,18 @@ export const
 			header_url,
 		]);
 
-		let logsQuery = await dbConnection.query(
+		if (result.rows.length === 0) {
+			return res.status(404).json({ message: "Course not found" });
+		}
+
+		await dbConnection.query(
 			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
 			[`You updated the course ${course_title}`, user_id],
 		);
-		return res.status(200).json({ message: "Update course" });
+
+		return res.status(200).json({ message: "Course updated successfully" });
 	} catch (err) {
+		console.error("Error during course update:", err);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };

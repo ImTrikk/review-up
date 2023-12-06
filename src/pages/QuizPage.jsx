@@ -47,25 +47,19 @@ export const QuizPage = () => {
 		});
 	};
 
-	useEffect(() => {
-		console.log("Quiz data: ", quizData);
-	}, [quizData]);
-
 	const getQuizInfo = async () => {
-		console.log("running test");
-		console.log(id);
 		try {
 			let response = await fetch(buildUrl(`/course/quiz/get-info/${id}`), {
 				method: "GET",
 			});
 			if (!response.ok) {
-				console.log("Internal server error");
+				toast.error("Internal server error");
 			} else {
 				const data = await response.json();
 				setQuizInfo(data.quizInfo);
 			}
 		} catch (err) {
-			console.log(err);
+			toast.info("There was a problem fetching quizzes, please try again later");
 		}
 	};
 
@@ -75,17 +69,15 @@ export const QuizPage = () => {
 				method: "GET",
 			});
 			if (!response.ok) {
-				console.log("Internal server error");
 				toast.error("Internal server error");
 			} else {
 				const data = await response.json();
-				console.log(data.questionsResults);
 				setQuiz(data.questionsResults);
 			}
 		} catch (err) {
-			console.log(err);
+			toast.info("There was a problem fetching questions, please try again later");
 		}
-	};
+	};	
 
 	// for the progress modal
 	const onProgressChange = (value) => {
@@ -98,7 +90,6 @@ export const QuizPage = () => {
 
 	// for the result modal
 	const onResultChange = (value) => {
-		console.log(value);
 		if (value === true) {
 			setQuizResultOpen(false);
 			window.location.reload();
@@ -128,13 +119,12 @@ export const QuizPage = () => {
 
 			if (response.ok) {
 				const data = await response.json();
-				console.log(data);
 				setQuizResult(data);
 			} else {
 				console.log("Internal server error");
 			}
 		} catch (err) {
-			console.log(err);
+			toast.info("There was a problem checking your quiz, please try again later");
 		}
 	};
 

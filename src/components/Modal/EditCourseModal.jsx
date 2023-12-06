@@ -13,8 +13,8 @@ import png from "/static/icons/PNG.png";
 import { buildUrl } from "../../utils/buildUrl";
 import { DragDropFile } from "../DragDropFile";
 
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import LoadingBar from "react-top-loading-bar";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -121,14 +121,13 @@ export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
 					body: formData,
 				});
 
-				if (!response.ok) {
-					loadingBar.current.complete();
-					console.log("Internal server error");
-				} else {
+				if (response.ok) {
 					console.log("Course information updated");
 					loadingBar.current.complete();
-					toast.success("Course Update!");
-					nav("/my-courses");
+					toast.info("Course Update!");
+					setTimeout(() => {
+						nav("/my-courses");
+					}, 3000);
 				}
 			} catch (err) {
 				loadingBar.current.complete();
