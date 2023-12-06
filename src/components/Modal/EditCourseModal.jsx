@@ -17,6 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from "react-top-loading-bar";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
 	const loadingBar = useRef(null);
@@ -44,6 +45,9 @@ export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
 	const [programError, setProgramError] = useState(false);
 	const [descriptionError, setDescriptionError] = useState(false);
 	const [headerError, setHeaderError] = useState(false);
+
+	// navigator
+	const nav = useNavigate();
 
 	const handleSubmitUpdate = async (e) => {
 		e.preventDefault();
@@ -124,7 +128,7 @@ export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
 					console.log("Course information updated");
 					loadingBar.current.complete();
 					toast.success("Course Update!");
-					onClose;
+					nav("/my-courses");
 				}
 			} catch (err) {
 				loadingBar.current.complete();

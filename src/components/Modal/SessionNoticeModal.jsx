@@ -18,7 +18,6 @@ export const SessionNoticeModal = ({ isOpen, onClose }) => {
 	}, []);
 
 	const handleClose = () => {
-		onClose();
 		setTimeout(() => {
 			nav("/login");
 		}, 3000);

@@ -44,7 +44,7 @@ export const MyCourseModule = () => {
 				setCourseInfo(data);
 			}
 		} catch (error) {
-			console.error("Error fetching data:", error);
+	toast.error('Error fetching course information, try again later')
 		}
 	};
 
@@ -88,7 +88,6 @@ export const MyCourseModule = () => {
 
 	const saveEditedData = (editedData) => {
 		// Implement logic to save the edited data, e.g., make an API call
-		console.log("Saving edited data:", editedData);
 	};
 
 	const navigator = useNavigate();
@@ -128,9 +127,7 @@ export const MyCourseModule = () => {
 				setQuiz([data.retrievedQuizInfo]);
 			} else {
 			}
-		} catch (err) {
-			console.log(err);
-		}
+		} catch (err) {}
 	};
 
 	const handleOpenQuizModal = () => {

@@ -36,8 +36,8 @@ export const Profile = () => {
 			<div className="">
 				<SideBar />
 				<Header title={"Profile"} description={"Update your account profile"} />
-				<div className="ml-[240px]">
-					<div className="max-w-[900px] h-full be rounded-[10px] shadow border border-black border-opacity-10 mt-10 ml-2 pt-6 ">
+				<div className="ml-[80px] mr-[20px] lg:ml-[240px]">
+					<div className="w-full lg:max-w-[900px] h-full be rounded-[10px] shadow border border-black border-opacity-10 mt-10 ml-2 pt-6 ">
 						<div className="flex gap-3 border-b-2 items-center px-6 shadow-sm pb-8">
 							<div>{StringAvatar}</div>
 							<div className="h-fit">

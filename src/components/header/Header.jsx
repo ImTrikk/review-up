@@ -25,7 +25,7 @@ const Header = ({ title, description, user }) => {
 Header.propTypes = {
 	title: PropTypes.string.isRequired,
 	description: PropTypes.string.isRequired,
-	user: PropTypes.string.isRequired,
+	user: PropTypes.string,
 };
 
 export default Header;
