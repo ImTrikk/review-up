@@ -64,7 +64,7 @@ export const SideBar = () => {
 							<p className="max-lg:text-center text-xs text-gray-400">Menu</p>
 						</div>
 						<div>
-							<NavLink to="/dashboard">
+							{/* <NavLink to="/dashboard">
 								{({ isActive }) => (
 									<div
 										className={`border border-gray-100 h-10 text-primaryColor ${
@@ -78,7 +78,7 @@ export const SideBar = () => {
 										</div>
 									</div>
 								)}
-							</NavLink>
+							</NavLink> */}
 							<NavLink to="/courses">
 								{({ isActive }) => (
 									<div

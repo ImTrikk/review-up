@@ -19,7 +19,7 @@ export const SavedCourses = () => {
 					title={"Saved"}
 					description="Courses saved from different users online"
 				/>
-				<div className="ml-[100px] lg:ml-[210px]">
+				<div className="ml-[10px] lg:ml-[210px]">
 					<div className="p-8">
 						<div className="pt-5">
 							{isEmpty ? (

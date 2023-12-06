@@ -26,7 +26,7 @@ export const Courses = () => {
 					description="All available courses posted online by different users from different
 								programs"
 				/>
-				<div className="ml-[100px] lg:ml-[210px]">
+				<div className="ml-[10px] lg:ml-[210px]">
 					<div className="p-8">
 						{/* <h1 className="font-bold text-xl text-primaryColor">
 							Courses with reviewers

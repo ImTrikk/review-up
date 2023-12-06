@@ -25,7 +25,7 @@ export const MyCourses = () => {
 						"Keep track on the save reviewers to keep learning and improving"
 					}
 				/>
-				<div className="ml-[210px]">
+				<div className="ml:ml-[10px] lg:ml-[210px]">
 					<div className="p-8">
 						<div className="pt-5">
 							{isEmpty ? (

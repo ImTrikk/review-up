@@ -108,7 +108,7 @@ export const LogsModal = ({ onCloseLogs }) => {
 							<div className="absolute bottom-5 right-10">
 								<button
 									onClick={handleDeleteLogs}
-									className="border border-red-500 text-red-500 rounded px-4 h-8 text-xs">
+									className="border border-red-500 text-red-500 rounded px-4 h-8 text-xs hover:bg-red-500 hover:text-white">
 									Delete all logs
 								</button>
 							</div>

@@ -224,8 +224,6 @@ export const UserCourses = async (req, res) => {
 	}
 };
 
-// ? this is for searching functionatilities
-// finding specific courses
 export const findCourse = async (req, res) => {
 	try {
 		const { course_title } = req.body;
@@ -443,7 +441,8 @@ export const DeleteCourse = async (req, res) => {
 	}
 };
 
-export const CourseUpdate = async (req, res) => {
+export const
+	CourseUpdate = async (req, res) => {
 	const {
 		course_id,
 		course_code,

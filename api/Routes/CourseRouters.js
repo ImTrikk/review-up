@@ -50,7 +50,7 @@ router.post(
 	"/course-update/:file_id",
 	(req, res, next) => {
 		const { file_id } = req.params;
-		req.batchID = file_id; // Set req.batchID to file_id
+		req.batchID = file_id;
 		next();
 	},
 	upload.any("file"),

@@ -216,7 +216,7 @@ export const CreateCourse = () => {
 						alt=""
 						className="absolute w-full h-[140px]"
 					/>
-					<div className="ml-[240px] h-full grid items-end absolute z-10">
+					<div className="ml-[80px] lg:ml-[240px] h-full grid items-end absolute z-10">
 						<div className="pb-10">
 							<h1 className="text-white text-3xl font-bold">Create Course</h1>
 							<p className="text-white text-sm">
@@ -225,247 +225,240 @@ export const CreateCourse = () => {
 						</div>
 					</div>
 				</div>
-				<div className="ml-[210px]">
-					<div className="p-8">
-						<div className="mt-5">
-							<div className="border border-primaryColor rounded relative h-auto">
-								<div className="p-5">
-									<div className="flex gap-10">
-										<form>
-											<div className="w-full">
-												<div className="flex gap-8">
+				<div className="ml-[70px] mr-[10px] lg:ml-[210px]">
+					<div className="mt-5">
+						<div className="border border-primaryColor rounded relative h-auto">
+							<div className="p-5">
+								<div className="lg:flex gap-10">
+									<form>
+										<div className="w-full">
+											<div className="md:flex space-y-2 md:space-y-0 gap-8">
+												<div className="flex flex-col">
+													<label htmlFor="" className="text-sm text-primaryColor">
+														Course Code:
+													</label>
 													<div className="flex flex-col">
-														<label htmlFor="" className="text-sm text-primaryColor">
-															Course Code:
-														</label>
-														<div className="flex flex-col">
-															<input
-																type="text"
-																placeholder="ex. 'IT109'"
-																value={course_code}
-																onChange={(e) => setCourseCode(e.target.value)}
-																className={`${
-																	isEmpty
-																		? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
-																		: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
-																}`}
-															/>
-															{codeError ? (
-																<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
-																	<BiSolidErrorCircle />
-																	<p>This field is required</p>
-																</div>
-															) : (
-																""
-															)}
-														</div>
-													</div>
-													<div className="flex flex-col overflow-auto">
-														<label htmlFor="" className="text-sm text-primaryColor">
-															Course Title:
-														</label>
-														<div className="flex flex-col">
-															<input
-																type="text"
-																placeholder="ex. 'Integrative Programming'"
-																value={course_title}
-																onChange={(e) => setCourseTitle(e.target.value)}
-																className={`${
-																	isEmpty
-																		? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
-																		: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
-																}`}
-															/>
-															{titleError ? (
-																<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
-																	<BiSolidErrorCircle />
-																	<p>This field is required</p>
-																</div>
-															) : (
-																""
-															)}
-														</div>
-													</div>
-												</div>
-												{/* here  */}
-												<div className="flex items-center gap-8 pt-5">
-													<div className="flex flex-col">
-														<label htmlFor="program" className="text-sm text-primaryColor">
-															Program
-														</label>
-														<div>
-															<select
-																id="program"
-																name="program"
-																value={course_program}
-																onChange={(e) => setCourseProgram(e.target.value)}
-																className={`${
-																	isEmpty
-																		? "border border-red-500 text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
-																		: "border border-primaryColor text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
-																}`}>
-																<option className="text-xs text-primaryColor">
-																	Select course program
-																</option>
-																<option
-																	value="Information Technology"
-																	className="text-xs text-primaryColor">
-																	Information Technology
-																</option>
-																<option
-																	value="Computer Science"
-																	className="text-xs text-primaryColor">
-																	Computer Science
-																</option>
-																<option
-																	value="Information System"
-																	className="text-xs text-primaryColor">
-																	Information System
-																</option>
-															</select>
-															{programError ? (
-																<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
-																	<BiSolidErrorCircle />
-																	<p>This field is required</p>
-																</div>
-															) : (
-																""
-															)}
-														</div>
-													</div>
-													<div className="flex flex-col">
-														<label htmlFor="" className="text-sm text-primaryColor">
-															Header image
-														</label>
 														<input
 															type="text"
-															placeholder="Use copy image address on online images"
-															value={headerUrl}
-															onChange={(e) => setHeaderUrl(e.target.value)}
+															placeholder="ex. 'IT109'"
+															value={course_code}
+															onChange={(e) => setCourseCode(e.target.value)}
 															className={`${
 																isEmpty
 																	? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
 																	: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
 															}`}
 														/>
+														{codeError ? (
+															<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
+																<BiSolidErrorCircle />
+																<p>This field is required</p>
+															</div>
+														) : (
+															""
+														)}
 													</div>
 												</div>
-												<div className="pt-5 flex flex-col">
+												<div className="flex flex-col overflow-auto">
 													<label htmlFor="" className="text-sm text-primaryColor">
-														Description:
+														Course Title:
 													</label>
 													<div className="flex flex-col">
-														<div className="pt-2 w-full">
-															<textarea
-																placeholder="Description"
-																value={description}
-																onChange={(e) => setDescription(e.target.value)}
-																className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none w-full lg:w-[630px] "
-															/>
-														</div>
-														<div>
-															{descriptionError ? (
-																<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
-																	<BiSolidErrorCircle />
-																	<p>This field is required</p>
-																</div>
-															) : (
-																""
-															)}
-														</div>
-													</div>
-												</div>
-												<div className="pt-5">
-													<hr className="border-1 border-primaryColor" />
-												</div>
-												<div className="pt-10">
-													<div className="flex items-center justify-between">
-														<div>
-															<h1 className="text-sm text-primaryColor">
-																Make practice quiz?
-															</h1>
-															<p className="text-gray-600 text-xs">
-																You can add this later on after creating the course
-															</p>
-														</div>
-														{quizModal ? (
-															<button
-																onClick={() => setQuizModal(false)}
-																type="button"
-																className="bg-red-600 h-8 rounded px-4 text-xs text-white">
-																Close
-															</button>
-														) : (
-															<button
-																onClick={() => setQuizModal(true)}
-																type="button"
-																className="bg-primaryColor h-8 rounded px-4 text-xs text-white">
-																Add
-															</button>
-														)}
-													</div>
-													{quizModal ? (
-														<QuizModal
-															onChangeQuestions={handleQuestionChange}
-															onChangeQuizName={handleQuizNameChange}
+														<input
+															type="text"
+															placeholder="ex. 'Integrative Programming'"
+															value={course_title}
+															onChange={(e) => setCourseTitle(e.target.value)}
+															className={`${
+																isEmpty
+																	? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+																	: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															}`}
 														/>
-													) : (
-														""
-													)}
-												</div>
-												<div className="pt-5">
-													<hr className="border-1 border-primaryColor" />
-												</div>
-												<div className="pt-10">
-													<div className="flex items-center justify-between">
-														<div>
-															<h1 className="text-sm text-primaryColor">
-																Add more resources?
-															</h1>
-															<p className="text-gray-600 text-xs">
-																You can add this later on after creating the course
-															</p>
-														</div>
-														{linkModal ? (
-															<button
-																onClick={() => setLinkModal(false)}
-																type="button"
-																className="bg-red-600 h-8 rounded px-4 text-xs text-white">
-																Close
-															</button>
+														{titleError ? (
+															<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
+																<BiSolidErrorCircle />
+																<p>This field is required</p>
+															</div>
 														) : (
-															<button
-																onClick={() => setLinkModal(true)}
-																type="button"
-																className="bg-primaryColor h-8 rounded px-4 text-xs text-white">
-																Add
-															</button>
+															""
 														)}
 													</div>
-													{linkModal ? <LinkResourcesModal /> : ""}
 												</div>
 											</div>
-										</form>
-
-										<div className="w-[600px] h-fit bg-white shadow rounded">
-											<DragDropFile onFileChange={(files) => onFileChange(files)} />
-											{fileListError ? (
-												<div className="pt-1 ml-5 text-xs text-red-600 flex items-center gap-1">
-													<BiSolidErrorCircle />
-													<p>This field is required</p>
+											{/* here  */}
+											<div className="md:flex space-y-2 pt-5">
+												<div className="flex flex-col">
+													<label htmlFor="program" className="text-sm text-primaryColor">
+														Program
+													</label>
+													<div>
+														<select
+															id="program"
+															name="program"
+															value={course_program}
+															onChange={(e) => setCourseProgram(e.target.value)}
+															className={`${
+																isEmpty
+																	? "border border-red-500 text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+																	: "border border-primaryColor text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+															}`}>
+															<option className="text-xs text-primaryColor">
+																Select course program
+															</option>
+															<option
+																value="Information Technology"
+																className="text-xs text-primaryColor">
+																Information Technology
+															</option>
+															<option
+																value="Computer Science"
+																className="text-xs text-primaryColor">
+																Computer Science
+															</option>
+															<option
+																value="Information System"
+																className="text-xs text-primaryColor">
+																Information System
+															</option>
+														</select>
+														{programError ? (
+															<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
+																<BiSolidErrorCircle />
+																<p>This field is required</p>
+															</div>
+														) : (
+															""
+														)}
+													</div>
 												</div>
-											) : (
-												""
-											)}
+												<div className="flex flex-col">
+													<label htmlFor="" className="text-sm text-primaryColor">
+														Header image
+													</label>
+													<input
+														type="text"
+														placeholder="Use copy image address on online images"
+														value={headerUrl}
+														onChange={(e) => setHeaderUrl(e.target.value)}
+														className={`${
+															isEmpty
+																? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+																: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+														}`}
+													/>
+												</div>
+											</div>
+											<div className="pt-5 flex flex-col">
+												<label htmlFor="" className="text-sm text-primaryColor">
+													Description:
+												</label>
+												<div className="flex flex-col">
+													<div className="pt-2 w-full">
+														<textarea
+															placeholder="Description"
+															value={description}
+															onChange={(e) => setDescription(e.target.value)}
+															className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none w-full lg:w-[630px] "
+														/>
+													</div>
+													<div>
+														{descriptionError ? (
+															<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
+																<BiSolidErrorCircle />
+																<p>This field is required</p>
+															</div>
+														) : (
+															""
+														)}
+													</div>
+												</div>
+											</div>
+											<div className="pt-5">
+												<hr className="border-1 border-primaryColor" />
+											</div>
+											<div className="pt-10">
+												<div className="flex items-center justify-between">
+													<div>
+														<h1 className="text-sm text-primaryColor">Make practice quiz?</h1>
+														<p className="text-gray-600 text-xs">
+															You can add this later on after creating the course
+														</p>
+													</div>
+													{quizModal ? (
+														<button
+															onClick={() => setQuizModal(false)}
+															type="button"
+															className="bg-red-600 h-8 rounded px-4 text-xs text-white">
+															Close
+														</button>
+													) : (
+														<button
+															onClick={() => setQuizModal(true)}
+															type="button"
+															className="bg-primaryColor h-8 rounded px-4 text-xs text-white">
+															Add
+														</button>
+													)}
+												</div>
+												{quizModal ? (
+													<QuizModal
+														onChangeQuestions={handleQuestionChange}
+														onChangeQuizName={handleQuizNameChange}
+													/>
+												) : (
+													""
+												)}
+											</div>
+											<div className="pt-5">
+												<hr className="border-1 border-primaryColor" />
+											</div>
+											<div className="pt-10">
+												<div className="flex items-center justify-between">
+													<div>
+														<h1 className="text-sm text-primaryColor">Add more resources?</h1>
+														<p className="text-gray-600 text-xs">
+															You can add this later on after creating the course
+														</p>
+													</div>
+													{linkModal ? (
+														<button
+															onClick={() => setLinkModal(false)}
+															type="button"
+															className="bg-red-600 h-8 rounded px-4 text-xs text-white">
+															Close
+														</button>
+													) : (
+														<button
+															onClick={() => setLinkModal(true)}
+															type="button"
+															className="bg-primaryColor h-8 rounded px-4 text-xs text-white">
+															Add
+														</button>
+													)}
+												</div>
+												{linkModal ? <LinkResourcesModal /> : ""}
+											</div>
 										</div>
+									</form>
+									<div className="lg:w-[600px] mt-5 h-fit bg-white shadow rounded">
+										<DragDropFile onFileChange={(files) => onFileChange(files)} />
+										{fileListError ? (
+											<div className="pt-1 ml-5 text-xs text-red-600 flex items-center gap-1">
+												<BiSolidErrorCircle />
+												<p>This field is required</p>
+											</div>
+										) : (
+											""
+										)}
 									</div>
-									<div className=" flex items-center justify-end mt-10">
-										<button
-											onClick={handleCreateCourse}
-											className="text-white bg-primaryColor px-4 rounded h-10 text-xs">
-											Create
-										</button>
-									</div>
+								</div>
+								<div className=" flex items-center justify-end mt-10">
+									<button
+										onClick={handleCreateCourse}
+										className="text-white bg-primaryColor px-4 rounded h-10 text-xs">
+										Create
+									</button>
 								</div>
 							</div>
 						</div>
