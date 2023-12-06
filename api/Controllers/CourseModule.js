@@ -349,15 +349,6 @@ export const RemoveSavedCourse = async (req, res) => {
 	}
 };
 
-// update course information
-
-export const UpdateCourse = async (req, res) => {
-	try {
-	} catch (err) {
-		return res.status(500).json({ message: "Internal server error" });
-	}
-};
-
 export const DeleteCourse = async (req, res) => {
 	const { id } = req.params;
 	try {
@@ -448,6 +439,67 @@ export const DeleteCourse = async (req, res) => {
 		return res.status(200).json({ message: "Course deleted successfully" });
 	} catch (err) {
 		console.log(err);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+export const CourseUpdate = async (req, res) => {
+	const {
+		course_id,
+		course_code,
+		course_title,
+		course_program,
+		description,
+		user_id,
+		header_url,
+	} = req.body;
+	console.log(course_id);
+	try {
+		const updateCourseQuery = `
+    UPDATE courses
+    SET course_code = $2, course_title = $3, course_program = $4, description = $5, header_url = $6
+    WHERE course_id = $1
+    RETURNING course_id;
+`;
+
+		const result = await dbConnection.query(updateCourseQuery, [
+			course_id,
+			course_code, // Assuming this is the new course code
+			course_title,
+			course_program,
+			description,
+			header_url,
+		]);
+
+		let logsQuery = await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You updated the course ${course_title}`, user_id],
+		);
+		return res.status(200).json({ message: "Update course" });
+	} catch (err) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+export const DeleteFileUrl = async (req, res) => {
+	// this should be retreive from the body
+	const { url, user_id } = req.body;
+	try {
+		// Get a reference to the file using the download URL
+		const fileRef = ref(firebaseStorage, url);
+		const fileNameWithId = url.split("_")[1];
+		const fileNameWithoutId = fileNameWithId.split(".")[0];
+		// Delete the file
+		await deleteObject(fileRef);
+
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You removed the file:  ${fileNameWithoutId}`, user_id],
+		);
+
+		return res.status(200).json({ message: "File deleted successfully" });
+	} catch (error) {
+		console.error("Error deleting file:", error);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };

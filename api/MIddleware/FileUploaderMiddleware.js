@@ -14,6 +14,10 @@ export const firebaseUpload = async (req, res, next) => {
 		const batchID = req.batchID;
 		const files = req.files;
 
+		if (files.length <= 0) {
+			next();
+		}
+
 		// Get a reference to the Firebase Storage bucket
 		const storage = getStorage(); // Pass the Firebase app
 		for (let i = 0; i < files.length; i++) {

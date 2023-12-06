@@ -9,6 +9,9 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 //import icons
 
+import { CiCirclePlus } from "react-icons/ci";
+import { CiCircleRemove } from "react-icons/ci";
+
 import pdf from "/static/icons/PDF.png";
 import doc from "/static/icons/DOC.png";
 import pptx from "/static/icons/PPT.png";
@@ -17,11 +20,17 @@ import png from "/static/icons/PNG.png";
 
 import LoadingBar from "react-top-loading-bar";
 import { useRef } from "react";
+import { QuizModal } from "../components/Modal/QuizModal";
 
 export const MyCourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
 	const [isEditOpen, setIsEditOpen] = useState(false);
 	const [quiz, setQuiz] = useState([]);
+	const [isQuizModalOpen, setQuizModalOpen] = useState(false);
+
+	// for quiz
+	const [questionList, setQuestions] = useState([]);
+	const [quizName, setQuizName] = useState("");
 
 	const { id } = useParams();
 
@@ -32,7 +41,6 @@ export const MyCourseModule = () => {
 			});
 			const data = await response.json();
 			if (response.ok) {
-				console.log(data);
 				setCourseInfo(data);
 			}
 		} catch (error) {
@@ -91,10 +99,9 @@ export const MyCourseModule = () => {
 		loadingBar.current.continuousStart(50);
 		await fetch(buildUrl(`/course/delete-course/${id}`), {
 			method: "DELETE",
-		}).then((res) => {
+		}).then(async (res) => {
 			return res.json().then((data) => {
 				if (res.ok) {
-					console.log(data);
 					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
 						loadingBar.current.complete();
@@ -117,15 +124,29 @@ export const MyCourseModule = () => {
 			});
 
 			const data = await response.json();
-			console.log(data.retrievedQuizInfo);
 			if (response.ok) {
 				setQuiz([data.retrievedQuizInfo]);
 			} else {
-				console.log("Something went wrong connecting with the server");
 			}
 		} catch (err) {
 			console.log(err);
 		}
+	};
+
+	const handleOpenQuizModal = () => {
+		setQuizModalOpen(true);
+	};
+
+	const handleCloseQuizModal = () => {
+		setQuizModalOpen(false);
+	};
+
+	const handleQuestionChange = (value) => {
+		setQuestions(value);
+	};
+
+	const handleQuizNameChange = (value) => {
+		setQuizName(value);
 	};
 
 	useEffect(() => {
@@ -143,7 +164,8 @@ export const MyCourseModule = () => {
 					<EditCourseModal
 						onClose={closeEditModal}
 						onSave={saveEditedData}
-						initialData={courseInfo}
+						id={id}
+						courseInfo={courseInfo}
 					/>
 				) : (
 					""
@@ -179,33 +201,56 @@ export const MyCourseModule = () => {
 				</div>
 				<div className="ml-[200px]">
 					<div className="p-8">
-						<div>
-							<div className="py-5 flex flex-wrap items-center gap-5">
-								{courseInfo.fileDownloadURLs &&
-									courseInfo.fileDownloadURLs.map((url, urlIndex) => (
-										<div
-											key={urlIndex}
-											className="h-56 w-56 shadow flex flex-col items-center justify-center">
-											{/* Display or use the downloadURL as needed */}
-											<img src={fileIconType(url)} alt="" className="w-[100px]" />
-											<div></div>
-											<a
-												href={url}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="text-xs font font-semibold text-primaryColor pt-2">
-												{getFileNameFromUrl(url)}
-												{/* {urlIndex + 1} */}
-											</a>
-										</div>
-									))}
-							</div>
+						<div className="py-5 flex flex-wrap items-center gap-5">
+							{courseInfo.fileDownloadURLs &&
+								courseInfo.fileDownloadURLs.map((url, urlIndex) => (
+									<div
+										key={urlIndex}
+										className="h-56 w-56 shadow flex flex-col items-center justify-center">
+										{/* Display or use the downloadURL as needed */}
+										<img src={fileIconType(url)} alt="" className="w-[100px]" />
+										<div></div>
+										<a
+											href={url}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="text-xs font font-semibold text-primaryColor pt-2">
+											{getFileNameFromUrl(url)}
+											{/* {urlIndex + 1} */}
+										</a>
+									</div>
+								))}
 						</div>
 						<div className="pt-10">
-							<h1 className="text-lg font-bold text-primaryColor">Quizzes</h1>
-							<div className="text-primaryColor">
+							<div className="flex justify-between">
+								<h1 className="text-lg font-bold text-primaryColor">Quizzes</h1>
+								{isQuizModalOpen ? (
+									<button
+										onClick={handleCloseQuizModal}
+										className="flex items-center gap-2 bg-red-500 h-8 rounded px-2 text-xs text-white	">
+										<CiCircleRemove size={20} />
+										Close
+									</button>
+								) : (
+									<button
+										onClick={handleOpenQuizModal}
+										className="flex items-center gap-2 border border-primaryColor h-8 rounded px-2 text-xs text-primaryColor">
+										<CiCirclePlus size={20} />
+										Add Quiz
+									</button>
+								)}
+							</div>
+							<div className="text-primaryColor pt-1">
 								<hr className="border border-primaryColor" />
 							</div>
+							{isQuizModalOpen ? (
+								<QuizModal
+									onChangeQuestions={handleQuestionChange}
+									onChangeQuizName={handleQuizNameChange}
+								/>
+							) : (
+								""
+							)}
 							<div className="pt-2">
 								<p className="text-xs text-primaryColor">Quizzes created by the user</p>
 							</div>
