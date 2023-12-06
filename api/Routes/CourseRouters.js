@@ -1,7 +1,9 @@
 import express from "express";
 import {
+	CourseUpdate,
 	CreateCourse,
 	DeleteCourse,
+	DeleteFileUrl,
 	RemoveSavedCourse,
 	RetrieveCourse,
 	RetrieveSavedCourse,
@@ -43,6 +45,20 @@ router.post("/retrieve-save", RetrieveSavedCourse);
 router.get("/saved-courses/:id", RetrieveSavedCourse);
 router.delete("/remove-saved/:course_id/:user_id", RemoveSavedCourse);
 router.delete("/delete-course/:id", DeleteCourse);
+
+router.post(
+	"/course-update/:file_id",
+	(req, res, next) => {
+		const { file_id } = req.params;
+		req.batchID = file_id; // Set req.batchID to file_id
+		next();
+	},
+	upload.any("file"),
+	firebaseUpload,
+	CourseUpdate,
+);
+
+router.post("/deleteFile", DeleteFileUrl);
 
 router.get("/quiz/:id", GetQuiz);
 router.get("/get-quiz-questions/:id", QuizData);

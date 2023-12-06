@@ -2,30 +2,199 @@ import { useState } from "react";
 import { NotesDragDrop } from "../NotesDragDrop";
 import { QuizModal } from "./QuizModal";
 
-export const EditCourseModal = ({ onClose, onSave, initialData }) => {
-	// implement hanlde sugmit new course information
-	const [fileList, setFileList] = useState([]);
+import { FaTrash } from "react-icons/fa";
+import { BiSolidErrorCircle } from "react-icons/bi";
 
-	const handleSubmitUpdate = () => {
-		onClose();
+import pdf from "/static/icons/PDF.png";
+import doc from "/static/icons/DOC.png";
+import pptx from "/static/icons/PPT.png";
+import jpg from "/static/icons/JPG.png";
+import png from "/static/icons/PNG.png";
+import { buildUrl } from "../../utils/buildUrl";
+import { DragDropFile } from "../DragDropFile";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingBar from "react-top-loading-bar";
+import { useRef } from "react";
+
+export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
+	const loadingBar = useRef(null);
+	const [fileList, setFileList] = useState([]);
+	const [questionList, setQuestions] = useState([]);
+	const [quizName, setQuizName] = useState("");
+
+	const user_id = localStorage.getItem("user_id");
+	const course_id = id;
+
+	const file_id = courseInfo.courseInfoFound?.file_id;
+
+	// course info states
+
+	const [course_code, setCourseCode] = useState("");
+	const [course_title, setCourseTitle] = useState("");
+	const [course_program, setCourseProgram] = useState("");
+	const [description, setDescription] = useState("");
+	const [headerUrl, setHeaderUrl] = useState("");
+
+	const [isEmpty, setIsEmpty] = useState(false);
+	// error handlers
+	const [codeError, setCodeError] = useState(false);
+	const [titleError, setTitleError] = useState(false);
+	const [programError, setProgramError] = useState(false);
+	const [descriptionError, setDescriptionError] = useState(false);
+	const [headerError, setHeaderError] = useState(false);
+
+	const handleSubmitUpdate = async (e) => {
+		e.preventDefault();
+		if (course_code == "") {
+			setCodeError(true);
+			setTimeout(() => {
+				setCodeError(false);
+			}, 5000);
+		}
+		if (course_title == "") {
+			setTitleError(true);
+			setTimeout(() => {
+				setTitleError(false);
+			}, 5000);
+		}
+		if (course_program == "") {
+			setProgramError(true);
+			setTimeout(() => {
+				setProgramError(false);
+			}, 5000);
+		}
+		if (description == "") {
+			setDescriptionError(true);
+			setTimeout(() => {
+				setDescriptionError(false);
+			}, 5000);
+		}
+		if (headerUrl == "") {
+			setHeaderError(true);
+			setTimeout(() => {
+				setHeaderError(false);
+			}, 5000);
+		}
+		if (
+			course_code !== "" &&
+			course_title !== "" &&
+			course_program !== "" &&
+			description !== "" &&
+			headerUrl !== ""
+		) {
+			loadingBar.current.continuousStart(50);
+			console.log("Handling update");
+			const formData = new FormData();
+			formData.append("course_id", course_id);
+			formData.append("course_code", course_code);
+			formData.append("course_title", course_title);
+			formData.append("course_program", course_program);
+			formData.append("description", description);
+			formData.append("user_id", user_id);
+			formData.append("header_url", headerUrl);
+			formData.append("file_id", file_id);
+
+			fileList.forEach((file) => {
+				formData.append("file", file);
+			});
+
+			// Check file size
+			const maxSize = 4.5 * 1024 * 1024; // 4.5 MB in bytes
+			const totalSize = fileList.reduce((acc, file) => acc + file.size, 0);
+
+			if (totalSize > maxSize) {
+				toast.error("File size exceeds the limit (4.5 MB)", {
+					autoClose: 3000,
+				});
+				return;
+			}
+
+			try {
+				let response = await fetch(buildUrl(`/course/course-update/${file_id}`), {
+					method: "POST",
+					body: formData,
+				});
+
+				if (!response.ok) {
+					loadingBar.current.complete();
+					console.log("Internal server error");
+				} else {
+					console.log("Course information updated");
+					loadingBar.current.complete();
+					toast.success("Course Update!");
+					onClose;
+				}
+			} catch (err) {
+				loadingBar.current.complete();
+				console.log("Error fetching", err);
+			}
+		}
 	};
 
 	const onFileChange = (files) => {
+		console.log("OnfileHCnage");
 		setFileList(files);
 	};
 
-	const [formData, setFormData] = useState({
-		// Initialize with the existing data
-		course_code: initialData.course_code || "",
-		course_title: initialData.course_title || "",
-		course_program: initialData.course_program || "",
-		description: initialData.description || "",
-		header_url: initialData.header_url || "",
-		// Add more fields as needed
-	});
+	const getFileNameFromUrl = (url) => {
+		const decodedUrl = decodeURIComponent(url);
+		const matches = decodedUrl.match(/\/([^\/?#]+)[^\/]*$/);
+
+		if (matches && matches.length > 1) {
+			const fileNameWithId = matches[1];
+			const fileNameWithoutId = fileNameWithId.replace(/^[^_]+_/, "");
+			return fileNameWithoutId;
+		}
+
+		return null;
+	};
+
+	const fileIconType = (url) => {
+		// Extract the filename from the URL
+		const filename = getFileNameFromUrl(url);
+		const extension = filename.split(".").pop();
+
+		// You can add more file types and corresponding icons as needed
+		const iconMappings = {
+			pdf: pdf,
+			doc: doc,
+			pptx: pptx,
+			jpg: jpg,
+			png: png,
+		};
+
+		return iconMappings[extension];
+	};
+
+	const handleDeleteReviewer = async (url) => {
+		console.log("url: ", url);
+		try {
+			let response = await fetch(buildUrl(`/course/deleteFile`), {
+				method: "POST",
+				headers: {
+					"content-type": "application/json",
+				},
+				body: JSON.stringify({
+					url,
+					user_id,
+				}),
+			});
+			if (!response.ok) {
+				console.log("Internal server error");
+			} else {
+				console.log("Removed course file");
+			}
+		} catch (err) {
+			console.log("Fetch failed", err);
+		}
+	};
 
 	return (
 		<>
+			<ToastContainer autoClose={3000} />
+			<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 			<div
 				className={`fixed z-40 top-0 left-0 w-full h-screen flex items-center justify-center `}>
 				<div
@@ -33,65 +202,194 @@ export const EditCourseModal = ({ onClose, onSave, initialData }) => {
 					style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}></div>
 
 				<div className="border border-gray-300 bg-white w-[700px] h-[650px]  rounded p-5 relative overflow-y-auto">
-					<h1 className="text-lg font-bold text-primaryColor mb-4">
-						Edit Course Module
-					</h1>
+					<h1 className="text-lg font-bold text-primaryColor">Edit Course Module</h1>
 					<div className="py-2">
 						<hr />
 					</div>
-					<form action="">
-						<div className="flex">
-							<div className="w-full space-y-4 p-5 flex flex-col">
-								<input
-									type="text"
-									value={formData.course_code}
-									onChange={(e) =>
-										setFormData({ ...formData, course_code: e.target.value })
-									}
-									placeholder="Course Code"
-									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
-								/>
-								<input
-									type="text"
-									value={formData.course_title}
-									onChange={(e) =>
-										setFormData({ ...formData, course_title: e.target.value })
-									}
-									placeholder="Course Title"
-									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
-								/>
-								<input
-									type="text"
-									value={formData.course_program}
-									onChange={(e) =>
-										setFormData({ ...formData, course_program: e.target.value })
-									}
-									placeholder="Course Program"
-									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
-								/>
-								<input
-									type="text"
-									value={formData.description}
-									onChange={(e) =>
-										setFormData({ ...formData, description: e.target.value })
-									}
-									placeholder="Description"
-									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
-								/>
-								<input
-									type="text"
-									value={formData.header_url}
-									onChange={(e) =>
-										setFormData({ ...formData, header_url: e.target.value })
-									}
-									placeholder="Header URL: use copy image address"
-									className="border border-primaryColor w-full h-10 rounded px-4 text-xs  outline-none	"
-								/>
+					<div className="py-2">
+						<h1 className="text-sm">Course Information</h1>
+					</div>
+					<form>
+						<div className="w-full">
+							<div className="flex gap-8">
+								<div className="flex flex-col">
+									<label htmlFor="" className="text-sm text-primaryColor">
+										Course Code:
+									</label>
+									<div className="flex flex-col">
+										<input
+											type="text"
+											placeholder="ex. 'IT109'"
+											value={course_code}
+											onChange={(e) => setCourseCode(e.target.value)}
+											className={`${
+												isEmpty
+													? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+													: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+											}`}
+										/>
+										{codeError ? (
+											<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
+												<BiSolidErrorCircle />
+												<p>This field is required</p>
+											</div>
+										) : (
+											""
+										)}
+									</div>
+								</div>
+								<div className="flex flex-col overflow-auto">
+									<label htmlFor="" className="text-sm text-primaryColor">
+										Course Title:
+									</label>
+									<div className="flex flex-col">
+										<input
+											type="text"
+											placeholder="ex. 'Integrative Programming'"
+											value={course_title}
+											onChange={(e) => setCourseTitle(e.target.value)}
+											className={`${
+												isEmpty
+													? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+													: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+											}`}
+										/>
+										{titleError ? (
+											<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
+												<BiSolidErrorCircle />
+												<p>This field is required</p>
+											</div>
+										) : (
+											""
+										)}
+									</div>
+								</div>
 							</div>
-							<NotesDragDrop onFileChange={(files) => onFileChange(files)} />
+							{/* here  */}
+							<div className="flex items-center gap-8 pt-5">
+								<div className="flex flex-col">
+									<label htmlFor="program" className="text-sm text-primaryColor">
+										Program
+									</label>
+									<div>
+										<select
+											id="program"
+											name="program"
+											value={course_program}
+											onChange={(e) => setCourseProgram(e.target.value)}
+											className={`${
+												isEmpty
+													? "border border-red-500 text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+													: "border border-primaryColor text-xs text-primaryColor px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+											}`}>
+											<option className="text-xs text-primaryColor">
+												Select course program
+											</option>
+											<option
+												value="Information Technology"
+												className="text-xs text-primaryColor">
+												Information Technology
+											</option>
+											<option
+												value="Computer Science"
+												className="text-xs text-primaryColor">
+												Computer Science
+											</option>
+											<option
+												value="Information System"
+												className="text-xs text-primaryColor">
+												Information System
+											</option>
+										</select>
+										{programError ? (
+											<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
+												<BiSolidErrorCircle />
+												<p>This field is required</p>
+											</div>
+										) : (
+											""
+										)}
+									</div>
+								</div>
+								<div className="flex flex-col">
+									<label htmlFor="" className="text-sm text-primaryColor">
+										Header image
+									</label>
+									<input
+										type="text"
+										placeholder="Use copy image address on online images"
+										value={headerUrl}
+										onChange={(e) => setHeaderUrl(e.target.value)}
+										className={`${
+											isEmpty
+												? "border border-red-500 text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+												: "border border-primaryColor text-xs px-4 h-10 w-full lg:w-[300px] rounded outline-none"
+										}`}
+									/>
+								</div>
+							</div>
+							<div className="pt-5 flex flex-col">
+								<label htmlFor="" className="text-sm text-primaryColor">
+									Description:
+								</label>
+								<div className="flex flex-col">
+									<div className="pt-2 w-full">
+										<textarea
+											placeholder="Description"
+											value={description}
+											onChange={(e) => setDescription(e.target.value)}
+											className="border border-primaryColor text-xs h-[80px] rounded p-5 outline-none w-full lg:w-[630px] "
+										/>
+									</div>
+									<div>
+										{descriptionError ? (
+											<div className="pt-1 text-xs text-red-600 flex items-center gap-1">
+												<BiSolidErrorCircle />
+												<p>This field is required</p>
+											</div>
+										) : (
+											""
+										)}
+									</div>
+								</div>
+							</div>
 						</div>
-						<QuizModal />
 					</form>
+					<div className="flex flex-col">
+						<DragDropFile onFileChange={(files) => onFileChange(files)} />
+					</div>
+					<div className="py-5 flex flex-wrap items-center gap-5">
+						{courseInfo.fileDownloadURLs &&
+							courseInfo.fileDownloadURLs.map((url, urlIndex) => (
+								<div
+									key={urlIndex}
+									className="h-44 w-44 shadow flex flex-col items-center justify-center group rounded relative">
+									{/* Hidden by default, shown on group hover */}
+									<div
+										onClick={() => handleDeleteReviewer(url)}
+										className="hidden group-hover:flex flex-col items-center justify-center bg-red-600 rounded h-full w-full cursor-pointer">
+										<FaTrash size={52} className="text-white" />
+										<p className="text-white">Remove File?</p>
+									</div>
+									{/* Shown by default, hidden on group hover */}
+									<div className="flex justify-center items-center flex-col group-hover:hidden h-full w-full">
+										<img
+											src={fileIconType(url)}
+											alt=""
+											className="w-[80px] group-hover:hidden"
+										/>
+										<a
+											href={url}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="text-xs font font-semibold text-primaryColor pt-2">
+											{getFileNameFromUrl(url)}
+											{/* {urlIndex + 1} */}
+										</a>
+									</div>
+								</div>
+							))}
+					</div>
 					<div className="flex justify-end gap-2">
 						<button
 							onClick={onClose}

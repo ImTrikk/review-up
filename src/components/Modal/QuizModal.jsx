@@ -181,6 +181,12 @@ export const QuizModal = ({ onChangeQuestions, onChangeQuizName }) => {
 								<span className="text-xs text-white">Question</span>
 							</button>
 						</div>
+							<div className="flex items-center text-center justify-center pt-4">
+								<h1 className="text-xs text-red-400">
+									Double check the questions and selected answers, you won't be able to
+									change it afterwards
+								</h1>
+							</div>
 					</div>
 				</div>
 			</div>
