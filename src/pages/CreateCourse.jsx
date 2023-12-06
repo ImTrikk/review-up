@@ -287,7 +287,7 @@ export const CreateCourse = () => {
 												</div>
 											</div>
 											{/* here  */}
-											<div className="md:flex space-y-2 pt-5">
+											<div className="md:flex items-center gap-8 space-y-2 lg:space-y-0 pt-5">
 												<div className="flex flex-col">
 													<label htmlFor="program" className="text-sm text-primaryColor">
 														Program
