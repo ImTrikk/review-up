@@ -36,6 +36,8 @@ dbConnection
 		// Routes that depend on the database can be added here
 		app.use("/api/course", CourseRouter);
 		app.use("/api/auth", UserRouter);
+		// Set the server timeout to 10 minutes (adjust as needed)
+		app.timeout = 600000;
 
 		// Start the server
 		app.listen(4242, () => {

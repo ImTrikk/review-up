@@ -141,7 +141,6 @@ export const RetrieveCourse = async (req, res) => {
 			message: "Found Courses",
 		});
 
-		// return res.status(200).json({ allCourses, message: "Courses found!" });
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ message: "Internal Server Error" });
