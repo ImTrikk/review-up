@@ -24,7 +24,6 @@ export const LogsModal = ({ onCloseLogs }) => {
 			console.log("Internal server error");
 		} else {
 			const data = await response.json();
-			console.log(data.logs);
 			setLogs(data.logs);
 		}
 	};
@@ -36,7 +35,6 @@ export const LogsModal = ({ onCloseLogs }) => {
 			});
 			if (response.ok) {
 				toast.success("Success delete logs");
-				console.log("Logs deleted successfully");
 				setTimeout(() => {
 					window.location.reload();
 				}, 3000);
