@@ -121,13 +121,16 @@ export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
 					body: formData,
 				});
 
-				if (response.ok) {
+				console.log(response.status);
+				if (response.status === 200) {
 					console.log("Course information updated");
 					loadingBar.current.complete();
 					toast.info("Course Update!");
 					setTimeout(() => {
 						nav("/my-courses");
 					}, 3000);
+				} else {
+					toast.error("Internal server error");
 				}
 			} catch (err) {
 				loadingBar.current.complete();
