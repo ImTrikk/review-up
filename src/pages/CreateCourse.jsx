@@ -109,17 +109,18 @@ export const CreateCourse = () => {
 			formData.append("last_name", last_name);
 			formData.append("email", email);
 			formData.append("header_url", headerUrl);
-			questionList.forEach((question, index) => {
-				formData.append(`question[${index}][question_id]`, question.id);
-				formData.append(`question[${index}][question]`, question.question);
-				formData.append(`question[${index}][choices]`, question.choices.join(","));
-				formData.append(
-					`question[${index}][correctAnswer]`,
-					question.correctAnswer,
-				);
-			});
-
-			formData.append("quiz_name", quizName);
+			if (quizName != "") {
+				formData.append("quiz_name", quizName);
+				questionList.forEach((question, index) => {
+					formData.append(`question[${index}][question_id]`, question.id);
+					formData.append(`question[${index}][question]`, question.question);
+					formData.append(`question[${index}][choices]`, question.choices.join(","));
+					formData.append(
+						`question[${index}][correctAnswer]`,
+						question.correctAnswer,
+					);
+				});
+			}
 
 			// Append each selected file to the FormData
 			fileList.forEach((file) => {
@@ -143,6 +144,7 @@ export const CreateCourse = () => {
 					body: formData,
 				});
 				const data = await response.json();
+				console.log(response.status);
 				if (response.status === 201) {
 					setSuccessModal(true);
 					loadingBar.current.continuousStart(60);
@@ -157,7 +159,8 @@ export const CreateCourse = () => {
 					});
 				} else {
 					loadingBar.current.complete();
-					toast.error("There was a problem creating course", {
+					console.log(data.message);
+					toast.error(`There was a problem creating course, ${data.message} `, {
 						autoClose: 3000,
 					});
 				}
