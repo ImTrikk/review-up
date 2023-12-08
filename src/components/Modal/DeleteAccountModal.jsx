@@ -28,7 +28,7 @@ export const DeleteAccountModal = ({ onChangeDeleteModal }) => {
 			if (response.ok) {
 				localStorage.clear();
 				console.log("Account deleted");
-				toast.info('Account deleted, navigating to home page...')
+				toast.info("Account deleted, navigating to home page...");
 				setTimeout(() => {
 					nav("/");
 				}, 5000);
@@ -45,7 +45,7 @@ export const DeleteAccountModal = ({ onChangeDeleteModal }) => {
 			<ToastContainer autoClose={2000} />
 			<div
 				className={`fixed z-40 top-0 left-0 w-full h-screen flex items-center backdrop-filter backdrop-blur-sm justify-center `}>
-				<div className="relative w-[800px] h-[500px] shadow bg-white border border-gray-300 rounded p-10">
+				<div className="relative w-[800px]	 shadow bg-white border border-gray-300 rounded p-10">
 					<div className="flex justify-between">
 						<h1 className="text-2xl font-bold text-red-500">Delete Account</h1>
 						<IoIosCloseCircle
@@ -57,6 +57,17 @@ export const DeleteAccountModal = ({ onChangeDeleteModal }) => {
 					<h1 className="text-sm text-gray-500">
 						Are you sure you want to delete your account?
 					</h1>
+					<div className="flex items-center justify-center">
+						<img src="/static/images/delete.jpg" alt="" className="w-full lg:w-[400px]" />
+					</div>
+					<div className="pb-8">
+						<p className="text-xs text-red-500">
+							Warning: Deleting your account will permanently erase all your saved
+							data, including courses, reviewers, logs, and quizzes. This action is
+							irreversible. Are you absolutely sure you want to proceed with deleting
+							your account?
+						</p>
+					</div>
 					<div className="absolute bottom-5 right-5">
 						<button
 							onClick={handleDeleteMyAccount}
