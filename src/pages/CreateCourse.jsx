@@ -146,12 +146,10 @@ export const CreateCourse = () => {
 						Accept: "application/json",
 					},
 				});
-
-				// Convert the response to JSON
 				const data = await response.json();
 				console.log(response);
 				console.log(response.status);
-				if (response.status == 201) {
+				if (response.status === 201) {
 					setSuccessModal(true);
 					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
@@ -166,7 +164,7 @@ export const CreateCourse = () => {
 				} else {
 					loadingBar.current.complete();
 					console.log(data.message);
-					toast.error(`There was a problem creating the course: ${data.message}`, {
+					toast.error(`There was a problem creating the course: ${data}`, {
 						autoClose: 3000,
 					});
 				}
