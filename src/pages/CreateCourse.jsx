@@ -151,7 +151,7 @@ export const CreateCourse = () => {
 				const data = await response.json();
 				console.log(response);
 				console.log(response.status);
-				if (response.status === 201) {
+				if (response.status == 201) {
 					setSuccessModal(true);
 					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
