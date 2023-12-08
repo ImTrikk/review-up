@@ -147,27 +147,21 @@ export const CreateCourse = () => {
 					},
 				});
 				const data = await response.json();
-				console.log(response);
 				console.log(response.status);
-				if (response.status === 201) {
-					setSuccessModal(true);
-					loadingBar.current.continuousStart(60);
-					setTimeout(() => {
-						loadingBar.current.complete();
-						setTimeout(() => {
-							navigator("/my-courses");
-						}, 1200);
-					}, 1000);
-					toast.success("Course created!", {
-						autoClose: 3000,
-					});
-				} else {
-					loadingBar.current.complete();
-					console.log(data.message);
-					toast.error(`There was a problem creating the course: ${data}`, {
-						autoClose: 3000,
-					});
+				if (!response) {
+					toast.error("Server responded too long, try again later");
 				}
+				setSuccessModal(true);
+				loadingBar.current.continuousStart(60);
+				setTimeout(() => {
+					loadingBar.current.complete();
+					setTimeout(() => {
+						navigator("/my-courses");
+					}, 1200);
+				}, 1000);
+				toast.success("Course created!", {
+					autoClose: 3000,
+				});
 			} catch (err) {
 				console.log("This is the error: ", err);
 				loadingBar.current.complete();
