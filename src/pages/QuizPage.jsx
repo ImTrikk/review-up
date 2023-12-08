@@ -77,7 +77,7 @@ export const QuizPage = () => {
 		} catch (err) {
 			toast.info("There was a problem fetching questions, please try again later");
 		}
-	};	
+	};
 
 	// for the progress modal
 	const onProgressChange = (value) => {
@@ -173,7 +173,10 @@ export const QuizPage = () => {
 							<div
 								key={questionIndex}
 								className="pt-5 bg-white border border-gray-200 my-5 p-5 rounded">
-								{/* ... */}
+								<h1 className="text-sm text-gray-500 font-medium">
+									Question {questionIndex + 1}: &nbsp;
+									{question.question}
+								</h1>
 								<div>
 									{question.choices.map((choice, choiceIndex) => (
 										<label
