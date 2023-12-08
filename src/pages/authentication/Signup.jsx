@@ -71,6 +71,7 @@ export const Signup = () => {
 
 		setTimeout(() => {
 			setShowredborder(false);
+			loadingBar.current.complete();
 			setShowerror(false);
 		}, 3000);
 	};
@@ -89,26 +90,31 @@ export const Signup = () => {
 		//Lowercase Validation
 		if (lower.test(value)) {
 			setPassLowValid(true);
+			loadingBar.current.complete();
 			setPassLowError(false);
 		} else {
 			setPassLowValid(false);
+			loadingBar.current.complete();
 			setPassLowError(true);
 		}
-
 		//Uppercase Validation
 		if (upper.test(value)) {
 			setPassUpValid(true);
+			loadingBar.current.complete();
 			setPassUpError(false);
 		} else {
 			setPassUpValid(false);
+			loadingBar.current.complete();
 			setPassUpError(true);
 		}
 
 		//Number Validation
 		if (number.test(value)) {
 			setPassNumValid(true);
+			loadingBar.current.complete();
 			setPassNumError(false);
 		} else {
+			loadingBar.current.complete();
 			setPassNumValid(false);
 			setPassNumError(true);
 		}
@@ -116,18 +122,22 @@ export const Signup = () => {
 		//Character Validation
 		if (special.test(value)) {
 			setPassSymValid(true);
+			loadingBar.current.complete();
 			setPassSymError(false);
 		} else {
 			setPassSymValid(false);
+			loadingBar.current.complete();
 			setPassSymError(true);
 		}
 
 		//Length Validation
 		if (length.test(value)) {
 			setPassShortValid(true);
+			loadingBar.current.complete();
 			setPassShortError(false);
 		} else {
 			setPassShortValid(false);
+			loadingBar.current.complete();
 			setPassShortError(true);
 		}
 	};
@@ -175,13 +185,23 @@ export const Signup = () => {
 		});
 		if (email !== "" && !emailRegex.test(email)) {
 			setCarsuError(true);
+			loadingBar.current.complete();
 			setShowerror(true);
 			showToast("Must use CARSU email", "error");
 		} else if (cPassword !== password) {
+			loadingBar.current.complete();
 			setCPassError(true);
 			setShowerror(true);
 			showToast("Password does not match", "error");
-		} else {
+		}
+		if (
+			first_name !== "" &&
+			last_name !== "" &&
+			email !== "" &&
+			phone !== "" &&
+			password !== "" &&
+			cPassword !== ""
+		) {
 			try {
 				let response = await fetch(buildUrl("/auth/send-otp"), {
 					method: "POST",
@@ -193,6 +213,7 @@ export const Signup = () => {
 					}),
 				});
 				if (response.ok) {
+					console.log(response);
 					setTimeout(() => {
 						loadingBar.current.complete();
 						setTimeout(() => {
