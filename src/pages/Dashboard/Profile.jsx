@@ -6,11 +6,13 @@ import { useState } from "react";
 import { stringAvatar } from "../../utils/StringAvatar";
 import Header from "../../components/header/Header";
 import { LogsModal } from "../../components/Modal/LogsModal";
+import { DeleteAccountModal } from "../../components/Modal/DeleteAccountModal";
 // BsArrowRight
 
 export const Profile = () => {
 	const [edit, setEdit] = useState(false);
 	const [isLogOpen, setLogOpen] = useState(false);
+	const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
 	const handleClick = () => {
 		setEdit(!edit);
@@ -30,6 +32,20 @@ export const Profile = () => {
 			setLogOpen(false);
 		}
 	};
+
+	// handle opening delete account modal
+	const handleOpenDeleteModal = () => {
+		setDeleteModalOpen(true);
+	};
+
+	// closing delete modal
+	const onChangeDeleteModal = (value) => { 
+		if (value) { 
+			setDeleteModalOpen(false)
+		}
+	}
+
+
 
 	return (
 		<>
@@ -101,12 +117,26 @@ export const Profile = () => {
 								<div className="flex">
 									<div
 										onClick={handleOpenLogs}
-										className="flex items-center justify-center h-12 px-4 rounded border border-primaryColor cursor-pointer">
+										className="flex items-center justify-center h-12 px-4 rounded border border-primaryColor cursor-pointer hover:bg-primaryColor hover:text-white">
 										<h1 className="text-xs">open your logs</h1>
 									</div>
 								</div>
 								{isLogOpen ? (
 									<LogsModal onCloseLogs={(value) => onCloseLogs(value)} />
+								) : (
+									""
+								)}
+								<div className="flex justify-end">
+									<button
+										onClick={handleOpenDeleteModal}
+										className="bg-red-500 px-2 h-10 rounded text-xs  text-white">
+										Delete account
+									</button>
+								</div>
+								{isDeleteModalOpen ? (
+									<DeleteAccountModal
+										onChangeDeleteModal={(value) => onChangeDeleteModal(value)}
+									/>
 								) : (
 									""
 								)}

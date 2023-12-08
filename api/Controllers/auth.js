@@ -258,3 +258,25 @@ export const DeleteLogs = async (req, res) => {
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
+
+export const DeleteUserAccount = async (req, res) => {
+	const user_id = req.params;
+	console.log(user_id.id);
+
+	try {
+		const deleteUserQuery = await dbConnection.query(
+			"DELETE FROM users WHERE user_id = $1",
+			[user_id.id],
+		);
+
+		// Check if any rows were affected to determine if the user was found and deleted
+		if (deleteUserQuery.rowCount === 1) {
+			return res.status(200).json({ message: "Account deleted successfully" });
+		} else {
+			return res.status(404).json({ message: "User not found" });
+		}
+	} catch (err) {
+		console.error("Error deleting user:", err);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
