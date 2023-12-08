@@ -2,52 +2,54 @@
 import { IoIosCloseCircle } from "react-icons/io";
 import { buildUrl } from "../../utils/buildUrl";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
+
+import LoadingBar from "react-top-loading-bar";
 
 // toaster
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 
-export const DeleteAccountModal = ({ onChangeDeleteModal }) => {
-	// getting the user_id
-	let user_id = localStorage.getItem("user_id");
+export const DeleteCourseModal = ({ onChangeDeleteModal, id }) => {
+	const loadingBar = useRef(null);
+	const navigator = useNavigate();
 
-	// navigator
-	const nav = useNavigate();
-
-	// /for closing delete modaln
 	const handleCloseDeleteModal = () => {
 		onChangeDeleteModal(true);
 	};
 
-	// handle delete account
-	const handleDeleteMyAccount = async () => {
-		try {
-			let response = await fetch(buildUrl(`/auth/delete-account/${user_id}`), {
-				method: "DELETE",
+	const handleDeleteCourse = async () => {
+		loadingBar.current.continuousStart(50);
+		await fetch(buildUrl(`/course/delete-course/${id}`), {
+			method: "DELETE",
+		}).then(async (res) => {
+			return res.json().then((data) => {
+				if (res.ok) {
+					loadingBar.current.continuousStart(60);
+					setTimeout(() => {
+						toast.info("Course deleted");
+						loadingBar.current.complete();
+						setTimeout(() => {
+							navigator("/my-courses");
+						}, 1200);
+					}, 1000);
+				} else {
+					loadingBar.current.complete();
+					toast.error(data.message);
+				}
 			});
-			if (response.ok) {
-				localStorage.clear();
-				console.log("Account deleted");
-				toast.info("Account deleted, navigating to home page...");
-				setTimeout(() => {
-					nav("/");
-				}, 5000);
-			} else {
-				console.log("There was a problem deleteng your account");
-			}
-		} catch (err) {
-			console.log(err);
-		}
+		});
 	};
 
 	return (
 		<>
 			<ToastContainer autoClose={2000} />
+			<LoadingBar height={7} color="#E44F48" ref={loadingBar} />
 			<div
 				className={`fixed z-40 top-0 left-0 w-full h-screen flex items-center backdrop-filter backdrop-blur-sm justify-center `}>
 				<div className="relative w-[800px]	 shadow bg-white border border-gray-300 rounded p-10">
 					<div className="flex justify-between">
-						<h1 className="text-2xl font-bold text-red-500">Delete Account</h1>
+						<h1 className="text-2xl font-bold text-red-500">Delete Course</h1>
 						<IoIosCloseCircle
 							onClick={handleCloseDeleteModal}
 							size={22}
@@ -55,7 +57,7 @@ export const DeleteAccountModal = ({ onChangeDeleteModal }) => {
 						/>
 					</div>
 					<h1 className="text-sm text-gray-500">
-						Are you sure you want to delete your account?
+						Are you sure you want to delete this course?
 					</h1>
 					<div className="flex items-center justify-center">
 						<img
@@ -66,17 +68,16 @@ export const DeleteAccountModal = ({ onChangeDeleteModal }) => {
 					</div>
 					<div className="pb-8">
 						<p className="text-xs text-red-500">
-							Warning: Deleting your account will permanently erase all your saved
-							data, including courses, reviewers, logs, and quizzes. This action is
-							irreversible. Are you absolutely sure you want to proceed with deleting
-							your account?
+							Warning: Deleting this course will permanently erase all your reviewers
+							and quizzes. This action is irreversible. Are you absolutely sure you
+							want to proceed with deleting your course?
 						</p>
 					</div>
 					<div className="absolute bottom-5 right-5">
 						<button
-							onClick={handleDeleteMyAccount}
+							onClick={handleDeleteCourse}
 							className="bg-red-500 text-white px-2 rounded h-10 text-xs">
-							Delete my account
+							Delete Course
 						</button>
 					</div>
 				</div>

@@ -41,6 +41,8 @@ dbConnection
 		app.listen(4242, () => {
 			console.log("Server running on localhost 4242");
 		});
+
+		console.log("Connected to postgre");
 	})
 	.catch((err) => {
 		console.error("Error connecting with the PostgreSQL database");

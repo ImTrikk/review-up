@@ -21,6 +21,7 @@ import png from "/static/icons/PNG.png";
 import LoadingBar from "react-top-loading-bar";
 import { useRef } from "react";
 import { QuizModal } from "../components/Modal/QuizModal";
+import { DeleteCourseModal } from "../components/Modal/DeleteCourseModal";
 
 export const MyCourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
@@ -31,6 +32,9 @@ export const MyCourseModule = () => {
 	// for quiz
 	const [questionList, setQuestions] = useState([]);
 	const [quizName, setQuizName] = useState("");
+
+	// opening delete modal
+	const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
 	const { id } = useParams();
 
@@ -44,7 +48,7 @@ export const MyCourseModule = () => {
 				setCourseInfo(data);
 			}
 		} catch (error) {
-	toast.error('Error fetching course information, try again later')
+			toast.error("Error fetching course information, try again later");
 		}
 	};
 
@@ -94,27 +98,14 @@ export const MyCourseModule = () => {
 
 	const loadingBar = useRef(null);
 
-	const handleDelete = async () => {
-		loadingBar.current.continuousStart(50);
-		await fetch(buildUrl(`/course/delete-course/${id}`), {
-			method: "DELETE",
-		}).then(async (res) => {
-			return res.json().then((data) => {
-				if (res.ok) {
-					loadingBar.current.continuousStart(60);
-					setTimeout(() => {
-						toast.info('Course deleted')
-						loadingBar.current.complete();
-						setTimeout(() => {
-							navigator("/my-courses");
-						}, 1200);
-					}, 1000);
-				} else {
-					loadingBar.current.complete();
-					toast.error(data.message);
-				}
-			});
-		});
+	const handleDeleteModal = () => {
+		setDeleteModalOpen(true);
+	};
+
+	const onChangeDeleteModal = (value) => {
+		if (value) {
+			setDeleteModalOpen(false);
+		}
 	};
 
 	const getQuiz = async () => {
@@ -190,11 +181,19 @@ export const MyCourseModule = () => {
 								Edit
 							</button>
 							<button
-								onClick={handleDelete}
+								onClick={handleDeleteModal}
 								className="bg-red-500 h-10 rounded px-5 text-white text-xs">
 								Delete Course
 							</button>
 						</div>
+						{isDeleteModalOpen ? (
+							<DeleteCourseModal
+								onChangeDeleteModal={(value) => onChangeDeleteModal(value)}
+								id={id}
+							/>
+						) : (
+							""
+						)}
 					</div>
 				</div>
 				<div className="ml-[60px] lg:ml-[200px]">
