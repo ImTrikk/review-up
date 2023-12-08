@@ -102,7 +102,7 @@ export const CreateCourse = async (req, res) => {
 		return res.status(201).json({ message: "Success creating course!" });
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: "Internal server error" });
+		return res.status(500).json({ message: "Internal server error" });
 	}
 };
 
