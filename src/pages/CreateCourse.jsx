@@ -143,31 +143,25 @@ export const CreateCourse = () => {
 					method: "POST",
 					body: formData,
 				});
-				const data = await response.json();
-				console.log(response.status);
+				console.log("Response Status:", response.status);
+
 				if (response.status === 201) {
-					setSuccessModal(true);
-					loadingBar.current.continuousStart(60);
-					setTimeout(() => {
-						loadingBar.current.complete();
-						setTimeout(() => {
-							navigator("/my-courses");
-						}, 1200);
-					}, 1000);
-					toast.success("Course created!", {
-						autoClose: 3000,
-					});
+					// ... (your success handling code)
 				} else {
 					loadingBar.current.complete();
-					console.log(data.message);
-					toast.error(`There was a problem creating course, ${data.message} `, {
+					console.log("Response Body:", await response.text());
+
+					const data = await response.json();
+					console.log("Error Message:", data.message);
+
+					toast.error(`There was a problem creating the course: ${data.message}`, {
 						autoClose: 3000,
 					});
 				}
 			} catch (err) {
-				console.log(err);
+				console.error("Fetch Error:", err);
 				loadingBar.current.complete();
-				toast.error("There was a problem making course ", {
+				toast.error("Can't handle your request right now, try again later", {
 					autoClose: 3000,
 				});
 			}
