@@ -109,8 +109,6 @@ export const CreateCourse = () => {
 			formData.append("last_name", last_name);
 			formData.append("email", email);
 			formData.append("header_url", headerUrl);
-			console.log(fileList);
-			console.log(questionList);
 			questionList.forEach((question, index) => {
 				formData.append(`question[${index}][question_id]`, question.id);
 				formData.append(`question[${index}][question]`, question.question);
@@ -139,17 +137,13 @@ export const CreateCourse = () => {
 				return;
 			}
 
-			console.log(formData);
-
 			try {
 				let response = await fetch(buildUrl("/course/create-course"), {
 					method: "POST",
 					body: formData,
 				});
 				const data = await response.json();
-				console.log(data);
-				if (response.ok) {
-					console.log(data);
+				if (response.status === 201) {
 					setSuccessModal(true);
 					loadingBar.current.continuousStart(60);
 					setTimeout(() => {
@@ -162,7 +156,6 @@ export const CreateCourse = () => {
 						autoClose: 3000,
 					});
 				} else {
-					console.log(data);
 					loadingBar.current.complete();
 					toast.error("There was a problem creating course", {
 						autoClose: 3000,
