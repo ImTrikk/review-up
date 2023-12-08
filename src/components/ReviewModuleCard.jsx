@@ -17,7 +17,6 @@ export const ReviewModuleCard = ({ onIsEmptyChange }) => {
 			});
 			const { coursesWithCreator, message } = await response.json();
 			onIsEmptyChange(coursesWithCreator);
-			console.log("Courses with creator: ", coursesWithCreator);
 			if (response.ok) {
 				setCourseInfo(coursesWithCreator);
 			} else if (response.status == 400) {
