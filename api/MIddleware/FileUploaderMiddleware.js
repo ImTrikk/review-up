@@ -13,11 +13,9 @@ export const firebaseUpload = async (req, res, next) => {
 	try {
 		const batchID = req.batchID;
 		const files = req.files;
-
-		if (files.length <= 0) {
-			next();
+		if (files.length === 0) {
+			return next();
 		}
-
 		// Get a reference to the Firebase Storage bucket
 		const storage = getStorage(); // Pass the Firebase app
 		for (let i = 0; i < files.length; i++) {
@@ -46,7 +44,7 @@ export const firebaseUpload = async (req, res, next) => {
 		}
 
 		// Handle the next middleware or response
-		next();
+		return next();
 	} catch (err) {
 		console.error("Error uploading to Firebase:", err);
 		res.status(500).json({ error: "Internal server error" });

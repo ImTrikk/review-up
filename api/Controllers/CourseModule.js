@@ -469,11 +469,7 @@ export const CourseUpdate = async (req, res) => {
 			header_url,
 		]);
 
-		if (result.rows.length === 0) {
-			return res.status(404).json({ message: "Course not found" });
-		}
-
-		await dbConnection.query(
+		let logsQuery = await dbConnection.query(
 			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
 			[`You updated the course ${course_title}`, user_id],
 		);
