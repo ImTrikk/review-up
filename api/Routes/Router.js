@@ -2,6 +2,7 @@ import express from "express";
 import {
 	CheckOTP,
 	DeleteLogs,
+	DeleteUserAccount,
 	ForgotPassword,
 	Logout,
 	ResetPassword,
@@ -39,4 +40,7 @@ router.post("/reset-password", ResetPassword);
 // user logs
 router.get("/user-logs/:id", UserLogs);
 router.delete("/delete-logs/:id", DeleteLogs);
+
+// delete user account
+router.delete("/delete-account/:id", DeleteUserAccount);
 export { router as UserRouter };
