@@ -17,6 +17,8 @@ export const CreateCourse = async (req, res) => {
 	} = req.body;
 	const questions = req.body.question;
 
+	console.log("Entry point")
+
 	try {
 		const newCourseQuery = `
             INSERT INTO courses (course_code, course_title, course_program, description, user_id, file_id, header_url)
@@ -101,8 +103,7 @@ export const CreateCourse = async (req, res) => {
 
 		return res.status(201).json({ message: "Success creating course!" });
 	} catch (err) {
-		console.error(err);
-		return res.status(500).json({ message: "Internal server error" });
+		return res.status(500).json({ message: `Internal server error ${err}` });
 	}
 };
 
