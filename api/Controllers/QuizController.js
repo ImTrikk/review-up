@@ -87,3 +87,23 @@ export const CheckQuiz = async (req, res) => {
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
+
+export const DeleteQuiz = async (req, res) => {
+	const quiz_id = req.params;
+	const { user_id, quizNameDelete } = req.body;
+	try {
+		const quizQuery = await dbConnection.query(
+			"delete from quizzes where quiz_id = $1",
+			[quiz_id.id],
+		);
+
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You deleted the quiz: ${quizNameDelete}`, user_id],
+		);
+
+		return res.status(200).json({ message: "Quiz delete" });
+	} catch (err) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};

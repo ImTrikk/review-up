@@ -13,6 +13,7 @@ import { CiCirclePlus } from "react-icons/ci";
 import { CiCircleRemove } from "react-icons/ci";
 import { FaTrash } from "react-icons/fa";
 import { BiSolidErrorCircle } from "react-icons/bi";
+// import { FaTrash } from "react-icons/fa";
 
 import pdf from "/static/icons/PDF.png";
 import doc from "/static/icons/DOC.png";
@@ -25,6 +26,7 @@ import { useRef } from "react";
 import { QuizModal } from "../components/Modal/QuizModal";
 import { DeleteCourseModal } from "../components/Modal/DeleteCourseModal";
 import { DelteFileModal } from "../components/Modal/DeleteFileModal";
+import { DeleteQuizModal } from "../components/Modal/DeleteQuizModal";
 
 export const MyCourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
@@ -163,6 +165,23 @@ export const MyCourseModule = () => {
 		getCourseInfo();
 	}, []);
 
+	const [isDeleteQuizModalOpen, setDeleteQuizModalOpen] = useState(false);
+	const [quiz_id, setQuiz_id] = useState("");
+	const [quizNameDelete, setQuizNameDelete] = useState("");
+
+	const handleDeleteQuiz = (quizId, quiz_name) => {
+		console.log(quizId);
+		setQuiz_id(quizId);
+		setQuizNameDelete(quiz_name);
+		setDeleteQuizModalOpen(true);
+	};
+
+	const onChangeDeleteQuizModal = (value) => {
+		if (value) {
+			setDeleteQuizModalOpen(false);
+		}
+	};
+
 	return (
 		<>
 			<div className="">
@@ -220,6 +239,15 @@ export const MyCourseModule = () => {
 							onChangeDeleteFileModal={(value) => onChangeDeleteFileModal(value)}
 							url={url}
 							user_id={user_id}
+						/>
+					) : (
+						""
+					)}
+					{isDeleteQuizModalOpen ? (
+						<DeleteQuizModal
+							onChangeDeleteQuizModal={(value) => onChangeDeleteQuizModal(value)}
+							quiz_id={quiz_id}
+							quizNameDelete={quizNameDelete}
 						/>
 					) : (
 						""
@@ -295,11 +323,18 @@ export const MyCourseModule = () => {
 							<div className="py-5 flex items-center gap-5">
 								{quiz.map((quiz, index) => (
 									<div key={index}>
-										<Link to={`/quiz/${quiz.quiz_id}`}>
-											<div className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white text-xs p-2 rounded">
-												<h1>Quiz name: {quiz.quiz_name}</h1>
+										<div className="flex items-center gap-2">
+											<Link to={`/quiz/${quiz.quiz_id}`}>
+												<div className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white text-xs p-2 rounded h-10 flex items-center justify-center">
+													<h1>Quiz name: {quiz.quiz_name}</h1>
+												</div>
+											</Link>
+											<div
+												onClick={() => handleDeleteQuiz(quiz.quiz_id, quiz.quiz_name)}
+												className="border h-10 px-2 flex items-center justify-center border-red-500 p-1 text-red-500 rounded hover:bg-red-500 hover:text-white">
+												<FaTrash size={18} />
 											</div>
-										</Link>
+										</div>
 									</div>
 								))}
 							</div>
