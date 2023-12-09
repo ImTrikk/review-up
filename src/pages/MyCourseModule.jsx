@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 
 import { CiCirclePlus } from "react-icons/ci";
 import { CiCircleRemove } from "react-icons/ci";
+import { FaTrash } from "react-icons/fa";
+import { BiSolidErrorCircle } from "react-icons/bi";
 
 import pdf from "/static/icons/PDF.png";
 import doc from "/static/icons/DOC.png";
@@ -22,6 +24,7 @@ import LoadingBar from "react-top-loading-bar";
 import { useRef } from "react";
 import { QuizModal } from "../components/Modal/QuizModal";
 import { DeleteCourseModal } from "../components/Modal/DeleteCourseModal";
+import { DelteFileModal } from "../components/Modal/DeleteFileModal";
 
 export const MyCourseModule = () => {
 	const [courseInfo, setCourseInfo] = useState([]);
@@ -37,6 +40,7 @@ export const MyCourseModule = () => {
 	const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
 	const { id } = useParams();
+	const user_id = localStorage.getItem("user_id");
 
 	const getCourseInfo = async () => {
 		try {
@@ -138,6 +142,22 @@ export const MyCourseModule = () => {
 		setQuizName(value);
 	};
 
+	const [isOpenDeleteFile, setOpenDeleteFile] = useState(false);
+	const [url, setUrl] = useState("");
+
+	// delete file
+	const handleDeleteReviewer = (url) => {
+		setUrl(url);
+		setOpenDeleteFile(true);
+	};
+
+	const onChangeDeleteFileModal = (value) => {
+		console.log(value);
+		if (value) {
+			setOpenDeleteFile(false);
+		}
+	};
+
 	useEffect(() => {
 		getQuiz();
 		getCourseInfo();
@@ -195,6 +215,15 @@ export const MyCourseModule = () => {
 							""
 						)}
 					</div>
+					{isOpenDeleteFile ? (
+						<DelteFileModal
+							onChangeDeleteFileModal={(value) => onChangeDeleteFileModal(value)}
+							url={url}
+							user_id={user_id}
+						/>
+					) : (
+						""
+					)}
 				</div>
 				<div className="ml-[60px] lg:ml-[200px]">
 					<div className="p-8">
@@ -203,18 +232,30 @@ export const MyCourseModule = () => {
 								courseInfo.fileDownloadURLs.map((url, urlIndex) => (
 									<div
 										key={urlIndex}
-										className="h-56 w-56 shadow flex flex-col items-center justify-center">
-										{/* Display or use the downloadURL as needed */}
-										<img src={fileIconType(url)} alt="" className="w-[100px]" />
-										<div></div>
-										<a
-											href={url}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="text-xs font font-semibold text-primaryColor pt-2">
-											{getFileNameFromUrl(url)}
-											{/* {urlIndex + 1} */}
-										</a>
+										className="h-44 w-44 shadow flex flex-col items-center justify-center group rounded relative">
+										{/* Hidden by default, shown on group hover */}
+										<div
+											onClick={() => handleDeleteReviewer(url)}
+											className="hidden group-hover:flex flex-col items-center justify-center bg-red-600 rounded h-full w-full cursor-pointer">
+											<FaTrash size={52} className="text-white" />
+											<p className="text-white">Remove File?</p>
+										</div>
+										{/* Shown by default, hidden on group hover */}
+										<div className="flex justify-center items-center flex-col group-hover:hidden h-full w-full">
+											<img
+												src={fileIconType(url)}
+												alt=""
+												className="w-[80px] group-hover:hidden"
+											/>
+											<a
+												href={url}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="text-xs font font-semibold text-primaryColor pt-2">
+												{getFileNameFromUrl(url)}
+												{/* {urlIndex + 1} */}
+											</a>
+										</div>
 									</div>
 								))}
 						</div>

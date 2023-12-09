@@ -157,46 +157,6 @@ export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
 		return null;
 	};
 
-	const fileIconType = (url) => {
-		// Extract the filename from the URL
-		const filename = getFileNameFromUrl(url);
-		const extension = filename.split(".").pop();
-
-		// You can add more file types and corresponding icons as needed
-		const iconMappings = {
-			pdf: pdf,
-			doc: doc,
-			pptx: pptx,
-			jpg: jpg,
-			png: png,
-		};
-
-		return iconMappings[extension];
-	};
-
-	const handleDeleteReviewer = async (url) => {
-		console.log("url: ", url);
-		try {
-			let response = await fetch(buildUrl(`/course/deleteFile`), {
-				method: "POST",
-				headers: {
-					"content-type": "application/json",
-				},
-				body: JSON.stringify({
-					url,
-					user_id,
-				}),
-			});
-			if (!response.ok) {
-				console.log("Internal server error");
-			} else {
-				console.log("Removed course file");
-			}
-		} catch (err) {
-			console.log("Fetch failed", err);
-		}
-	};
-
 	return (
 		<>
 			<ToastContainer autoClose={3000} />
@@ -363,38 +323,6 @@ export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
 					</form>
 					<div className="flex flex-col">
 						<DragDropFile onFileChange={(files) => onFileChange(files)} />
-					</div>
-					<div className="py-5 flex flex-wrap items-center gap-5">
-						{courseInfo.fileDownloadURLs &&
-							courseInfo.fileDownloadURLs.map((url, urlIndex) => (
-								<div
-									key={urlIndex}
-									className="h-44 w-44 shadow flex flex-col items-center justify-center group rounded relative">
-									{/* Hidden by default, shown on group hover */}
-									<div
-										onClick={() => handleDeleteReviewer(url)}
-										className="hidden group-hover:flex flex-col items-center justify-center bg-red-600 rounded h-full w-full cursor-pointer">
-										<FaTrash size={52} className="text-white" />
-										<p className="text-white">Remove File?</p>
-									</div>
-									{/* Shown by default, hidden on group hover */}
-									<div className="flex justify-center items-center flex-col group-hover:hidden h-full w-full">
-										<img
-											src={fileIconType(url)}
-											alt=""
-											className="w-[80px] group-hover:hidden"
-										/>
-										<a
-											href={url}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="text-xs font font-semibold text-primaryColor pt-2">
-											{getFileNameFromUrl(url)}
-											{/* {urlIndex + 1} */}
-										</a>
-									</div>
-								</div>
-							))}
 					</div>
 					<div className="flex justify-end gap-2">
 						<button

@@ -17,8 +17,6 @@ export const CreateCourse = async (req, res) => {
 	} = req.body;
 	const questions = req.body.question;
 
-	console.log("Entry point")
-
 	try {
 		const newCourseQuery = `
             INSERT INTO courses (course_code, course_title, course_program, description, user_id, file_id, header_url)
