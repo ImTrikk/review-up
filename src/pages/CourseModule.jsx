@@ -204,7 +204,7 @@ export const CourseModule = () => {
 												target="_blank"
 												rel="noopener noreferrer"
 												className="text-xs font font-semibold text-primaryColor pt-2">
-												{getFileNameFromUrl(url)}
+												{getFileNameFromUrl(url).slice(0, 15)}
 												{/* {urlIndex + 1} */}
 											</a>
 										</div>
