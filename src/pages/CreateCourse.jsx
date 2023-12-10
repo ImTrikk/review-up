@@ -170,6 +170,7 @@ export const CreateCourse = () => {
 				});
 			}
 		} else {
+				loadingBar.current.complete();
 			toast.error("Fields are required!", {
 				autoClose: 3000,
 			});
@@ -404,10 +405,10 @@ export const CreateCourse = () => {
 													""
 												)}
 											</div>
-											<div className="pt-5">
+											{/* <div className="pt-5">
 												<hr className="border-1 border-primaryColor" />
-											</div>
-											<div className="pt-10">
+											</div> */}
+											{/* <div className="pt-10">
 												<div className="flex items-center justify-between">
 													<div>
 														<h1 className="text-sm text-primaryColor">Add more resources?</h1>
@@ -432,7 +433,7 @@ export const CreateCourse = () => {
 													)}
 												</div>
 												{linkModal ? <LinkResourcesModal /> : ""}
-											</div>
+											</div> */}
 										</div>
 									</form>
 									<div className="lg:w-[600px] mt-5 h-fit bg-white shadow rounded">
