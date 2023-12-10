@@ -34,10 +34,6 @@ export const MyCourseModule = () => {
 	const [quiz, setQuiz] = useState([]);
 	const [isQuizModalOpen, setQuizModalOpen] = useState(false);
 
-	// for quiz
-	const [questionList, setQuestions] = useState([]);
-	const [quizName, setQuizName] = useState("");
-
 	// opening delete modal
 	const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -119,29 +115,13 @@ export const MyCourseModule = () => {
 			const response = await fetch(buildUrl(`/course/quiz/${id}`), {
 				method: "GET",
 			});
-
 			const data = await response.json();
 			if (response.ok) {
-				setQuiz([data.retrievedQuizInfo]);
-			} else {
+				setQuiz(data.retrievedQuizInfo);
 			}
-		} catch (err) {}
-	};
-
-	const handleOpenQuizModal = () => {
-		setQuizModalOpen(true);
-	};
-
-	const handleCloseQuizModal = () => {
-		setQuizModalOpen(false);
-	};
-
-	const handleQuestionChange = (value) => {
-		setQuestions(value);
-	};
-
-	const handleQuizNameChange = (value) => {
-		setQuizName(value);
+		} catch (err) {
+			toast.error("Error fetching data, try again later")
+		}
 	};
 
 	const [isOpenDeleteFile, setOpenDeleteFile] = useState(false);
@@ -179,6 +159,76 @@ export const MyCourseModule = () => {
 	const onChangeDeleteQuizModal = (value) => {
 		if (value) {
 			setDeleteQuizModalOpen(false);
+		}
+	};
+
+	// handling the quiz
+	const handleOpenQuizModal = () => {
+		setQuizModalOpen(true);
+	};
+
+	const handleCloseQuizModal = () => {
+		setQuizModalOpen(false);
+	};
+
+	const handleQuestionChange = (value) => {
+		setQuestions(value);
+	};
+
+	const handleQuizNameChange = (value) => {
+		setQuizName(value);
+	};
+
+	// for quiz
+	const [questionList, setQuestions] = useState([]);
+	const [quizName, setQuizName] = useState("");
+
+	const course_id = useParams();
+
+	const handleCreateQuiz = async (e) => {
+		e.preventDefault();
+		loadingBar.current.continuousStart(50);
+		const formData = new FormData();
+		if (quizName != "") {
+			formData.append("quiz_name", quizName);
+			formData.append("user_id", user_id);
+			formData.append("course_id", course_id.id);
+			questionList.forEach((question, index) => {
+				formData.append(`question[${index}][question_id]`, question.id);
+				formData.append(`question[${index}][question]`, question.question);
+				formData.append(`question[${index}][choices]`, question.choices.join(","));
+				formData.append(
+					`question[${index}][correctAnswer]`,
+					question.correctAnswer,
+				);
+			});
+		}
+		// Log FormData entries
+		console.log("FormData entries:");
+		for (const entry of formData.entries()) {
+			console.log(entry);
+		}
+		console.log(formData);
+
+		try {
+			let response = await fetch(buildUrl(`/course/quiz/create-quiz`), {
+				method: "POST",
+				body: formData,
+				headers: {
+					Accept: "application/json",
+				},
+			});
+			console.log(response);
+			if (response.ok) {
+				loadingBar.current.complete();
+				toast.success("Quiz has been created");
+				setTimeout(() => {
+					window.location.reload();
+				}, 3000);
+			}
+		} catch (err) {
+			loadingBar.current.complete();
+			console.log(err);
 		}
 	};
 
@@ -244,11 +294,13 @@ export const MyCourseModule = () => {
 						""
 					)}
 					{isDeleteQuizModalOpen ? (
-						<DeleteQuizModal
-							onChangeDeleteQuizModal={(value) => onChangeDeleteQuizModal(value)}
-							quiz_id={quiz_id}
-							quizNameDelete={quizNameDelete}
-						/>
+						<form>
+							<DeleteQuizModal
+								onChangeDeleteQuizModal={(value) => onChangeDeleteQuizModal(value)}
+								quiz_id={quiz_id}
+								quizNameDelete={quizNameDelete}
+							/>
+						</form>
 					) : (
 						""
 					)}
@@ -310,21 +362,30 @@ export const MyCourseModule = () => {
 								<hr className="border border-primaryColor" />
 							</div>
 							{isQuizModalOpen ? (
-								<QuizModal
-									onChangeQuestions={handleQuestionChange}
-									onChangeQuizName={handleQuizNameChange}
-								/>
+								<div>
+									<QuizModal
+										onChangeQuestions={handleQuestionChange}
+										onChangeQuizName={handleQuizNameChange}
+									/>
+									<div className="flex justify-end pt-5">
+										<button
+											onClick={handleCreateQuiz}
+											className="h-10 px-4 border border-primaryColor rounded text-primaryColor hover:bg-primaryColor hover:text-white">
+											Create Quiz
+										</button>
+									</div>
+								</div>
 							) : (
 								""
 							)}
 							<div className="pt-2">
 								<p className="text-xs text-primaryColor">Quizzes created by the user</p>
 							</div>
-							<div className="py-5 flex items-center gap-5">
+							<div className="py-5 flex gap-5 flex-wrap">
 								{quiz.map((quiz, index) => (
 									<div key={index}>
 										<div className="flex items-center gap-2">
-											<Link to={`/quiz/${quiz.quiz_id}`}>
+											<Link key={index} to={`/quiz/${quiz.quiz_id}`}>
 												<div className="bg-gradient-to-r from-indigo-600 from-10% via-[rgb(111,93,192)] via-30% to-[rgb(173,125,193)] to-90% text-white text-xs p-2 rounded h-10 flex items-center justify-center">
 													<h1>Quiz name: {quiz.quiz_name}</h1>
 												</div>

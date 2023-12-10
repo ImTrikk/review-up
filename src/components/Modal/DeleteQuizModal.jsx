@@ -27,7 +27,6 @@ export const DeleteQuizModal = ({
 	// hanlde delte quiz
 	const handleDeleteQuiz = async () => {
 		loadingBar.current.continuousStart(50);
-
 		try {
 			let response = await fetch(buildUrl(`/course/quiz/delete-quiz/${quiz_id}`), {
 				method: "DELETE",

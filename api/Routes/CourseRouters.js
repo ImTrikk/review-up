@@ -18,6 +18,7 @@ import {
 } from "../MIddleware/FileUploaderMiddleware.js";
 import {
 	CheckQuiz,
+	CreateQuiz,
 	DeleteQuiz,
 	GetQuiz,
 	QuizData,
@@ -61,10 +62,13 @@ router.post(
 
 router.post("/deleteFile", DeleteFileUrl);
 
+// create quiz
+router.post("/quiz/create-quiz", upload.any("file"), CreateQuiz);
+
 router.get("/quiz/:id", GetQuiz);
 router.get("/get-quiz-questions/:id", QuizData);
 router.get("/quiz/get-info/:id", QuizInfo);
 router.post("/quiz/check-quiz", CheckQuiz);
-router.delete('/quiz/delete-quiz/:id', DeleteQuiz)
+router.delete("/quiz/delete-quiz/:id", DeleteQuiz);
 
 export { router as CourseRouter };

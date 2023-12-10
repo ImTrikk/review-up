@@ -1,5 +1,80 @@
 import { dbConnection } from "../Database/database.js";
 
+// creating new quiz
+export const CreateQuiz = async (req, res) => {
+	const { quiz_name, user_id, course_id } = req.body;
+	const questions = req.body.question;
+	console.log(quiz_name);
+	console.log(user_id);
+	console.log(course_id);
+	console.log(questions);
+
+	try {
+		if (quiz_name !== "" || quiz_name != undefined) {
+			// Mapping over questions
+			const mappedQuestions = questions.map((question) => {
+				if (question && typeof question === "object") {
+					const choicesArray =
+						typeof question.choices === "string"
+							? question.choices.split(",")
+							: question.choices;
+
+					const correctAnswerNumber =
+						typeof question.correctAnswer === "string"
+							? parseInt(question.correctAnswer, 10)
+							: question.correctAnswer;
+
+					return {
+						id: question.question_id || 0,
+						question: question.question || "",
+						choices: Array.isArray(choicesArray) ? choicesArray : ["", "", "", ""],
+						correctAnswer: isNaN(correctAnswerNumber) ? 0 : correctAnswerNumber,
+					};
+				} else {
+					return null;
+				}
+			});
+
+			// Filter out any null values from the mappedQuestions array
+			const filteredQuestions = mappedQuestions.filter(
+				(question) => question !== null,
+			);
+
+			// insert values in quizzes table
+			const quizTableQuery = await dbConnection.query(
+				"INSERT INTO quizzes(quiz_name, user_id, course_id) VALUES($1, $2, $3) RETURNING quiz_id;",
+				[quiz_name, user_id, course_id],
+			);
+
+			const quiz_id = quizTableQuery.rows[0].quiz_id;
+
+			// This is for making the quiz
+			for (const q of filteredQuestions) {
+				const query = {
+					text:
+						"INSERT INTO questions (quiz_id, question, choices) VALUES($1, $2, $3) RETURNING quest_id",
+					values: [quiz_id, q.question, q.choices],
+				};
+				try {
+					const quizQueryResult = await dbConnection.query(query);
+					const quest_id = quizQueryResult.rows[0].quest_id;
+
+					const answerTableQuery = await dbConnection.query(
+						"INSERT INTO answers (quest_id, hashed_answer) VALUES($1, $2)",
+						[quest_id, q.correctAnswer],
+					);
+				} catch (err) {
+					console.log(err);
+				}
+			}
+		}
+		return res.status(201).json({ message: "Quiz created" });
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
 export const GetQuiz = async (req, res) => {
 	const { id } = req.params;
 	try {
@@ -8,7 +83,7 @@ export const GetQuiz = async (req, res) => {
 			[id],
 		);
 		const quiz_id = quizInfo.rows[0].quiz_id;
-		const retrievedQuizInfo = quizInfo.rows[0];
+		const retrievedQuizInfo = quizInfo.rows;
 
 		const questions = await dbConnection.query(
 			"select * from questions where quiz_id = $1",

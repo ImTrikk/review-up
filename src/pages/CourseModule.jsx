@@ -52,7 +52,7 @@ export const CourseModule = () => {
 			const data = await response.json();
 			console.log(data.retrievedQuizInfo);
 			if (response.ok) {
-				setQuiz([data.retrievedQuizInfo]);
+				setQuiz(data.retrievedQuizInfo);
 			} else {
 				console.log("Something went wrong connecting with the server");
 			}
