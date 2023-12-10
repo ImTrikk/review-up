@@ -135,7 +135,7 @@ export const QuizPage = () => {
 
 	return (
 		<>
-			<div className="bg-[#fafafa]">
+			<div className="bg-[#fafafa] h-screen">
 				<ToastContainer autoClose={2000} />
 				<div className="mx-10 md:mx-32 lg:mx-72 py-10">
 					{isBack ? (
