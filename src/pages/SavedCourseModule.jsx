@@ -129,7 +129,6 @@ export const SavedCourseModule = () => {
 											className="h-56 w-56 shadow flex flex-col items-center justify-center">
 											{/* Display or use the downloadURL as needed */}
 											<img src={fileIconType(url)} alt="" className="w-[100px]" />
-											<div></div>
 											<a
 												href={url}
 												target="_blank"

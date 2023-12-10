@@ -18,10 +18,8 @@ export const SessionNoticeModal = ({ isOpen, onClose }) => {
 	}, []);
 
 	const handleClose = () => {
-		setTimeout(() => {
-			localStorage.clear();
-			nav("/login");
-		}, 3000);
+		localStorage.clear();
+		nav("/login");
 	};
 
 	return (

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SessionNoticeModal } from "./Modal/SessionNoticeModal";
 
-
 // set sesssion timeout inactivity of 30 minutes
 const YOUR_SESSION_TIMEOUT_DURATION = 1800000; // 30 minutes in milliseconds
 
@@ -47,7 +46,6 @@ const GlobalLayout = ({ children }) => {
 			document.removeEventListener("keydown", handleUserActivity);
 		};
 	}, []);
-
 
 	return (
 		<div>
