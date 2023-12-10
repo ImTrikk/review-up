@@ -204,8 +204,9 @@ export const CourseModule = () => {
 												target="_blank"
 												rel="noopener noreferrer"
 												className="text-xs font font-semibold text-primaryColor pt-2">
-												{getFileNameFromUrl(url).slice(0, 15)}
-												{/* {urlIndex + 1} */}
+												{getFileNameFromUrl(url).length > 15
+													? `${getFileNameFromUrl(url).slice(0, 15)}...`
+													: getFileNameFromUrl(url)}
 											</a>
 										</div>
 									))}
