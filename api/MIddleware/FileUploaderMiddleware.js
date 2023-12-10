@@ -2,6 +2,7 @@ import multer from "multer";
 import path from "path";
 import { firebaseStorage } from "../Database/firebase.js";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { dbConnection } from "../Database/database.js";
 
 const storage = multer.memoryStorage();
 export const upload = multer({
@@ -10,6 +11,18 @@ export const upload = multer({
 });
 
 export const firebaseUpload = async (req, res, next) => {
+	const bool = req.bool;
+
+	if (bool) {
+		const { course_id } = req.body;
+		let fileIDQuery = await dbConnection.query(
+			"select file_id from courses where course_id = $1",
+			[course_id],
+		);
+		const file_id = fileIDQuery.rows[0].file_id;
+		req.batchID = file_id;
+	}
+
 	try {
 		const batchID = req.batchID;
 		const files = req.files;

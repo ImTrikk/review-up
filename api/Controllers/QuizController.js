@@ -4,10 +4,6 @@ import { dbConnection } from "../Database/database.js";
 export const CreateQuiz = async (req, res) => {
 	const { quiz_name, user_id, course_id } = req.body;
 	const questions = req.body.question;
-	console.log(quiz_name);
-	console.log(user_id);
-	console.log(course_id);
-	console.log(questions);
 
 	try {
 		if (quiz_name !== "" || quiz_name != undefined) {

@@ -1,5 +1,6 @@
-import express from "express";
+import express, { query } from "express";
 import {
+	AddNewReviewer,
 	CourseUpdate,
 	CreateCourse,
 	DeleteCourse,
@@ -24,6 +25,7 @@ import {
 	QuizData,
 	QuizInfo,
 } from "../Controllers/QuizController.js";
+import { dbConnection } from "../Database/database.js";
 
 const router = express.Router();
 
@@ -58,6 +60,19 @@ router.post(
 	upload.any("file"),
 	firebaseUpload,
 	CourseUpdate,
+);
+
+// upload new file
+router.post(
+	"/save-new-file",
+	async (req, res, next) => {
+		const isNew = true;
+		req.bool = isNew;
+		next();
+	},
+	upload.any("file"),
+	firebaseUpload,
+	AddNewReviewer,
 );
 
 router.post("/deleteFile", DeleteFileUrl);

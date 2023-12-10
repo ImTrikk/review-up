@@ -499,3 +499,18 @@ export const DeleteFileUrl = async (req, res) => {
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
+
+// add new file
+export const AddNewReviewer = async (req, res) => {
+	const { course_id, user_id } = req.body;
+	try {
+		await dbConnection.query(
+			"INSERT INTO logs (message, user_id) VALUES ($1, $2)",
+			[`You added a new reviewer`, user_id],
+		);
+
+		return res.status(201).json({ message: "Added new reviewer" });
+	} catch (err) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};

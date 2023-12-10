@@ -7,6 +7,7 @@ import { EditCourseModal } from "../components/Modal/EditCourseModal";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { DragDropFile } from "../components/DragDropFile";
 //import icons
 
 import { CiCirclePlus } from "react-icons/ci";
@@ -120,7 +121,7 @@ export const MyCourseModule = () => {
 				setQuiz(data.retrievedQuizInfo);
 			}
 		} catch (err) {
-			toast.error("Error fetching data, try again later")
+			toast.error("Error fetching data, try again later");
 		}
 	};
 
@@ -232,6 +233,64 @@ export const MyCourseModule = () => {
 		}
 	};
 
+	// handling new files
+	const [fileList, setFileList] = useState([]);
+
+	const onFileChange = (files) => {
+		setFileList(files);
+	};
+
+	const handleSaveNewFile = async () => {
+		if (fileList.length !== 0) {
+			loadingBar.current.continuousStart(50);
+			const formData = new FormData();
+			formData.append("course_id", course_id.id);
+			formData.append("user_id", user_id);
+			// Append each selected file to the FormData
+			fileList.forEach((file) => {
+				formData.append("file", file);
+			});
+
+			// Check file size
+			const maxSize = 4.5 * 1024 * 1024; // 4.5 MB in bytes
+			const totalSize = fileList.reduce((acc, file) => acc + file.size, 0);
+
+			if (totalSize > maxSize) {
+				toast.error("File size exceeds the limit (4.5 MB)", {
+					autoClose: 3000,
+				});
+				return;
+			}
+
+			console.log("FormData entries:");
+			for (const entry of formData.entries()) {
+				console.log(entry);
+			}
+			console.log(formData);
+
+			try {
+				let response = await fetch(buildUrl(`/course/save-new-file`), {
+					method: "POST",
+					body: formData,
+				});
+				if (response.ok) {
+					loadingBar.current.complete();
+
+					toast.success("New reviewers posted");
+					setTimeout(() => {
+						window.location.reload();
+					}, 3000);
+				}
+			} catch (err) {
+				loadingBar.current.complete();
+				console.log(err);
+				toast.error("Internal server error, try again later");
+			}
+		} else {
+			toast.error("Input first a reviewer");
+		}
+	};
+
 	return (
 		<>
 			<div className="">
@@ -307,37 +366,58 @@ export const MyCourseModule = () => {
 				</div>
 				<div className="ml-[60px] lg:ml-[200px]">
 					<div className="p-8">
-						<div className="py-5 flex flex-wrap items-center gap-5">
-							{courseInfo.fileDownloadURLs &&
-								courseInfo.fileDownloadURLs.map((url, urlIndex) => (
-									<div
-										key={urlIndex}
-										className="h-44 w-44 shadow flex flex-col items-center justify-center group rounded relative">
-										{/* Hidden by default, shown on group hover */}
+						<h1 className="text-lg font-bold text-primaryColor">Reviewers</h1>
+						<div className="text-primaryColor pt-1">
+							<hr className="border border-primaryColor" />
+						</div>
+						<div className="pt-2">
+							<p className="text-xs text-primaryColor">
+								Reviewers created by the user
+							</p>
+						</div>
+						<div className="lg:flex items-start gap-2">
+							<div className="flex flex-col items-start">
+								<div className="lg:w-[400px] mt-5 h-fit bg-white shadow rounded">
+									<DragDropFile onFileChange={(files) => onFileChange(files)} />
+								</div>
+								<button
+									onClick={handleSaveNewFile}
+									className="mt-5 border border-primaryColor rounded px-4 h-8 text-primaryColor hover:bg-primaryColor hover:text-white text-xs flex items-center justify-center">
+									Save
+								</button>
+							</div>
+							<div className="py-5 flex flex-wrap items-center gap-5">
+								{courseInfo.fileDownloadURLs &&
+									courseInfo.fileDownloadURLs.map((url, urlIndex) => (
 										<div
-											onClick={() => handleDeleteReviewer(url)}
-											className="hidden group-hover:flex flex-col items-center justify-center bg-red-600 rounded h-full w-full cursor-pointer">
-											<FaTrash size={52} className="text-white" />
-											<p className="text-white">Remove File?</p>
+											key={urlIndex}
+											className="h-44 w-44 shadow flex flex-col items-center justify-center group rounded relative">
+											{/* Hidden by default, shown on group hover */}
+											<div
+												onClick={() => handleDeleteReviewer(url)}
+												className="hidden group-hover:flex flex-col items-center justify-center bg-red-600 rounded h-full w-full cursor-pointer">
+												<FaTrash size={52} className="text-white" />
+												<p className="text-white">Remove File?</p>
+											</div>
+											{/* Shown by default, hidden on group hover */}
+											<div className="flex justify-center items-center flex-col group-hover:hidden h-full w-full">
+												<img
+													src={fileIconType(url)}
+													alt=""
+													className="w-[80px] group-hover:hidden"
+												/>
+												<a
+													href={url}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="text-xs font font-semibold text-primaryColor pt-2">
+													{getFileNameFromUrl(url)}
+													{/* {urlIndex + 1} */}
+												</a>
+											</div>
 										</div>
-										{/* Shown by default, hidden on group hover */}
-										<div className="flex justify-center items-center flex-col group-hover:hidden h-full w-full">
-											<img
-												src={fileIconType(url)}
-												alt=""
-												className="w-[80px] group-hover:hidden"
-											/>
-											<a
-												href={url}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="text-xs font font-semibold text-primaryColor pt-2">
-												{getFileNameFromUrl(url)}
-												{/* {urlIndex + 1} */}
-											</a>
-										</div>
-									</div>
-								))}
+									))}
+							</div>
 						</div>
 						<div className="pt-10">
 							<div className="flex justify-between">

@@ -321,9 +321,6 @@ export const EditCourseModal = ({ onClose, onSave, courseInfo, id }) => {
 							</div>
 						</div>
 					</form>
-					<div className="flex flex-col">
-						<DragDropFile onFileChange={(files) => onFileChange(files)} />
-					</div>
 					<div className="flex justify-end gap-2">
 						<button
 							onClick={onClose}
