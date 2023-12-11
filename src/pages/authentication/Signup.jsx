@@ -90,31 +90,25 @@ export const Signup = () => {
 		//Lowercase Validation
 		if (lower.test(value)) {
 			setPassLowValid(true);
-			loadingBar.current.complete();
 			setPassLowError(false);
 		} else {
 			setPassLowValid(false);
-			loadingBar.current.complete();
 			setPassLowError(true);
 		}
 		//Uppercase Validation
 		if (upper.test(value)) {
 			setPassUpValid(true);
-			loadingBar.current.complete();
 			setPassUpError(false);
 		} else {
 			setPassUpValid(false);
-			loadingBar.current.complete();
 			setPassUpError(true);
 		}
 
 		//Number Validation
 		if (number.test(value)) {
 			setPassNumValid(true);
-			loadingBar.current.complete();
 			setPassNumError(false);
 		} else {
-			loadingBar.current.complete();
 			setPassNumValid(false);
 			setPassNumError(true);
 		}
@@ -122,22 +116,18 @@ export const Signup = () => {
 		//Character Validation
 		if (special.test(value)) {
 			setPassSymValid(true);
-			loadingBar.current.complete();
 			setPassSymError(false);
 		} else {
 			setPassSymValid(false);
-			loadingBar.current.complete();
 			setPassSymError(true);
 		}
 
 		//Length Validation
 		if (length.test(value)) {
 			setPassShortValid(true);
-			loadingBar.current.complete();
 			setPassShortError(false);
 		} else {
 			setPassShortValid(false);
-			loadingBar.current.complete();
 			setPassShortError(true);
 		}
 	};
@@ -188,6 +178,7 @@ export const Signup = () => {
 			loadingBar.current.complete();
 			setShowerror(true);
 			showToast("Must use CARSU email", "error");
+			return;
 		} else if (cPassword !== password) {
 			loadingBar.current.complete();
 			setCPassError(true);
@@ -195,12 +186,14 @@ export const Signup = () => {
 			showToast("Password does not match", "error");
 		}
 		if (
-			first_name !== "" &&
-			last_name !== "" &&
-			email !== "" &&
-			phone !== "" &&
-			password !== "" &&
-			cPassword !== ""
+			first_name !== "" ||
+			last_name !== "" ||
+			email !== "" ||
+			phone !== "" ||
+			password !== "" ||
+			cPassword !== "" ||
+			!emailRegex.test(email) ||
+			email !== ""
 		) {
 			try {
 				let response = await fetch(buildUrl("/auth/send-otp"), {
@@ -221,11 +214,9 @@ export const Signup = () => {
 						}, 1200);
 					}, 1000);
 				} else {
-					loadingBar.current.complete();
 					showToast("Email already in use", "error");
 				}
 			} catch (err) {
-				loadingBar.current.complete();
 				console.log(err);
 			}
 		}
