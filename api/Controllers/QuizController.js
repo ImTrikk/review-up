@@ -129,6 +129,7 @@ export const QuizData = async (req, res) => {
 	}
 };
 
+
 export const CheckQuiz = async (req, res) => {
 	const { id, quizData, user_id, quiz_name } = req.body;
 	let score = 0;

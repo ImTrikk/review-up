@@ -275,7 +275,6 @@ export const MyCourseModule = () => {
 				});
 				if (response.ok) {
 					loadingBar.current.complete();
-
 					toast.success("New reviewers posted");
 					setTimeout(() => {
 						window.location.reload();

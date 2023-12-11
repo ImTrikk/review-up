@@ -77,9 +77,8 @@ router.post(
 
 router.post("/deleteFile", DeleteFileUrl);
 
-// create quiz
+// create qui
 router.post("/quiz/create-quiz", upload.any("file"), CreateQuiz);
-
 router.get("/quiz/:id", GetQuiz);
 router.get("/get-quiz-questions/:id", QuizData);
 router.get("/quiz/get-info/:id", QuizInfo);

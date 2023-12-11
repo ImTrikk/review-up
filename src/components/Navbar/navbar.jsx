@@ -44,6 +44,9 @@ export const Navbar = () => {
 	return (
 		<>
 			<div className="fixed w-full z-50">
+				<div className="h-6 flex items-center justify-center w-full bg-orange-500 text-white text-xs">
+					Product is still in development for optimization and improvement ✨{" "}
+				</div>
 				<div className="bg-gradient-to-br from-primaryColor to-violet-300 p-2 inset-40">
 					<div className="flex items-center justify-between lg:max-w-7xl mx-5 sm:mx-20 2xl:mx-auto">
 						<div className="w-[30px]">
