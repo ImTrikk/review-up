@@ -132,17 +132,22 @@ export const Signup = () => {
 		}
 	};
 
+	useEffect(() => {
+		setTimeout(() => {
+			setFnameError(false);
+			setLnameError(false);
+			setEmailError(false);
+			setEmailExist(false);
+			setCarsuError(false);
+			setPhoneError(false);
+			setPassError(false);
+			setCPassError(false);
+		}, 5000);
+	});
+
 	const handleSignupRequest = async (event) => {
 		event.preventDefault();
 		loadingBar.current.continuousStart(60);
-		setFnameError(false);
-		setLnameError(false);
-		setEmailError(false);
-		setEmailExist(false);
-		setCarsuError(false);
-		setPhoneError(false);
-		setPassError(false);
-		setCPassError(false);
 
 		// Check for empty fields and set error states
 		const fields = [
@@ -186,14 +191,14 @@ export const Signup = () => {
 			showToast("Password does not match", "error");
 		}
 		if (
-			first_name !== "" ||
-			last_name !== "" ||
-			email !== "" ||
-			phone !== "" ||
-			password !== "" ||
-			cPassword !== "" ||
+			first_name !== NULL ||
+			last_name !== NULL ||
+			email !== NULL ||
+			phone !== NULL ||
+			password !== NULL ||
+			cPassword !== NULL ||
 			!emailRegex.test(email) ||
-			email !== ""
+			email !== NULL
 		) {
 			try {
 				let response = await fetch(buildUrl("/auth/send-otp"), {
