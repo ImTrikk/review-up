@@ -191,14 +191,13 @@ export const Signup = () => {
 			showToast("Password does not match", "error");
 		}
 		if (
-			first_name !== NULL ||
-			last_name !== NULL ||
-			email !== NULL ||
-			phone !== NULL ||
-			password !== NULL ||
-			cPassword !== NULL ||
-			!emailRegex.test(email) ||
-			email !== NULL
+			first_name.length !== 0 &&
+			last_name.length !== 0 &&
+			email.length !== 0 &&
+			phone.length !== 0 &&
+			password.length !== 0 &&
+			cPassword.length !== 0 &&
+			emailRegex.test(email)
 		) {
 			try {
 				let response = await fetch(buildUrl("/auth/send-otp"), {
@@ -215,7 +214,7 @@ export const Signup = () => {
 					setTimeout(() => {
 						loadingBar.current.complete();
 						setTimeout(() => {
-							navigator("/verify", { state: { userData, endpoint } });
+							navLogin("/verify", { state: { userData, endpoint } });
 						}, 1200);
 					}, 1000);
 				} else {
