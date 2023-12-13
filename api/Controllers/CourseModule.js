@@ -40,7 +40,7 @@ export const CreateCourse = async (req, res) => {
 		]);
 		const course_id = courseResult.rows[0].course_id;
 
-		if (quiz_name !== "") {
+		if (quiz_name !== undefined) {
 			// Mapping over questions
 			const mappedQuestions = questions.map((question) => {
 				if (question && typeof question === "object") {
@@ -100,6 +100,7 @@ export const CreateCourse = async (req, res) => {
 		}
 		return res.status(201).json({ message: "Success creating course!" });
 	} catch (err) {
+		console.log(err);
 		return res.status(500).json({ message: `Internal server error ${err}` });
 	}
 };

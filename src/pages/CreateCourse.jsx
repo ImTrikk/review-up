@@ -142,26 +142,22 @@ export const CreateCourse = () => {
 				let response = await fetch(buildUrl("/course/create-course"), {
 					method: "POST",
 					body: formData,
-					headers: {
-						Accept: "application/json",
-					},
 				});
-				const data = await response.json();
-				console.log(response.status);
-				if (!response) {
+				if (response.ok) {
+					setSuccessModal(true);
+					loadingBar.current.continuousStart(60);
+					setTimeout(() => {
+						loadingBar.current.complete();
+						setTimeout(() => {
+							navigator("/my-courses");
+						}, 1200);
+					}, 1000);
+					toast.success("Course created!", {
+						autoClose: 3000,
+					});
+				} else {
 					toast.error("Server responded too long, try again later");
 				}
-				setSuccessModal(true);
-				loadingBar.current.continuousStart(60);
-				setTimeout(() => {
-					loadingBar.current.complete();
-					setTimeout(() => {
-						navigator("/my-courses");
-					}, 1200);
-				}, 1000);
-				toast.success("Course created!", {
-					autoClose: 3000,
-				});
 			} catch (err) {
 				console.log("This is the error: ", err);
 				loadingBar.current.complete();
@@ -170,7 +166,7 @@ export const CreateCourse = () => {
 				});
 			}
 		} else {
-				loadingBar.current.complete();
+			loadingBar.current.complete();
 			toast.error("Fields are required!", {
 				autoClose: 3000,
 			});
