@@ -515,3 +515,16 @@ export const AddNewReviewer = async (req, res) => {
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
+
+// report course module
+
+export const ReportCourse = async (req, res) => {
+	try {
+
+		
+
+		return res.status(200).json({ message: "Course reported" });
+	} catch (err) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
