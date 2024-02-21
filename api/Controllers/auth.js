@@ -47,7 +47,6 @@ export const login = async (req, res) => {
 
 		return res.status(200).json({ jwtToken, foundUser, message: "User found" });
 	} catch (err) {
-		console.log(err);
 		return res.status(500).json({ message: err });
 	}
 };
@@ -83,7 +82,6 @@ export const signup = async (req, res) => {
 
 		res.status(201).json({ newUserQuery, message: "New user created!" });
 	} catch (err) {
-		console.log(err);
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
@@ -91,7 +89,6 @@ export const signup = async (req, res) => {
 // logout functionality
 export const Logout = async (req, res) => {
 	const user_id = req.params;
-	console.log(user_id);
 	try {
 		res.cookie("jwtToken", { expires: new Date(0), httpOnly: true });
 		res.clearCookie();
@@ -103,7 +100,6 @@ export const Logout = async (req, res) => {
 
 		return res.status(200).json({ message: "Logout successful" });
 	} catch (err) {
-		console.log(err);
 		// Handle the error appropriately
 		res.status(500).json({ error: "Internal Server Error" });
 	}
@@ -129,7 +125,6 @@ export const ValidateToken = async (req, res) => {
 		}
 	} catch (err) {
 		// Other JWT verification errors
-		console.error("JWT verification failed:", err);
 		res.status(401).json({ error: "Unauthorized" });
 	}
 };
@@ -161,7 +156,6 @@ export const ForgotPassword = async (req, res) => {
 
 		return res.status(200).json({ message: "Email sent" });
 	} catch (err) {
-		console.log(err);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
@@ -192,7 +186,6 @@ export const CheckOTP = async (req, res) => {
 			return res.status(400).json({ message: "Wrong OTP" });
 		}
 	} catch (err) {
-		console.log(err);
 		return res.status(500).json({ message: err });
 	}
 };
@@ -225,7 +218,7 @@ const OtpVerificationEmail = async ({ user_id, email }) => {
 		sentCode = otp;
 		return otp;
 	} catch (err) {
-		console.log(err);
+		return res.status(500).json({ message: "Internal Server Error" });
 	}
 };
 
@@ -239,7 +232,6 @@ export const UserLogs = async (req, res) => {
 		const logs = logsQuery.rows;
 		return res.status(200).json({ logs, message: "Retrieved logs" });
 	} catch (err) {
-		console.log(err);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
@@ -254,14 +246,12 @@ export const DeleteLogs = async (req, res) => {
 
 		return res.status(200).json({ message: "Logs deleted successfuly" });
 	} catch (err) {
-		console.log(err);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
 
 export const DeleteUserAccount = async (req, res) => {
 	const user_id = req.params;
-	console.log(user_id.id);
 
 	try {
 		const deleteUserQuery = await dbConnection.query(
@@ -276,7 +266,6 @@ export const DeleteUserAccount = async (req, res) => {
 			return res.status(404).json({ message: "User not found" });
 		}
 	} catch (err) {
-		console.error("Error deleting user:", err);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
